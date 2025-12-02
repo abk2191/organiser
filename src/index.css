@@ -1,0 +1,427 @@
+/* Remove highlight for all elements */
+* {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+/* Hamburger Menu Styles */
+.hamburger {
+  width: 40px;
+  height: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin-left: 20px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background-color: rgb(97, 198, 97);
+  border-radius: 4px;
+  transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  transform-origin: center;
+}
+
+/* Hover Effects */
+.hamburger:hover {
+  transform: scale(1.1);
+}
+
+.hamburger:hover span {
+  background-color: rgb(77, 178, 77);
+  box-shadow: 0 0 6px rgba(97, 198, 97, 0.4);
+}
+
+/* X Transformation when open */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(13px) rotate(45deg);
+  background-color: rgb(97, 198, 97);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-13px) rotate(-45deg);
+  background-color: rgb(97, 198, 97);
+}
+
+/* Hover effect when open */
+.hamburger.open:hover span {
+  background-color: rgb(255, 60, 60);
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.5);
+}
+
+/* Base sidebar - starts hidden */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: greenyellow;
+  color: white;
+  z-index: 999;
+  /* Initial state - hidden */
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin-top: 80px;
+}
+
+/* Open animation */
+.sidebar.sidebar-open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Close animation */
+.sidebar.sidebar-close {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* Remove the old button style */
+.sidebar-button {
+  display: none;
+}
+
+/* Keep all the existing sliding-div animations */
+.sliding-div {
+  animation: slideOnce 0.6s ease-in-out forwards;
+}
+
+@keyframes slideOnce {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/******************************************************/
+.sliding-div-two {
+  animation: slideOnce2 0.6s ease-in-out forwards;
+}
+
+@keyframes slideOnce2 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/******************************************************/
+.sliding-div-three {
+  animation: slideOnce3 0.6s ease-in-out forwards;
+}
+
+@keyframes slideOnce3 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(13px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/******************************************************/
+.sliding-div-four {
+  animation: slideOnce4 0.6s ease-in-out forwards;
+}
+
+@keyframes slideOnce4 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(18px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/******************************************************/
+.sliding-div-five {
+  animation: slideOnce5 0.6s ease-in-out forwards;
+}
+
+@keyframes slideOnce5 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(23px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.sliding-div-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 2px;
+  width: 100%;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.item-style h2 {
+  color: white;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 35px;
+}
+
+.div-style {
+  border: 1px solid black;
+  width: 200px;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(97, 198, 97);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 81px;
+  z-index: 10000;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: greenyellow;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(186, 247, 186);
+}
+
+.wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.page-text {
+  border: 1px sold black;
+  position: relative;
+  padding: 5px;
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  color: rgb(97, 198, 97);
+  height: 70px;
+  margin-top: 30px;
+}
+
+.page-text h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.page-text:hover {
+  text-shadow: 0 0 10px greenyellow, 0 0 20px greenyellow, 0 0 30px greenyellow,
+    0 0 40px greenyellow, 0 0 70px greenyellow;
+}
+
+.page-text:active {
+  text-shadow: 0 0 10px greenyellow, 0 0 20px greenyellow, 0 0 30px greenyellow,
+    0 0 40px greenyellow, 0 0 70px greenyellow;
+}
+
+.kontainer {
+  height: 650px;
+  width: 850px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  box-shadow: 0 8px 16px rgba(64, 64, 64, 0.4);
+  z-index: 1; /* Lower than backdrop */
+  position: relative;
+  z-index: 999;
+}
+
+.main-kontainer {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.crt-nt-btn {
+  height: 50px;
+  background-color: rgb(97, 198, 97);
+  padding: 10px;
+  border: 1px solid rgb(97, 198, 97);
+  color: white;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.crt-nt-btn-div {
+  margin-top: 25px;
+}
+
+.nw-nt-div {
+  height: 200px;
+  width: 500px;
+  border: 1px solid black;
+}
+
+/* Backdrop - overlay */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+/* Notes modal - single modal for all notes */
+.notes-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: greenyellow;
+  padding: 30px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  width: 80%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Notes list in main view */
+.notes-list {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.note-item {
+  width: 100%;
+  max-width: 500px;
+}
+
+.nw-nt-div {
+  height: 200px;
+  width: 100%;
+  max-width: 500px;
+  border: none;
+  background: greenyellow;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nw-nt-div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove or fix the old .openn class */
+.openn {
+  /* Remove or fix this - it shouldn't have background */
+  /* position: fixed; */
+  /* background-color: rgba(0, 0, 0, 0.7); <- This is the problem! */
+}
+
+/* Keep .kontainer z-index normal */
+.kontainer {
+  z-index: 1; /* Normal stacking */
+}
+
+.cls-nt-btn {
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.cls-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+@media (max-width: 768px) {
+  .kontainer {
+    width: 360px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .nw-nt-div {
+    width: 310px;
+    height: 100px;
+  }
+
+  .notes-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+  }
+}
