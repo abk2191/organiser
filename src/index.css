@@ -405,7 +405,7 @@ html {
 
 @media (max-width: 768px) {
   .kontainer {
-    width: 360px;
+    width: 340px;
     margin-right: 15px;
     display: flex;
     flex-direction: column;
@@ -414,7 +414,7 @@ html {
   }
 
   .nw-nt-div {
-    width: 310px;
+    width: 290px;
     height: 100px;
   }
 
