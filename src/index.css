@@ -268,13 +268,12 @@ html {
 }
 
 .kontainer {
-  height: 650px;
-  width: 850px;
+  height: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
-  box-shadow: 0 8px 16px rgba(64, 64, 64, 0.4);
+  justify-content: center;
   z-index: 1; /* Lower than backdrop */
   position: relative;
   z-index: 999;
@@ -348,17 +347,23 @@ html {
 /* Notes list in main view */
 .notes-list {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  gap: 15px;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
   align-items: center;
   margin-top: 20px;
+
+  height: auto;
+  width: 100%;
 }
 
 .note-item {
   width: 100%;
-  max-width: 500px;
+  gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nw-nt-div {
@@ -405,12 +410,12 @@ html {
 
 @media (max-width: 768px) {
   .kontainer {
-    width: 340px;
-    margin-right: 15px;
+    width: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    justify-content: center;
   }
 
   .nw-nt-div {
