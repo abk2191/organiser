@@ -30,7 +30,7 @@ function Notes() {
     // Set the text directly when opening
     setTimeout(() => {
       if (contentRef.current && notes[index]) {
-        contentRef.current.innerText = notes[index].content;
+        contentRef.current.innerHTML = notes[index].content;
       }
     }, 0);
   }
@@ -87,8 +87,14 @@ function Notes() {
           {/* Display notes list */}
           <div className="notes-list">
             {notes.length === 0 ? (
-              <div style={{ textAlign: "center", justifyContent: "center" }}>
-                <p className="warning">No notes yet. Create your first note!</p>
+              <div
+                style={{
+                  textAlign: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <p className="warning"></p>
               </div>
             ) : (
               notes.map((note, index) => (
@@ -99,7 +105,7 @@ function Notes() {
                 >
                   <div className="nw-nt-div">
                     <div className="nt-cntnt-div">
-                      <p>{note.content}</p>
+                      <p dangerouslySetInnerHTML={{ __html: note.content }}></p>
                     </div>
                     <div className="dlt-nt-btn-div">
                       <button
@@ -134,7 +140,7 @@ function Notes() {
                 contentEditable
                 suppressContentEditableWarning={true}
                 onInput={(e) => {
-                  const updatedText = e.target.innerText;
+                  const updatedText = e.target.innerHTML;
                   setNotes((prev) =>
                     prev.map((n, i) =>
                       i === selectedNoteIndex

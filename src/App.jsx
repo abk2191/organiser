@@ -58,10 +58,10 @@ function App() {
         <div ref={sidebarRef} className="sidebar">
           <div className="sliding-div-container item-style">
             <div className="sliding-div div-style">
-              <h2>Notes</h2>
+              <h2>NOTES</h2>
             </div>
             <div className="sliding-div-two div-style">
-              <h2>Todos</h2>
+              <h2>TODOS</h2>
             </div>
           </div>
         </div>

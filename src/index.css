@@ -1,50 +1,87 @@
-/* Remove highlight for all elements */
+/* ============================================
+   GOOGLE-STYLE MATERIAL DESIGN REDESIGN
+   Maintaining existing color scheme
+   ============================================ */
+/* ===== CSS RESET & GLOBAL STYLES ===== */
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   tap-highlight-color: transparent;
+  font-family: "Roboto", "Segoe UI", "Inter", sans-serif;
 }
 
-/* Hamburger Menu Styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(250, 250, 250);
+  min-height: 100vh;
+  font-family: "Roboto", "Segoe UI", "Inter", sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ===== GOOGLE-STYLE NAVBAR =====  */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  z-index: 10000;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: greenyellow;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 24px;
+}
+
+/* ===== GOOGLE-STYLE HAMBURGER MENU ===== */
 .hamburger {
-  width: 40px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0;
-  margin-left: 20px;
+  padding: 12px;
+  border-radius: 50%;
   position: relative;
-  transition: transform 0.3s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hamburger span {
   display: block;
-  width: 100%;
-  height: 4px;
+  width: 24px;
+  height: 2px;
   background-color: rgb(97, 198, 97);
-  border-radius: 4px;
-  transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
+}
+
+.hamburger span:nth-child(1) {
+  transform: translateY(-6px);
+}
+
+.hamburger span:nth-child(3) {
+  transform: translateY(6px);
 }
 
 /* Hover Effects */
 .hamburger:hover {
-  transform: scale(1.1);
-}
-
-.hamburger:hover span {
-  background-color: rgb(77, 178, 77);
-  box-shadow: 0 0 6px rgba(97, 198, 97, 0.4);
+  background-color: white;
+  transform: scale(1.05);
 }
 
 /* X Transformation when open */
 .hamburger.open span:nth-child(1) {
-  transform: translateY(13px) rotate(45deg);
-  background-color: rgb(97, 198, 97);
+  transform: translateY(1px) rotate(45deg);
 }
 
 .hamburger.open span:nth-child(2) {
@@ -53,31 +90,30 @@
 }
 
 .hamburger.open span:nth-child(3) {
-  transform: translateY(-13px) rotate(-45deg);
-  background-color: rgb(97, 198, 97);
+  transform: translateY(-1px) rotate(-45deg);
 }
 
-/* Hover effect when open */
-.hamburger.open:hover span {
-  background-color: rgb(255, 60, 60);
-  box-shadow: 0 0 8px rgba(255, 80, 80, 0.5);
+.hamburger.open:hover {
+  background-color: white;
 }
 
-/* Base sidebar - starts hidden */
+/* ===== GOOGLE-STYLE SIDEBAR ===== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 280px;
   height: 100vh;
   background: greenyellow;
-  color: white;
-  z-index: 999;
-  /* Initial state - hidden */
+  color: #202124;
+  z-index: 9998;
   transform: translateX(-100%);
   opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  margin-top: 80px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 64px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
 }
 
 /* Open animation */
@@ -92,226 +128,272 @@
   opacity: 0;
 }
 
-/* Remove the old button style */
-.sidebar-button {
-  display: none;
-}
-
-/* Keep all the existing sliding-div animations */
-.sliding-div {
-  animation: slideOnce 0.6s ease-in-out forwards;
-}
-
-@keyframes slideOnce {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(3px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/******************************************************/
-.sliding-div-two {
-  animation: slideOnce2 0.6s ease-in-out forwards;
-}
-
-@keyframes slideOnce2 {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(8px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/******************************************************/
-.sliding-div-three {
-  animation: slideOnce3 0.6s ease-in-out forwards;
-}
-
-@keyframes slideOnce3 {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(13px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/******************************************************/
-.sliding-div-four {
-  animation: slideOnce4 0.6s ease-in-out forwards;
-}
-
-@keyframes slideOnce4 {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(18px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/******************************************************/
-.sliding-div-five {
-  animation: slideOnce5 0.6s ease-in-out forwards;
-}
-
-@keyframes slideOnce5 {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(23px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 .sliding-div-container {
   display: flex;
   flex-direction: column;
-  text-align: left;
-  gap: 2px;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding-left: 20px;
-  padding-top: 20px;
-}
-
-.item-style h2 {
-  color: white;
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", sans-serif;
-  font-size: 35px;
+  padding: 16px 0;
 }
 
 .div-style {
-  border: 1px solid black;
-  width: 200px;
-  padding-left: 12px;
-  padding-right: 12px;
-  height: 70px;
+  width: fit-content;
+  padding: 15px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgb(97, 198, 97);
-  border: none;
-  border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.2s;
+  border: 1px solid rgb(97, 198, 97);
+  border-radius: 10px;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 81px;
-  z-index: 10000;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background: greenyellow;
-}
-
-body,
-html {
+.div-style h2 {
+  color: white;
   margin: 0;
   padding: 0;
-  background-color: rgb(186, 247, 186);
+  font-family: "Inter", sans-serif;
+  font-size: 55px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
 }
 
+/* Sidebar item animations - Google-style subtle entrance */
+.sliding-div {
+  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.sliding-div-two {
+  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== GOOGLE-STYLE NOTES APP ===== */
+/* FIXED: Full width, perfectly centered container */
+.main-kontainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+/* FIXED: Removed all padding that was causing offset */
 .wrapper {
   width: 100%;
-  height: auto;
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0;
 }
 
+/* FIXED: Perfectly centered title */
 .page-text {
-  border: 1px sold black;
-  position: relative;
-  padding: 5px;
-  font-family: "Inter", sans-serif;
-  font-size: 30px;
+  padding: 8px 16px;
+  font-size: 32px;
   color: rgb(97, 198, 97);
-  height: 70px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-align: center;
   margin-top: 30px;
 }
 
 .page-text h1 {
   margin: 0;
   padding: 0;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
 }
 
 .page-text:hover {
-  text-shadow: 0 0 10px greenyellow, 0 0 20px greenyellow, 0 0 30px greenyellow,
-    0 0 40px greenyellow, 0 0 70px greenyellow;
+  background-color: rgba(97, 198, 97, 0.05);
 }
 
-.page-text:active {
-  text-shadow: 0 0 10px greenyellow, 0 0 20px greenyellow, 0 0 30px greenyellow,
-    0 0 40px greenyellow, 0 0 70px greenyellow;
-}
-
+/* FIXED: Centered main container */
 .kontainer {
-  height: auto;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  z-index: 1; /* Lower than backdrop */
-  position: relative;
-  z-index: 999;
+  justify-content: flex-start;
+  padding: 0;
+  margin: 0;
 }
 
-.main-kontainer {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
-}
-
+/* ===== GOOGLE-STYLE BUTTONS ===== */
 .crt-nt-btn {
-  height: 50px;
+  height: 48px;
   background-color: rgb(97, 198, 97);
-  padding: 10px;
-  border: 1px solid rgb(97, 198, 97);
+  padding: 0 24px;
+  border: none;
   color: white;
-  font-size: 18px;
-  border-radius: 8px;
+  font-size: 14px;
+  border-radius: 24px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
+.crt-nt-btn:hover {
+  background-color: rgb(87, 188, 87);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+  transform: translateY(-1px);
+}
+
+.crt-nt-btn:active {
+  background-color: rgb(77, 178, 77);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transform: translateY(0);
+}
+
+/* FIXED: Perfectly centered button container */
 .crt-nt-btn-div {
-  margin-top: 25px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+/* ===== GOOGLE-STYLE NOTES LIST ===== */
+/* FIXED: Perfectly centered grid */
+.notes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 350px);
+  gap: 24px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  overflow-x: hidden;
+  justify-content: center;
+  justify-items: center;
+}
+
+.note-item {
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
 }
 
 .nw-nt-div {
-  height: 200px;
-  width: 500px;
-  border: 1px solid black;
-  font-family: "Inter", sans-serif;
-  font-size: 25px;
+  height: 280px;
+  width: 350px;
+  background: greenyellow;
+  color: #202124;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #dadce0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
 }
 
-/* Backdrop - overlay */
+.nw-nt-div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-color: rgb(97, 198, 97);
+}
+
+.nt-cntnt-div {
+  height: calc(100% - 60px);
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.nt-cntnt-div p {
+  font-size: 24px;
+  line-height: 1.5;
+  color: rgb(97, 198, 97);
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dlt-nt-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 40px;
+  opacity: 1;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f1f1;
+}
+
+.dlt-btn {
+  background: rgba(97, 198, 97, 0.1);
+  border: 1px solid rgba(97, 198, 97, 0.2);
+  font-size: 16px;
+  color: rgb(97, 198, 97);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.dlt-btn:hover {
+  background-color: rgba(97, 198, 97, 0.2);
+  color: #d32f2f;
+  border-color: rgba(97, 198, 97, 0.3);
+  transform: scale(1.1);
+}
+
+/* ===== GOOGLE-STYLE MODAL ===== */
 .backdrop {
   position: fixed;
   top: 0;
@@ -320,153 +402,318 @@ html {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9998;
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Notes modal - single modal for all notes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .notes-modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: greenyellow;
-  padding: 10px;
+  padding: 0;
   border: none;
-  border-radius: 6px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+    0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
   z-index: 9999;
-  width: 80%;
+  width: 90%;
   max-width: 700px;
-  max-height: 80vh;
-  overflow-y: auto;
+  max-height: 85vh;
+  overflow: hidden;
+  animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .modal-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
-}
-
-/* Notes list in main view */
-.notes-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
-  align-items: center;
-  margin-top: 20px;
-
-  height: auto;
-  width: 100%;
-}
-
-.note-item {
-  width: fit-content;
-  gap: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.note-content {
-  font-family: "Inter", sans-serif;
-  font-size: 25px;
-  color: rgb(9, 73, 9);
-}
-
-.nw-nt-div {
-  height: 500px;
-  overflow-y: auto;
-  width: 500px;
-  max-width: 500px;
-  border: none;
-  background: greenyellow;
-  color: rgb(27, 78, 27);
-  padding: 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.nt-cntnt-div {
-  height: 400px;
-}
-
-.nt-cntnt-div p {
-  text-align: wrap;
-}
-
-.dlt-nt-btn-div {
-  display: flex;
-  align-items: center;
-  justify-content: right;
-}
-
-.nw-nt-div:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Remove or fix the old .openn class */
-.openn {
-  /* Remove or fix this - it shouldn't have background */
-  /* position: fixed; */
-  /* background-color: rgba(0, 0, 0, 0.7); <- This is the problem! */
-}
-
-/* Keep .kontainer z-index normal */
-.kontainer {
-  z-index: 1; /* Normal stacking */
-}
-
-.cls-nt-btn {
-  background: none;
-  border: none;
-  font-size: 25px;
-  cursor: pointer;
+  height: 100%;
 }
 
 .cls-btn-div {
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-end;
+  padding: 16px 16px 8px;
+  border-bottom: 1px solid #e8eaed;
 }
 
-.warning {
-  font-family: "Inter", sans-serif;
-  color: rgb(97, 198, 97);
-  font-size: 20px;
-}
-
-.dlt-btn {
+.cls-nt-btn {
   background: none;
   border: none;
-  font-size: 20px;
-  color: rgb(26, 110, 26);
+  font-size: 24px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6368;
+  transition: all 0.2s;
 }
 
+.cls-nt-btn:hover {
+  background-color: rgba(95, 99, 104, 0.1);
+}
+
+.note-content {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  color: rgb(87, 188, 87);
+  line-height: 1.5;
+  padding: 20px 24px;
+  min-height: 300px;
+  outline: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.note-content:focus {
+  outline: none;
+}
+
+.note-content[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  color: #9aa0a6;
+  pointer-events: none;
+}
+
+/* ===== UTILITY & EMPTY STATES ===== */
+.warning {
+  font-family: "Roboto", sans-serif;
+  color: #9aa0a6;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  padding: 64px 24px;
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-  .kontainer {
+  .navbar {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .sidebar {
+    margin-top: 56px;
+    width: 280px;
+  }
+
+  .main-kontainer {
+    padding: 0; /* REMOVED padding that was causing offset */
+  }
+
+  .page-text {
+    font-size: 24px;
+    height: 48px;
+  }
+
+  .crt-nt-btn {
+    width: 350px;
+  }
+
+  /* FIXED: Mobile notes list centering */
+  .notes-list {
+    grid-template-columns: 350px;
+    gap: 16px;
+    padding: 0;
     width: 100%;
-    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
 
-  .nw-nt-div {
-    width: 290px;
-    height: 100px;
-  }
-
-  .notes-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .note-item {
     width: 350px;
   }
+
+  .nw-nt-div {
+    height: 240px;
+    width: 350px;
+  }
+
+  .nt-cntnt-div p {
+    -webkit-line-clamp: 6;
+  }
+
+  .notes-modal {
+    width: 95%;
+    max-height: 90vh;
+    border-radius: 8px;
+  }
+
+  .hamburger {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dlt-nt-btn-div {
+    height: 36px;
+  }
+
+  .dlt-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .crt-nt-btn-div {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .notes-list {
+    grid-template-columns: 320px;
+  }
+
+  .note-item {
+    width: 320px;
+  }
+
+  .nw-nt-div {
+    width: 320px;
+  }
+
+  .crt-nt-btn {
+    width: 320px;
+  }
+
+  .page-text {
+    font-size: 22px;
+    padding: 8px 12px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .notes-list {
+    grid-template-columns: repeat(3, 350px);
+    max-width: 1110px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .notes-list {
+    grid-template-columns: repeat(2, 350px);
+    max-width: 724px;
+  }
+}
+
+/* ===== GOOGLE-STYLE SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dadce0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bdc1c6;
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-item {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.note-item:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.note-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.note-item:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.note-item:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.note-item:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.note-item:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.note-item:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.note-item:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.note-item:nth-child(n + 9) {
+  animation-delay: 0.45s;
+}
+
+/* ===== FIX FOR HORIZONTAL SCROLLING ===== */
+body,
+html,
+#root,
+.App,
+.main-kontainer,
+.kontainer,
+.notes-list {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: rgb(213, 248, 162);
+}
+
+/* ===== EXTRA CENTERING FIXES ===== */
+/* Force everything to be centered */
+.main-kontainer > * {
+  margin-left: auto;
+  margin-right: auto;
 }
