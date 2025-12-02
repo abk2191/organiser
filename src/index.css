@@ -307,6 +307,8 @@ html {
   height: 200px;
   width: 500px;
   border: 1px solid black;
+  font-family: "Inter", sans-serif;
+  font-size: 25px;
 }
 
 /* Backdrop - overlay */
@@ -327,9 +329,9 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
   background: greenyellow;
-  padding: 30px;
+  padding: 10px;
   border: none;
-  border-radius: 12px;
+  border-radius: 6px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   width: 80%;
@@ -342,6 +344,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
 /* Notes list in main view */
@@ -359,23 +362,47 @@ html {
 }
 
 .note-item {
-  width: 100%;
+  width: fit-content;
   gap: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.note-content {
+  font-family: "Inter", sans-serif;
+  font-size: 25px;
+  color: rgb(9, 73, 9);
+}
+
 .nw-nt-div {
-  height: 200px;
-  width: 100%;
+  height: 500px;
+  overflow-y: auto;
+  width: 500px;
   max-width: 500px;
   border: none;
   background: greenyellow;
+  color: rgb(27, 78, 27);
   padding: 20px;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.nt-cntnt-div {
+  height: 400px;
+}
+
+.nt-cntnt-div p {
+  text-align: wrap;
+}
+
+.dlt-nt-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 .nw-nt-div:hover {
@@ -406,6 +433,19 @@ html {
   display: flex;
   align-items: center;
   justify-content: right;
+}
+
+.warning {
+  font-family: "Inter", sans-serif;
+  color: rgb(97, 198, 97);
+  font-size: 20px;
+}
+
+.dlt-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: rgb(26, 110, 26);
 }
 
 @media (max-width: 768px) {
