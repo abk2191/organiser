@@ -359,7 +359,7 @@ function Todo() {
                         <div className="nt-cntnt-div">
                           <h3
                             style={{
-                              color: "rgb(97, 198, 97)",
+                              color: "white",
                               marginBottom: "8px",
                             }}
                           >
@@ -368,7 +368,7 @@ function Todo() {
                           <p
                             style={{
                               fontSize: "14px",
-                              color: "rgb(87, 188, 87)",
+                              color: "white",
                             }}
                           >
                             {totalCount === 0
@@ -443,7 +443,7 @@ function Todo() {
                       <div className="nt-cntnt-div">
                         <h3
                           style={{
-                            color: "rgb(97, 198, 97)",
+                            color: "white",
                             marginBottom: "8px",
                           }}
                         >
@@ -452,7 +452,7 @@ function Todo() {
                         <p
                           style={{
                             fontSize: "14px",
-                            color: "rgb(87, 188, 87)",
+                            color: "white",
                           }}
                         >
                           {totalCount === 0
@@ -508,7 +508,7 @@ function Todo() {
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
-                  color: "rgb(97, 198, 97)",
+
                   padding: "20px 24px 0",
                   marginBottom: "20px",
                   outline: "none",
@@ -531,7 +531,7 @@ function Todo() {
                     width: "100%",
                     fontSize: "24px",
                     fontWeight: "bold",
-                    color: "rgb(97, 198, 97)",
+                    color: "white",
                     backgroundColor: "transparent",
                     border: "none",
                     outline: "none",
@@ -550,14 +550,12 @@ function Todo() {
                     marginBottom: "20px",
                   }}
                 >
-                  <h3 style={{ color: "rgb(97, 198, 97)", margin: 0 }}>
-                    Tasks
-                  </h3>
+                  <h3 style={{ color: "white", margin: 0 }}>Tasks</h3>
                   <button
                     className="add-task-btn"
                     onClick={() => addTask(currentTodoId)}
                     style={{
-                      backgroundColor: "rgb(97, 198, 97)",
+                      backgroundColor: "navy",
                       color: "white",
                       border: "none",
                       padding: "8px 16px",

@@ -34,7 +34,7 @@ html {
   top: 0;
   left: 0;
   width: 100%;
-  background: greenyellow;
+  background: #000033;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0 24px;
 }
@@ -60,7 +60,7 @@ html {
   display: block;
   width: 24px;
   height: 2px;
-  background-color: rgb(97, 198, 97);
+  background-color: white;
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
@@ -76,7 +76,7 @@ html {
 
 /* Hover Effects */
 .hamburger:hover {
-  background-color: white;
+  background-color: navy;
   transform: scale(1.05);
 }
 
@@ -95,7 +95,7 @@ html {
 }
 
 .hamburger.open:hover {
-  background-color: white;
+  background-color: navy;
 }
 
 /* ===== GOOGLE-STYLE SIDEBAR ===== */
@@ -105,7 +105,7 @@ html {
   left: 0;
   width: 280px;
   height: 100vh;
-  background: greenyellow;
+  background: #000033;
   color: #202124;
   z-index: 9998;
   transform: translateX(-100%);
@@ -136,20 +136,21 @@ html {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 16px 0;
+  margin-left: -5px;
+  margin-top: 35px;
 }
 
 .div-style {
-  width: fit-content;
-  padding: 15px;
+  width: 250px;
+  padding: 10px;
   height: 68px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(97, 198, 97);
+  background-color: navy;
   cursor: pointer;
   transition: background-color 0.2s;
-  border: 1px solid rgb(97, 198, 97);
+  border: 1px solid navy;
   border-radius: 10px;
 }
 
@@ -214,7 +215,7 @@ html {
 .page-text {
   padding: 8px 16px;
   font-size: 32px;
-  color: rgb(97, 198, 97);
+  color: #8989ea;
   height: 64px;
   display: flex;
   align-items: center;
@@ -231,6 +232,7 @@ html {
   font-weight: 500;
   letter-spacing: -0.5px;
   font-family: "Inter", sans-serif;
+  color: white;
   font-weight: bold;
 }
 
@@ -252,7 +254,8 @@ html {
   font-weight: 500;
   letter-spacing: -0.5px;
   font-family: "Inter", sans-serif;
-  color: rgb(97, 198, 97);
+  color: white;
+
   font-size: 30px;
   font-weight: bold;
 }
@@ -275,7 +278,7 @@ html {
 /* ===== GOOGLE-STYLE BUTTONS ===== */
 .crt-nt-btn {
   height: 48px;
-  background-color: rgb(97, 198, 97);
+  background-color: #000033;
   padding: 0 24px;
   border: none;
   color: white;
@@ -293,7 +296,7 @@ html {
 }
 
 .crt-nt-btn:hover {
-  background-color: rgb(87, 188, 87);
+  background-color: navy;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
   transform: translateY(-1px);
 }
@@ -341,7 +344,7 @@ html {
 .nw-nt-div {
   height: 280px;
   width: 350px;
-  background: greenyellow;
+  background: #000033;
   color: #202124;
   padding: 20px;
   border-radius: 8px;
@@ -350,7 +353,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid #dadce0;
+  border: 1px solid #000033;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
@@ -359,8 +362,6 @@ html {
 
 .nw-nt-div:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
-  border-color: rgb(97, 198, 97);
 }
 
 .nt-cntnt-div {
@@ -375,7 +376,7 @@ html {
 .nt-cntnt-div p {
   font-size: 24px;
   line-height: 1.5;
-  color: rgb(97, 198, 97);
+  color: white;
   margin: 0;
   font-family: "Inter", sans-serif;
   display: -webkit-box;
@@ -401,7 +402,7 @@ html {
   background: rgba(97, 198, 97, 0.1);
   border: 1px solid rgba(97, 198, 97, 0.2);
   font-size: 16px;
-  color: rgb(97, 198, 97);
+  color: white;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -445,7 +446,7 @@ html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: greenyellow;
+  background: #000033;
   padding: 0;
   border: none;
   border-radius: 8px;
@@ -482,7 +483,6 @@ html {
   align-items: center;
   justify-content: flex-end;
   padding: 16px 16px 8px;
-  border-bottom: 1px solid #e8eaed;
 }
 
 .cls-nt-btn {
@@ -496,7 +496,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(87, 188, 87);
+  color: white;
   transition: all 0.2s;
 }
 
@@ -507,7 +507,7 @@ html {
 .note-content {
   font-family: "Inter", sans-serif;
   font-size: 20px;
-  color: rgb(87, 188, 87);
+  color: white;
   line-height: 1.5;
   padding: 20px 24px;
   min-height: 300px;
@@ -549,7 +549,7 @@ html {
   font-size: 30px;
 
   font-family: "Inter", sans-serif;
-  color: rgb(97, 198, 97);
+  color: white;
 }
 
 .mdl-hdr {
@@ -576,10 +576,14 @@ html {
 }
 
 .unpin-btn-img {
-  filter: invert(66%) sepia(34%) saturate(776%) hue-rotate(71deg)
-    brightness(91%) contrast(89%);
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)
+    contrast(100%);
   width: 20px;
   height: 20px;
+}
+
+.todo-title {
+  color: white;
 }
 
 /* FIX: Make unpin button visible */
@@ -602,9 +606,9 @@ html {
   gap: 12px;
   padding: 16px;
   margin-bottom: 12px;
-  background-color: rgb(30, 82, 30);
+  background-color: navy;
   border-radius: 8px;
-  border: 1px solid rgb(30, 82, 30);
+  border: 1px solid navy;
   font-family: "Inter", sans-serif;
   font-size: 18px;
   transition: all 0.2s ease;
@@ -626,7 +630,7 @@ html {
   flex: 1;
   cursor: pointer;
   padding: 8px;
-  color: rgb(87, 188, 87);
+  color: white;
   font-weight: 500;
   min-height: 28px;
   font-size: 25px;
@@ -653,7 +657,7 @@ html {
 .task-delete-btn {
   background-color: transparent;
   border: none;
-  color: rgb(87, 188, 87);
+  color: white;
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
@@ -679,7 +683,7 @@ html {
     font-weight: 500;
     letter-spacing: -0.5px;
     font-family: "Inter", sans-serif;
-    color: rgb(97, 198, 97);
+    color: navy;
     font-size: 18px;
     font-weight: bold;
   }
@@ -890,7 +894,7 @@ html,
 }
 
 body {
-  background-color: rgb(228, 250, 194);
+  background-color: rgb(9, 9, 62);
 }
 
 /* ===== EXTRA CENTERING FIXES ===== */
