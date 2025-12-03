@@ -147,10 +147,10 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: navy;
+  background-color: #000033;
   cursor: pointer;
   transition: background-color 0.2s;
-  border: 1px solid navy;
+  border: 1px solid #000033;
   border-radius: 10px;
 }
 
@@ -395,7 +395,6 @@ html {
   transition: opacity 0.2s;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid #f1f1f1;
 }
 
 .dlt-btn {
@@ -894,7 +893,7 @@ html,
 }
 
 body {
-  background-color: rgb(9, 9, 62);
+  background-color: rgb(50, 50, 122);
 }
 
 /* ===== EXTRA CENTERING FIXES ===== */
