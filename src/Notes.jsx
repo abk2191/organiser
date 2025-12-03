@@ -187,7 +187,7 @@ function Notes() {
             <div className="pinned-nts">
               <div className="wrapper">
                 <div className="page-text-2">
-                  <h1>PINNED NOTES</h1>
+                  <i className="fa-solid fa-thumbtack"></i>
                 </div>
               </div>
               <div className="all-pnd-nts">
@@ -226,7 +226,7 @@ function Notes() {
               </div>
               <div className="wrapper">
                 <div className="page-text-2">
-                  <h1>ALL NOTES</h1>
+                  <i class="fa-regular fa-note-sticky"></i>
                 </div>
               </div>
             </div>
