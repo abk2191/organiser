@@ -342,9 +342,9 @@ html {
 }
 
 .nw-nt-div {
-  max-height: 280px;
+  height: 280px;
   width: 350px;
-  background: #000033;
+  background: #030342;
   color: #202124;
   padding: 20px;
   border-radius: 8px;
@@ -356,7 +356,7 @@ html {
   border: 1px solid #000033;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   margin: 0;
 }
 
@@ -454,8 +454,8 @@ html {
   z-index: 9999;
   width: 90%;
   max-width: 700px;
-  max-height: 85vh;
-  overflow: hidden;
+  max-height: 600px;
+  overflow-y: auto;
   animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -676,6 +676,11 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .notes-modal {
+    height: 500px;
+    overflow-y: auto;
+  }
+
   .page-text-2 h2 {
     margin: 0;
     padding: 0;
