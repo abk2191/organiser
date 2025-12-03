@@ -1,0 +1,586 @@
+import { useState, useEffect } from "react";
+
+function Todo() {
+  // Load todos from localStorage on initial render
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
+  const [todoActive, setTodoActive] = useState(false);
+  const [selectedTodoIndex, setSelectedTodoIndex] = useState(null);
+  const [pinnedTodos, setPinnedTodos] = useState(() => {
+    const savedPinnedTodos = localStorage.getItem("pinnedTodos");
+    return savedPinnedTodos ? JSON.parse(savedPinnedTodos) : [];
+  });
+  const [isTodoPinned, setIsTodoPinned] = useState(false);
+
+  // Store tasks for each todo (object with todoId as keys)
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("todoTasks");
+    return savedTasks ? JSON.parse(savedTasks) : {};
+  });
+
+  // Save todos to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  // Save pinned todos to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("pinnedTodos", JSON.stringify(pinnedTodos));
+  }, [pinnedTodos]);
+
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("todoTasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  function newTodo() {
+    // Create a Date object (current time)
+    const now = new Date();
+
+    // Get date parts
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const year = now.getFullYear();
+
+    // Get time parts
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    // Convert 24-hour to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    // Format time with leading zero
+    const formattedHours = hours.toString().padStart(2, "0");
+
+    // Create the formatted strings
+    const dateString = `${month}/${day}/${year}`;
+    const timeString = `${formattedHours}:${minutes} ${ampm}`;
+
+    const newTodoItem = {
+      id: Date.now(),
+      title: "Todo List",
+      date: dateString,
+      time: timeString,
+    };
+
+    setTodos((prevTodos) => [...prevTodos, newTodoItem]);
+
+    // Initialize empty tasks for this todo
+    setTasks((prev) => ({
+      ...prev,
+      [newTodoItem.id]: [],
+    }));
+  }
+
+  function openTodo(todoId) {
+    // Check if todo is in pinnedTodos
+    const pinnedIndex = pinnedTodos.findIndex((todo) => todo.id === todoId);
+    if (pinnedIndex !== -1) {
+      // Todo is pinned
+      setSelectedTodoIndex(pinnedIndex);
+      setIsTodoPinned(true);
+      setTodoActive(true);
+      return;
+    }
+
+    // Check if todo is in regular todos
+    const originalIndex = todos.findIndex((todo) => todo.id === todoId);
+    if (originalIndex !== -1) {
+      setSelectedTodoIndex(originalIndex);
+      setIsTodoPinned(false);
+      setTodoActive(true);
+    }
+  }
+
+  function closeTodo() {
+    setTodoActive(false);
+    setSelectedTodoIndex(null);
+    setIsTodoPinned(false);
+  }
+
+  function deleteTodo(todoId, e) {
+    e?.stopPropagation();
+    e?.preventDefault();
+
+    // Delete from both arrays
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
+    setPinnedTodos((prevPinned) =>
+      prevPinned.filter((todo) => todo.id !== todoId)
+    );
+
+    // Remove tasks for this todo
+    setTasks((prev) => {
+      const newTasks = { ...prev };
+      delete newTasks[todoId];
+      return newTasks;
+    });
+
+    closeTodo();
+  }
+
+  // Function to clear all todos
+  function clearAllTodos() {
+    if (window.confirm("Are you sure you want to delete all todo lists?")) {
+      setTodos([]);
+      setPinnedTodos([]);
+      setTasks({});
+      localStorage.removeItem("todos");
+      localStorage.removeItem("pinnedTodos");
+      localStorage.removeItem("todoTasks");
+    }
+  }
+
+  // Filter out pinned todos from regular todos for display
+  const unpinnedTodos = todos.filter(
+    (todo) => !pinnedTodos.some((pinnedTodo) => pinnedTodo.id === todo.id)
+  );
+
+  // Sort todos by ID in descending order (newest first)
+  const sortedUnpinnedTodos = [...unpinnedTodos].sort((a, b) => b.id - a.id);
+  const sortedPinnedTodos = [...pinnedTodos].sort((a, b) => b.id - a.id);
+
+  function pinTodo(todoId, e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("Pin triggered for todo:", todoId);
+    const todoToPin = todos.find((todo) => todo.id === todoId);
+
+    if (todoToPin && !pinnedTodos.some((todo) => todo.id === todoId)) {
+      // Add to pinned todos
+      setPinnedTodos((prev) => [...prev, todoToPin]);
+
+      // Remove from regular todos array
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
+    }
+  }
+
+  function unpinTodo(todoId, e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("Unpin triggered for todo:", todoId);
+
+    // Find the todo in pinnedTodos
+    const todoToUnpin = pinnedTodos.find((todo) => todo.id === todoId);
+
+    if (todoToUnpin) {
+      // Remove from pinnedTodos
+      setPinnedTodos((prev) => prev.filter((todo) => todo.id !== todoId));
+
+      // Add back to todos array
+      setTodos((prevTodos) => [...prevTodos, todoToUnpin]);
+    }
+  }
+
+  // Task-related functions
+  function addTask(todoId) {
+    const newTask = {
+      id: Date.now(),
+      text: "New Task",
+      completed: false,
+    };
+
+    setTasks((prev) => ({
+      ...prev,
+      [todoId]: [...(prev[todoId] || []), newTask],
+    }));
+  }
+
+  function deleteTask(todoId, taskId) {
+    setTasks((prev) => ({
+      ...prev,
+      [todoId]: (prev[todoId] || []).filter((task) => task.id !== taskId),
+    }));
+  }
+
+  function toggleTaskCompletion(todoId, taskId) {
+    setTasks((prev) => ({
+      ...prev,
+      [todoId]: (prev[todoId] || []).map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      ),
+    }));
+  }
+
+  function updateTaskText(todoId, taskId, newText) {
+    setTasks((prev) => ({
+      ...prev,
+      [todoId]: (prev[todoId] || []).map((task) =>
+        task.id === taskId ? { ...task, text: newText } : task
+      ),
+    }));
+  }
+
+  // TaskItem component
+  function TaskItem({ todoId, task, onDelete, onToggle, onUpdate }) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [text, setText] = useState(task.text);
+
+    const handleSave = () => {
+      if (text.trim()) {
+        onUpdate(todoId, task.id, text);
+      }
+      setIsEditing(false);
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSave();
+      } else if (e.key === "Escape") {
+        setIsEditing(false);
+        setText(task.text);
+      }
+    };
+
+    return (
+      <div className="task-container">
+        <input
+          type="checkbox"
+          checked={task.completed}
+          onChange={() => onToggle(todoId, task.id)}
+          className="task-checkbox"
+        />
+        {isEditing ? (
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+            autoFocus
+            className="task-edit-input"
+          />
+        ) : (
+          <div
+            className="task-content"
+            onClick={() => setIsEditing(true)}
+            style={{
+              textDecoration: task.completed ? "line-through" : "none",
+              opacity: task.completed ? 0.6 : 1,
+              cursor: "pointer",
+              padding: "8px",
+              flex: 1,
+            }}
+          >
+            {task.text}
+          </div>
+        )}
+        <button
+          onClick={() => onDelete(todoId, task.id)}
+          className="task-delete-btn"
+        >
+          <i className="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    );
+  }
+
+  // Get current todo in modal
+  const currentTodo =
+    isTodoPinned && selectedTodoIndex !== null
+      ? pinnedTodos[selectedTodoIndex]
+      : !isTodoPinned && selectedTodoIndex !== null
+      ? todos[selectedTodoIndex]
+      : null;
+
+  const currentTodoId = currentTodo?.id;
+  const currentTodoTasks = currentTodoId ? tasks[currentTodoId] || [] : [];
+
+  return (
+    <>
+      <div className="main-kontainer">
+        <div className="wrapper">
+          <div className="page-text">
+            <h1>TODO</h1>
+          </div>
+        </div>
+        <div className="kontainer">
+          <div className="crt-nt-btn-div">
+            <button className="crt-nt-btn" onClick={newTodo}>
+              Create New Todo List
+            </button>
+          </div>
+
+          {/* Pinned Todos */}
+          {sortedPinnedTodos.length > 0 && (
+            <div className="pinned-nts">
+              <div className="wrapper">
+                <div className="page-text-2">
+                  <h2>PINNED LISTS ({sortedPinnedTodos.length})</h2>
+                </div>
+              </div>
+              <div className="all-pnd-nts">
+                {sortedPinnedTodos.map((todo) => {
+                  const todoTasks = tasks[todo.id] || [];
+                  const completedCount = todoTasks.filter(
+                    (t) => t.completed
+                  ).length;
+                  const totalCount = todoTasks.length;
+
+                  return (
+                    <div
+                      key={todo.id}
+                      className="note-item"
+                      onClick={() => openTodo(todo.id)}
+                    >
+                      <div className="nw-nt-div">
+                        <div className="nt-cntnt-div">
+                          <h3
+                            style={{
+                              color: "rgb(97, 198, 97)",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            {todo.title}
+                          </h3>
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              color: "rgb(87, 188, 87)",
+                            }}
+                          >
+                            {totalCount === 0
+                              ? "No tasks"
+                              : `${completedCount}/${totalCount} completed`}
+                          </p>
+                        </div>
+
+                        <div className="dlt-nt-btn-div">
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => unpinTodo(todo.id, e)}
+                            title="Unpin list"
+                          >
+                            <img
+                              className="unpin-btn-img"
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
+                              alt="unpin"
+                            />
+                          </button>
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => deleteTodo(todo.id, e)}
+                            title="Delete list"
+                          >
+                            <i className="fa-solid fa-trash-can"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="wrapper">
+                <div className="page-text-2">
+                  <h2>ALL LISTS</h2>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Display unpinned todos list */}
+          <div className="notes-list">
+            {sortedUnpinnedTodos.length === 0 &&
+            sortedPinnedTodos.length === 0 ? (
+              <div
+                style={{
+                  textAlign: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <p className="warning">
+                  No todo lists yet. Create your first list!
+                </p>
+              </div>
+            ) : (
+              sortedUnpinnedTodos.map((todo) => {
+                const todoTasks = tasks[todo.id] || [];
+                const completedCount = todoTasks.filter(
+                  (t) => t.completed
+                ).length;
+                const totalCount = todoTasks.length;
+
+                return (
+                  <div
+                    key={todo.id}
+                    className="note-item"
+                    onClick={() => openTodo(todo.id)}
+                  >
+                    <div className="nw-nt-div">
+                      <div className="nt-cntnt-div">
+                        <h3
+                          style={{
+                            color: "rgb(97, 198, 97)",
+                            marginBottom: "8px",
+                          }}
+                        >
+                          {todo.title}
+                        </h3>
+                        <p
+                          style={{
+                            fontSize: "14px",
+                            color: "rgb(87, 188, 87)",
+                          }}
+                        >
+                          {totalCount === 0
+                            ? "No tasks"
+                            : `${completedCount}/${totalCount} completed`}
+                        </p>
+                      </div>
+                      <div className="dlt-nt-btn-div">
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => pinTodo(todo.id, e)}
+                          title="Pin list"
+                        >
+                          <i className="fa-solid fa-thumbtack"></i>
+                        </button>
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => deleteTodo(todo.id, e)}
+                          title="Delete list"
+                        >
+                          <i className="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Modal overlay for viewing/editing a single todo list */}
+      {todoActive && currentTodo && (
+        <>
+          <div className="backdrop" onClick={closeTodo}></div>
+          <div className="notes-modal">
+            <div className="mdl-hdr">
+              <div className="nt-dt-tm">
+                <p style={{ fontWeight: "bold" }}>{currentTodo.date}</p>
+                <p>{currentTodo.time}</p>
+              </div>
+              <div className="cls-btn-div">
+                <button className="cls-nt-btn" onClick={closeTodo}>
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+            <div className="modal-content">
+              {/* Todo title */}
+              <div
+                className="todo-title"
+                contentEditable
+                suppressContentEditableWarning={true}
+                onInput={(e) => {
+                  const updatedTitle = e.target.textContent;
+                  if (isTodoPinned) {
+                    setPinnedTodos((prev) =>
+                      prev.map((t, i) =>
+                        i === selectedTodoIndex
+                          ? { ...t, title: updatedTitle }
+                          : t
+                      )
+                    );
+                  } else {
+                    setTodos((prev) =>
+                      prev.map((t, i) =>
+                        i === selectedTodoIndex
+                          ? { ...t, title: updatedTitle }
+                          : t
+                      )
+                    );
+                  }
+                }}
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  color: "rgb(97, 198, 97)",
+                  padding: "20px 24px 0",
+                  marginBottom: "20px",
+                  outline: "none",
+                  borderBottom: "2px solid #e8eaed",
+                  paddingBottom: "10px",
+                }}
+              >
+                {currentTodo.title}
+              </div>
+
+              {/* Tasks section */}
+              <div className="tasks-section" style={{ padding: "0 24px 24px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <h3 style={{ color: "rgb(97, 198, 97)", margin: 0 }}>
+                    Tasks
+                  </h3>
+                  <button
+                    className="add-task-btn"
+                    onClick={() => addTask(currentTodoId)}
+                    style={{
+                      backgroundColor: "rgb(97, 198, 97)",
+                      color: "white",
+                      border: "none",
+                      padding: "8px 16px",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <i className="fa-solid fa-plus"></i> Add Task
+                  </button>
+                </div>
+
+                <div className="tasks-list">
+                  {currentTodoTasks.length === 0 ? (
+                    <p
+                      className="no-tasks"
+                      style={{
+                        textAlign: "center",
+                        color: "#9aa0a6",
+                        padding: "20px",
+                        fontStyle: "italic",
+                      }}
+                    >
+                      No tasks yet. Click "Add Task" to create your first task!
+                    </p>
+                  ) : (
+                    currentTodoTasks.map((task) => (
+                      <TaskItem
+                        key={task.id}
+                        todoId={currentTodoId}
+                        task={task}
+                        onDelete={deleteTask}
+                        onToggle={toggleTaskCompletion}
+                        onUpdate={updateTaskText}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
+export default Todo;

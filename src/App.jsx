@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Notes from "./Notes";
+import Todo from "./Todo";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -38,38 +47,64 @@ function App() {
     }
   }, [shouldRenderSidebar, isSidebarOpen]);
 
-  return (
-    <div>
-      {/* Navbar and Sidebar Logic Starts */}
-      <div className="navbar">
-        <button
-          className={`hamburger ${isSidebarOpen ? "open" : ""}`}
-          onClick={toggleSidebar}
-          aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+  // Function to close sidebar when a link is clicked (for mobile)
+  const closeSidebar = () => {
+    if (isSidebarOpen) {
+      toggleSidebar();
+    }
+  };
 
-      {/* Conditionally render sidebar */}
-      {shouldRenderSidebar && (
-        <div ref={sidebarRef} className="sidebar">
-          <div className="sliding-div-container item-style">
-            <div className="sliding-div div-style">
-              <h2>NOTES</h2>
-            </div>
-            <div className="sliding-div-two div-style">
-              <h2>TODOS</h2>
+  return (
+    <Router basename="/organiser">
+      <div>
+        {/* Navbar and Sidebar Logic Starts */}
+        <div className="navbar">
+          <button
+            className={`hamburger ${isSidebarOpen ? "open" : ""}`}
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        {/* Conditionally render sidebar */}
+        {shouldRenderSidebar && (
+          <div ref={sidebarRef} className="sidebar">
+            <div className="sliding-div-container item-style">
+              <div
+                className="sliding-div div-style"
+                onClick={() => {
+                  window.location.href = "/organiser/notes";
+                  closeSidebar();
+                }}
+              >
+                <h2>NOTES</h2>
+              </div>
+              <div
+                className="sliding-div-two div-style"
+                onClick={() => {
+                  window.location.href = "/organiser/todo";
+                  closeSidebar();
+                }}
+              >
+                <h2>TODOS</h2>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      {/* Navbar and Sidebar Logic Ends */}
+        )}
+        {/* Navbar and Sidebar Logic Ends */}
 
-      <Notes />
-    </div>
+        {/* Routes Configuration */}
+        <Routes>
+          <Route path="/" element={<Navigate to="/notes" />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/todo" element={<Todo />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

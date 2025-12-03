@@ -579,6 +579,82 @@ html {
   width: 20px;
   height: 20px;
 }
+
+.task-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background-color: rgb(30, 82, 30);
+  border-radius: 8px;
+  border: 1px solid rgb(30, 82, 30);
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.task-checkbox {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: rgb(87, 188, 87);
+  flex-shrink: 0;
+}
+
+.task-checkbox:checked {
+  accent-color: rgb(87, 188, 87);
+}
+
+.task-content {
+  flex: 1;
+  cursor: pointer;
+  padding: 8px;
+  color: rgb(87, 188, 87);
+  font-weight: 500;
+  min-height: 28px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.task-edit-input {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  border: 2px solid rgb(87, 188, 87);
+  border-radius: 6px;
+  color: rgb(87, 188, 87);
+  outline: none;
+  background-color: white;
+}
+
+.task-edit-input:focus {
+  box-shadow: 0 0 0 3px rgba(87, 188, 87, 0.1);
+}
+
+.task-delete-btn {
+  background-color: transparent;
+  border: none;
+  color: rgb(87, 188, 87);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.2s ease;
+}
+
+.task-delete-btn:hover {
+  background-color: rgba(229, 57, 53, 0.1);
+}
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .page-text-2 h2 {
