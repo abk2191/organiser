@@ -30,8 +30,9 @@ html {
   justify-content: space-between;
   height: 64px;
   z-index: 10000;
-  position: sticky;
+  position: fixed; /* CHANGED: Fixed instead of sticky */
   top: 0;
+  left: 0;
   width: 100%;
   background: greenyellow;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -111,7 +112,7 @@ html {
   opacity: 0;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: 64px;
+  margin-top: 64px; /* Keep margin-top for navbar */
   box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
 }
@@ -196,6 +197,7 @@ html {
   padding: 0;
   margin: 0 auto;
   overflow-x: hidden;
+  padding-top: 64px; /* ADDED: Padding for fixed navbar */
 }
 
 /* FIXED: Removed all padding that was causing offset */
@@ -580,6 +582,19 @@ html {
   height: 20px;
 }
 
+/* FIX: Make unpin button visible */
+.dlt-btn .unpin-btn-img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* FIX: Ensure all buttons show their content */
+.dlt-btn i,
+.dlt-btn img {
+  display: block;
+}
+
 .task-container {
   display: flex;
   align-items: center;
@@ -655,6 +670,7 @@ html {
 .task-delete-btn:hover {
   background-color: rgba(229, 57, 53, 0.1);
 }
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .page-text-2 h2 {
@@ -680,6 +696,7 @@ html {
 
   .main-kontainer {
     padding: 0; /* REMOVED padding that was causing offset */
+    padding-top: 56px; /* ADDED: Adjust for mobile navbar height */
   }
 
   .page-text {
