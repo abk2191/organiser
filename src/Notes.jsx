@@ -9,6 +9,8 @@ function Notes() {
 
   const [noteActive, setNoteActive] = useState(false);
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
+  const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [isNotePinned, setIsNotePinned] = useState(false); // Track if selected note is pinned
   const contentRef = useRef(null);
 
   // Save notes to localStorage whenever they change
@@ -16,13 +18,25 @@ function Notes() {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
+  // Load pinned notes from localStorage
+  useEffect(() => {
+    const savedPinnedNotes = localStorage.getItem("pinnedNotes");
+    if (savedPinnedNotes) {
+      setPinnedNotes(JSON.parse(savedPinnedNotes));
+    }
+  }, []);
+
+  // Save pinned notes to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("pinnedNotes", JSON.stringify(pinnedNotes));
+  }, [pinnedNotes]);
+
   function newNote() {
-    //*********************************************/
     // Create a Date object (current time)
     const now = new Date();
 
     // Get date parts
-    const month = now.getMonth() + 1; // Months are 0-indexed (0 = January)
+    const month = now.getMonth() + 1;
     const day = now.getDate();
     const year = now.getFullYear();
 
@@ -33,7 +47,7 @@ function Notes() {
 
     // Convert 24-hour to 12-hour format
     hours = hours % 12;
-    hours = hours ? hours : 12; // 0 should be 12
+    hours = hours ? hours : 12;
 
     // Format time with leading zero
     const formattedHours = hours.toString().padStart(2, "0");
@@ -41,7 +55,6 @@ function Notes() {
     // Create the formatted strings
     const dateString = `${month}/${day}/${year}`;
     const timeString = `${formattedHours}:${minutes} ${ampm}`;
-    //********************************************************************/
 
     const newNoteItem = {
       id: Date.now(),
@@ -53,47 +66,106 @@ function Notes() {
   }
 
   function openNote(noteId) {
+    // Check if note is in pinnedNotes
+    const pinnedIndex = pinnedNotes.findIndex((note) => note.id === noteId);
+    if (pinnedIndex !== -1) {
+      // Note is pinned
+      setSelectedNoteIndex(pinnedIndex);
+      setIsNotePinned(true);
+      setNoteActive(true);
+      setTimeout(() => {
+        if (contentRef.current && pinnedNotes[pinnedIndex]) {
+          contentRef.current.innerHTML = pinnedNotes[pinnedIndex].content;
+        }
+      }, 0);
+      return;
+    }
+
+    // Check if note is in regular notes
     const originalIndex = notes.findIndex((note) => note.id === noteId);
-    setSelectedNoteIndex(originalIndex);
-    setNoteActive(true);
-    // Set the text directly when opening
-    setTimeout(() => {
-      if (contentRef.current && notes[originalIndex]) {
-        contentRef.current.innerHTML = notes[originalIndex].content;
-      }
-    }, 0);
+    if (originalIndex !== -1) {
+      setSelectedNoteIndex(originalIndex);
+      setIsNotePinned(false);
+      setNoteActive(true);
+      setTimeout(() => {
+        if (contentRef.current && notes[originalIndex]) {
+          contentRef.current.innerHTML = notes[originalIndex].content;
+        }
+      }, 0);
+    }
   }
 
   function closeNote() {
     setNoteActive(false);
     setSelectedNoteIndex(null);
+    setIsNotePinned(false);
   }
 
   function deleteNote(noteId, e) {
-    e.stopPropagation(); // CRITICAL: Prevent click from bubbling
-    e.preventDefault(); // Extra safety
+    e.stopPropagation();
+    e.preventDefault();
 
-    const originalIndex = notes.findIndex((note) => note.id === noteId);
-
-    setNotes((prevNotes) => {
-      const newNotes = [...prevNotes];
-      newNotes.splice(originalIndex, 1);
-      return newNotes;
-    });
+    // Delete from both arrays
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    setPinnedNotes((prevPinned) =>
+      prevPinned.filter((note) => note.id !== noteId)
+    );
 
     closeNote();
   }
 
-  // Function to clear all notes (optional - you can add a button for this)
+  // Function to clear all notes
   function clearAllNotes() {
     if (window.confirm("Are you sure you want to delete all notes?")) {
       setNotes([]);
+      setPinnedNotes([]);
       localStorage.removeItem("notes");
+      localStorage.removeItem("pinnedNotes");
     }
   }
 
+  // Filter out pinned notes from regular notes for display
+  const unpinnedNotes = notes.filter(
+    (note) => !pinnedNotes.some((pinnedNote) => pinnedNote.id === note.id)
+  );
+
   // Sort notes by ID in descending order (newest first)
-  const sortedNotes = [...notes].sort((a, b) => b.id - a.id);
+  const sortedUnpinnedNotes = [...unpinnedNotes].sort((a, b) => b.id - a.id);
+  const sortedPinnedNotes = [...pinnedNotes].sort((a, b) => b.id - a.id);
+
+  function pinNote(noteId, e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("Pin triggered for note:", noteId);
+    const noteToPin = notes.find((note) => note.id === noteId);
+
+    if (noteToPin && !pinnedNotes.some((note) => note.id === noteId)) {
+      // Add to pinned notes
+      setPinnedNotes((prev) => [...prev, noteToPin]);
+
+      // Remove from regular notes array
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    }
+  }
+
+  function unpinNote(noteId, e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("Unpin triggered for note:", noteId);
+
+    // Find the note in pinnedNotes
+    const noteToUnpin = pinnedNotes.find((note) => note.id === noteId);
+
+    if (noteToUnpin) {
+      // Remove from pinnedNotes
+      setPinnedNotes((prev) => prev.filter((note) => note.id !== noteId));
+
+      // Add back to notes array
+      setNotes((prevNotes) => [...prevNotes, noteToUnpin]);
+    }
+  }
 
   return (
     <>
@@ -108,19 +180,62 @@ function Notes() {
             <button className="crt-nt-btn" onClick={newNote}>
               Create New Note
             </button>
-            {/* Optional: Add clear all button */}
-            {/* <button 
-              className="crt-nt-btn" 
-              onClick={clearAllNotes}
-              style={{ marginLeft: "10px", backgroundColor: "#ff6b6b" }}
-            >
-              Clear All
-            </button> */}
           </div>
 
-          {/* Display notes list */}
+          {/* Pinned Notes */}
+          {sortedPinnedNotes.length > 0 && (
+            <div className="pinned-nts">
+              <div className="wrapper">
+                <div className="page-text-2">
+                  <h1>PINNED NOTES</h1>
+                </div>
+              </div>
+              <div className="all-pnd-nts">
+                {sortedPinnedNotes.map((note) => (
+                  <div
+                    key={note.id}
+                    className="note-item"
+                    onClick={() => openNote(note.id)}
+                  >
+                    <div className="nw-nt-div">
+                      <div className="nt-cntnt-div">
+                        <p
+                          dangerouslySetInnerHTML={{ __html: note.content }}
+                        ></p>
+                      </div>
+
+                      <div className="dlt-nt-btn-div">
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => unpinNote(note.id, e)}
+                          title="Unpin note"
+                        >
+                          <i className="fa-solid fa-link-slash"></i>
+                        </button>
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => deleteNote(note.id, e)}
+                          title="Delete note"
+                        >
+                          <i className="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="wrapper">
+                <div className="page-text-2">
+                  <h1>ALL NOTES</h1>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Display unpinned notes list */}
           <div className="notes-list">
-            {sortedNotes.length === 0 ? (
+            {sortedUnpinnedNotes.length === 0 &&
+            sortedPinnedNotes.length === 0 ? (
               <div
                 style={{
                   textAlign: "center",
@@ -128,10 +243,10 @@ function Notes() {
                   display: "flex",
                 }}
               >
-                <p className="warning"></p>
+                <p className="warning">No notes yet. Create your first note!</p>
               </div>
             ) : (
-              sortedNotes.map((note) => (
+              sortedUnpinnedNotes.map((note, index) => (
                 <div
                   key={note.id}
                   className="note-item"
@@ -144,7 +259,15 @@ function Notes() {
                     <div className="dlt-nt-btn-div">
                       <button
                         className="dlt-btn"
+                        onClick={(e) => pinNote(note.id, e)}
+                        title="Pin note"
+                      >
+                        <i className="fa-solid fa-thumbtack"></i>
+                      </button>
+                      <button
+                        className="dlt-btn"
                         onClick={(e) => deleteNote(note.id, e)}
+                        title="Delete note"
                       >
                         <i className="fa-solid fa-trash-can"></i>
                       </button>
@@ -158,16 +281,22 @@ function Notes() {
       </div>
 
       {/* Modal overlay for viewing/editing a single note */}
-      {noteActive && selectedNoteIndex !== null && notes[selectedNoteIndex] && (
+      {noteActive && selectedNoteIndex !== null && (
         <>
           <div className="backdrop" onClick={closeNote}></div>
           <div className="notes-modal">
             <div className="mdl-hdr">
               <div className="nt-dt-tm">
                 <p style={{ fontWeight: "bold" }}>
-                  {notes[selectedNoteIndex].date || "No date"}
+                  {isNotePinned
+                    ? pinnedNotes[selectedNoteIndex]?.date || "No date"
+                    : notes[selectedNoteIndex]?.date || "No date"}
                 </p>
-                <p>{notes[selectedNoteIndex].time || "No time"}</p>
+                <p>
+                  {isNotePinned
+                    ? pinnedNotes[selectedNoteIndex]?.time || "No time"
+                    : notes[selectedNoteIndex]?.time || "No time"}
+                </p>
               </div>
               <div className="cls-btn-div">
                 <button className="cls-nt-btn" onClick={closeNote}>
@@ -183,13 +312,25 @@ function Notes() {
                 suppressContentEditableWarning={true}
                 onInput={(e) => {
                   const updatedText = e.target.innerHTML;
-                  setNotes((prev) =>
-                    prev.map((n, i) =>
-                      i === selectedNoteIndex
-                        ? { ...n, content: updatedText }
-                        : n
-                    )
-                  );
+                  if (isNotePinned) {
+                    // Update pinned note
+                    setPinnedNotes((prev) =>
+                      prev.map((n, i) =>
+                        i === selectedNoteIndex
+                          ? { ...n, content: updatedText }
+                          : n
+                      )
+                    );
+                  } else {
+                    // Update regular note
+                    setNotes((prev) =>
+                      prev.map((n, i) =>
+                        i === selectedNoteIndex
+                          ? { ...n, content: updatedText }
+                          : n
+                      )
+                    );
+                  }
                 }}
               ></div>
             </div>
