@@ -386,6 +386,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 20px;
   height: 40px;
   opacity: 1;
   transition: opacity 0.2s;
