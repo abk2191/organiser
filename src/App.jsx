@@ -59,6 +59,9 @@ function App() {
       <div>
         {/* Navbar and Sidebar Logic Starts */}
         <div className="navbar">
+          <div className="logo">
+            <h3 style={{ color: "white" }}>Andromeda.</h3>
+          </div>
           <button
             className={`hamburger ${isSidebarOpen ? "open" : ""}`}
             onClick={toggleSidebar}
