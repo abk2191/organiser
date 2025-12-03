@@ -96,6 +96,14 @@ function App() {
                 <h2>TODOS</h2>
               </div>
             </div>
+            <div className="brand-name">
+              <p
+                style={{ color: "white", fontSize: "20px", fontWeight: "bold" }}
+              >
+                <i class="fa-solid fa-flask"></i> Aphelion Labs.
+              </p>
+              <p style={{ color: "white" }}>&copy; All rights reserved 2025</p>
+            </div>
           </div>
         )}
         {/* Navbar and Sidebar Logic Ends */}

@@ -105,6 +105,10 @@ html {
 
 /* ===== GOOGLE-STYLE SIDEBAR ===== */
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 350px;
   position: fixed;
   top: 0;
   left: 0;
@@ -240,6 +244,18 @@ html {
   text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
   color: white;
   font-weight: bold;
+}
+
+.brand-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.brand-name p {
+  font-family: "Inter", sans-serif;
 }
 
 .page-text-2 {
