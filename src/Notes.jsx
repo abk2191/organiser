@@ -9,26 +9,28 @@ function Notes() {
 
   const [noteActive, setNoteActive] = useState(false);
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
-  const [pinnedNotes, setPinnedNotes] = useState([]);
-  const [isNotePinned, setIsNotePinned] = useState(false); // Track if selected note is pinned
+  const [pinnedNotes, setPinnedNotes] = useState(() => {
+    // Load pinned notes in initial state
+    const savedPinnedNotes = localStorage.getItem("pinnedNotes");
+    return savedPinnedNotes ? JSON.parse(savedPinnedNotes) : [];
+  });
+  const [isNotePinned, setIsNotePinned] = useState(false);
   const contentRef = useRef(null);
+
+  // Debug: Log pinned notes changes
+  useEffect(() => {
+    console.log("Pinned notes updated:", pinnedNotes);
+  }, [pinnedNotes]);
 
   // Save notes to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  // Load pinned notes from localStorage
-  useEffect(() => {
-    const savedPinnedNotes = localStorage.getItem("pinnedNotes");
-    if (savedPinnedNotes) {
-      setPinnedNotes(JSON.parse(savedPinnedNotes));
-    }
-  }, []);
-
   // Save pinned notes to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("pinnedNotes", JSON.stringify(pinnedNotes));
+    console.log("Saved pinned notes to localStorage:", pinnedNotes);
   }, [pinnedNotes]);
 
   function newNote() {
@@ -182,12 +184,12 @@ function Notes() {
             </button>
           </div>
 
-          {/* Pinned Notes */}
-          {sortedPinnedNotes.length > 0 && (
+          {/* Pinned Notes - Always show section if there are pinned notes */}
+          {sortedPinnedNotes.length > 0 ? (
             <div className="pinned-nts">
               <div className="wrapper">
                 <div className="page-text-2">
-                  <i className="fa-solid fa-thumbtack"></i>
+                  <h2>PINNED NOTES ({sortedPinnedNotes.length})</h2>
                 </div>
               </div>
               <div className="all-pnd-nts">
@@ -210,7 +212,11 @@ function Notes() {
                           onClick={(e) => unpinNote(note.id, e)}
                           title="Unpin note"
                         >
-                          <i className="fa-solid fa-link-slash"></i>
+                          <img
+                            className="unpin-btn-img"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
+                            alt="unpin"
+                          ></img>
                         </button>
                         <button
                           className="dlt-btn"
@@ -226,8 +232,15 @@ function Notes() {
               </div>
               <div className="wrapper">
                 <div className="page-text-2">
-                  <i class="fa-regular fa-note-sticky"></i>
+                  <h2>ALL NOTES</h2>
                 </div>
+              </div>
+            </div>
+          ) : (
+            // Show "All Notes" header even when no pinned notes exist
+            <div className="wrapper">
+              <div className="page-text-2">
+                <h2>ALL NOTES</h2>
               </div>
             </div>
           )}
