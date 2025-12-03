@@ -342,7 +342,7 @@ html {
 }
 
 .nw-nt-div {
-  height: 280px;
+  max-height: 280px;
   width: 350px;
   background: #000033;
   color: #202124;
@@ -356,7 +356,7 @@ html {
   border: 1px solid #000033;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   position: relative;
-  overflow: hidden;
+  overflow: auto;
   margin: 0;
 }
 
@@ -617,7 +617,7 @@ html {
   width: 22px;
   height: 22px;
   cursor: pointer;
-  accent-color: rgb(87, 188, 87);
+  accent-color: #000033;
   flex-shrink: 0;
 }
 
