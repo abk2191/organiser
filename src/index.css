@@ -632,7 +632,7 @@ html {
 }
 
 .task-checkbox:checked {
-  accent-color: rgb(87, 188, 87);
+  accent-color: #000033;
 }
 
 .task-content {
