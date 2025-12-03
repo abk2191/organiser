@@ -470,7 +470,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #5f6368;
+  color: rgb(87, 188, 87);
   transition: all 0.2s;
 }
 
@@ -515,6 +515,22 @@ html {
   justify-content: center;
 }
 
+.nt-dt-tm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 25px;
+  font-size: 30px;
+
+  font-family: "Inter", sans-serif;
+  color: rgb(97, 198, 97);
+}
+
+.mdl-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .navbar {

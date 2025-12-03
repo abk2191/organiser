@@ -17,20 +17,49 @@ function Notes() {
   }, [notes]);
 
   function newNote() {
+    //*********************************************/
+    // Create a Date object (current time)
+    const now = new Date();
+
+    // Get date parts
+    const month = now.getMonth() + 1; // Months are 0-indexed (0 = January)
+    const day = now.getDate();
+    const year = now.getFullYear();
+
+    // Get time parts
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    // Convert 24-hour to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 should be 12
+
+    // Format time with leading zero
+    const formattedHours = hours.toString().padStart(2, "0");
+
+    // Create the formatted strings
+    const dateString = `${month}/${day}/${year}`;
+    const timeString = `${formattedHours}:${minutes} ${ampm}`;
+    //********************************************************************/
+
     const newNoteItem = {
       id: Date.now(),
       content: `Add text`,
+      date: dateString,
+      time: timeString,
     };
     setNotes((prevNotes) => [...prevNotes, newNoteItem]);
   }
 
-  function openNote(index) {
-    setSelectedNoteIndex(index);
+  function openNote(noteId) {
+    const originalIndex = notes.findIndex((note) => note.id === noteId);
+    setSelectedNoteIndex(originalIndex);
     setNoteActive(true);
     // Set the text directly when opening
     setTimeout(() => {
-      if (contentRef.current && notes[index]) {
-        contentRef.current.innerHTML = notes[index].content;
+      if (contentRef.current && notes[originalIndex]) {
+        contentRef.current.innerHTML = notes[originalIndex].content;
       }
     }, 0);
   }
@@ -40,13 +69,15 @@ function Notes() {
     setSelectedNoteIndex(null);
   }
 
-  function deleteNote(index, e) {
+  function deleteNote(noteId, e) {
     e.stopPropagation(); // CRITICAL: Prevent click from bubbling
     e.preventDefault(); // Extra safety
 
+    const originalIndex = notes.findIndex((note) => note.id === noteId);
+
     setNotes((prevNotes) => {
       const newNotes = [...prevNotes];
-      newNotes.splice(index, 1);
+      newNotes.splice(originalIndex, 1);
       return newNotes;
     });
 
@@ -60,6 +91,9 @@ function Notes() {
       localStorage.removeItem("notes");
     }
   }
+
+  // Sort notes by ID in descending order (newest first)
+  const sortedNotes = [...notes].sort((a, b) => b.id - a.id);
 
   return (
     <>
@@ -86,7 +120,7 @@ function Notes() {
 
           {/* Display notes list */}
           <div className="notes-list">
-            {notes.length === 0 ? (
+            {sortedNotes.length === 0 ? (
               <div
                 style={{
                   textAlign: "center",
@@ -97,11 +131,11 @@ function Notes() {
                 <p className="warning"></p>
               </div>
             ) : (
-              notes.map((note, index) => (
+              sortedNotes.map((note) => (
                 <div
                   key={note.id}
                   className="note-item"
-                  onClick={() => openNote(index)}
+                  onClick={() => openNote(note.id)}
                 >
                   <div className="nw-nt-div">
                     <div className="nt-cntnt-div">
@@ -110,9 +144,9 @@ function Notes() {
                     <div className="dlt-nt-btn-div">
                       <button
                         className="dlt-btn"
-                        onClick={(e) => deleteNote(index, e)}
+                        onClick={(e) => deleteNote(note.id, e)}
                       >
-                        <i class="fa-solid fa-trash-can"></i>
+                        <i className="fa-solid fa-trash-can"></i>
                       </button>
                     </div>
                   </div>
@@ -128,10 +162,18 @@ function Notes() {
         <>
           <div className="backdrop" onClick={closeNote}></div>
           <div className="notes-modal">
-            <div className="cls-btn-div">
-              <button className="cls-nt-btn" onClick={closeNote}>
-                <i className="fa-solid fa-xmark"></i>
-              </button>
+            <div className="mdl-hdr">
+              <div className="nt-dt-tm">
+                <p style={{ fontWeight: "bold" }}>
+                  {notes[selectedNoteIndex].date || "No date"}
+                </p>
+                <p>{notes[selectedNoteIndex].time || "No time"}</p>
+              </div>
+              <div className="cls-btn-div">
+                <button className="cls-nt-btn" onClick={closeNote}>
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              </div>
             </div>
             <div className="modal-content">
               <div
