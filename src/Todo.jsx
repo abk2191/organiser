@@ -15,6 +15,9 @@ function Todo() {
   });
   const [isTodoPinned, setIsTodoPinned] = useState(false);
 
+  // State for editing todo title in modal
+  const [editingTitle, setEditingTitle] = useState("");
+
   // Store tasks for each todo (object with todoId as keys)
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem("todoTasks");
@@ -85,6 +88,7 @@ function Todo() {
       setSelectedTodoIndex(pinnedIndex);
       setIsTodoPinned(true);
       setTodoActive(true);
+      setEditingTitle(pinnedTodos[pinnedIndex].title);
       return;
     }
 
@@ -94,6 +98,7 @@ function Todo() {
       setSelectedTodoIndex(originalIndex);
       setIsTodoPinned(false);
       setTodoActive(true);
+      setEditingTitle(todos[originalIndex].title);
     }
   }
 
@@ -101,6 +106,7 @@ function Todo() {
     setTodoActive(false);
     setSelectedTodoIndex(null);
     setIsTodoPinned(false);
+    setEditingTitle("");
   }
 
   function deleteTodo(todoId, e) {
@@ -175,6 +181,25 @@ function Todo() {
 
       // Add back to todos array
       setTodos((prevTodos) => [...prevTodos, todoToUnpin]);
+    }
+  }
+
+  // Update todo title
+  function updateTodoTitle() {
+    if (!editingTitle.trim()) return;
+
+    if (isTodoPinned && selectedTodoIndex !== null) {
+      setPinnedTodos((prev) =>
+        prev.map((t, i) =>
+          i === selectedTodoIndex ? { ...t, title: editingTitle } : t
+        )
+      );
+    } else if (selectedTodoIndex !== null) {
+      setTodos((prev) =>
+        prev.map((t, i) =>
+          i === selectedTodoIndex ? { ...t, title: editingTitle } : t
+        )
+      );
     }
   }
 
@@ -360,7 +385,7 @@ function Todo() {
                           >
                             <img
                               className="unpin-btn-img"
-                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9ggVOQUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
                               alt="unpin"
                             />
                           </button>
@@ -477,31 +502,9 @@ function Todo() {
               </div>
             </div>
             <div className="modal-content">
-              {/* Todo title */}
+              {/* Todo title - Fixed: Using controlled input */}
               <div
                 className="todo-title"
-                contentEditable
-                suppressContentEditableWarning={true}
-                onInput={(e) => {
-                  const updatedTitle = e.target.textContent;
-                  if (isTodoPinned) {
-                    setPinnedTodos((prev) =>
-                      prev.map((t, i) =>
-                        i === selectedTodoIndex
-                          ? { ...t, title: updatedTitle }
-                          : t
-                      )
-                    );
-                  } else {
-                    setTodos((prev) =>
-                      prev.map((t, i) =>
-                        i === selectedTodoIndex
-                          ? { ...t, title: updatedTitle }
-                          : t
-                      )
-                    );
-                  }
-                }}
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
@@ -513,7 +516,28 @@ function Todo() {
                   paddingBottom: "10px",
                 }}
               >
-                {currentTodo.title}
+                <input
+                  type="text"
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  onBlur={updateTodoTitle}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      updateTodoTitle();
+                    }
+                  }}
+                  style={{
+                    width: "100%",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "rgb(97, 198, 97)",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    outline: "none",
+                    fontFamily: "inherit",
+                  }}
+                />
               </div>
 
               {/* Tasks section */}
