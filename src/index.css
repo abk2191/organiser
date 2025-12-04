@@ -734,6 +734,64 @@ html {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+.dlt-wrn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 120px;
+  width: 300px;
+
+  border-radius: 8px;
+  position: fixed; /* CHANGE TO FIXED */
+  z-index: 10000;
+  background: #000033 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Position in center of screen temporarily to debug */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* box-shadow: 0 0 15px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.2), 0 0 45px rgba(255, 255, 255, 0.1); */
+  /* ✅ NEW ANIMATION */
+  animation: popIn 0.11s ease-out;
+
+  /* ✅ Smooth exit when removed */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.yes-no-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.wrng p {
+  font-family: "Inter", sans-serif;
+  color: white;
+
+  font-size: 25px;
+}
+
+.btn-y {
+  height: 30px;
+  width: 100px;
+  background: red;
+  border: 1px solid red;
+  color: white;
+}
+
+.btn-x {
+  height: 30px;
+  width: 100px;
+  background: #32327a;
+  border: 1px solid #32327a;
+  color: white;
+}
+
 .color-selector::after {
   content: "";
   position: absolute;

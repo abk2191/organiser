@@ -9,6 +9,9 @@ function Todo() {
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
 
+  const [renderDeleteWarning, setRenderDeleteWarning] = useState(false);
+  const [todoToDelete, setTodoToDelete] = useState(null); // Store which todo to delete
+
   const [todoActive, setTodoActive] = useState(false);
   const [selectedTodoIndex, setSelectedTodoIndex] = useState(null);
   const [pinnedTodos, setPinnedTodos] = useState(() => {
@@ -126,31 +129,46 @@ function Todo() {
     setColorSelectorActiveTodoId(null);
   }
 
-  function deleteTodo(todoId, e) {
-    e?.stopPropagation();
-    e?.preventDefault();
+  function showDeleteConfirmation(todoId, e) {
+    e.stopPropagation();
+    e.preventDefault();
 
-    // Delete from both arrays
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
-    setPinnedTodos((prevPinned) =>
-      prevPinned.filter((todo) => todo.id !== todoId)
-    );
+    setTodoToDelete(todoId);
+    setRenderDeleteWarning(true);
+  }
 
-    // Remove tasks for this todo
-    setTasks((prev) => {
-      const newTasks = { ...prev };
-      delete newTasks[todoId];
-      return newTasks;
-    });
+  function confirmDelete() {
+    if (todoToDelete) {
+      // Delete from both arrays
+      setTodos((prevTodos) =>
+        prevTodos.filter((todo) => todo.id !== todoToDelete)
+      );
+      setPinnedTodos((prevPinned) =>
+        prevPinned.filter((todo) => todo.id !== todoToDelete)
+      );
 
-    // Remove color for this todo
-    setTodoColors((prev) => {
-      const newColors = { ...prev };
-      delete newColors[todoId];
-      return newColors;
-    });
+      // Remove tasks for this todo
+      setTasks((prev) => {
+        const newTasks = { ...prev };
+        delete newTasks[todoToDelete];
+        return newTasks;
+      });
 
-    closeTodo();
+      // Remove color for this todo
+      setTodoColors((prev) => {
+        const newColors = { ...prev };
+        delete newColors[todoToDelete];
+        return newColors;
+      });
+
+      closeTodo();
+    }
+    cancelDelete();
+  }
+
+  function cancelDelete() {
+    setRenderDeleteWarning(false);
+    setTodoToDelete(null);
   }
 
   // Function to clear all todos
@@ -612,7 +630,9 @@ function Todo() {
                             </button>
                             <button
                               className="dlt-btn"
-                              onClick={(e) => deleteTodo(todo.id, e)}
+                              onClick={(e) =>
+                                showDeleteConfirmation(todo.id, e)
+                              }
                               title="Delete list"
                             >
                               <i className="fa-solid fa-trash-can"></i>
@@ -630,6 +650,26 @@ function Todo() {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Delete Confirmation Warning Modal - EXACTLY like Notes.jsx */}
+          {renderDeleteWarning && (
+            <>
+              <div className="backdrop" onClick={cancelDelete}></div>
+              <div className="dlt-wrn">
+                <div className="wrng">
+                  <p>Are you sure ?</p>
+                </div>
+                <div className="yes-no-btn-div">
+                  <button className="btn-y" onClick={confirmDelete}>
+                    Yes
+                  </button>
+                  <button className="btn-x" onClick={cancelDelete}>
+                    No
+                  </button>
+                </div>
+              </div>
+            </>
           )}
 
           {/* Display unpinned todos list */}
@@ -746,7 +786,9 @@ function Todo() {
                             </button>
                             <button
                               className="dlt-btn"
-                              onClick={(e) => deleteTodo(todo.id, e)}
+                              onClick={(e) =>
+                                showDeleteConfirmation(todo.id, e)
+                              }
                               title="Delete list"
                             >
                               <i className="fa-solid fa-trash-can"></i>

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 
 function Notes() {
   // Load notes from localStorage on initial render
+  const [renderDeleteWarning, setRenderDeleteWarning] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null); // Store which note to delete
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [notes, setNotes] = useState(() => {
@@ -117,17 +119,39 @@ function Notes() {
     setColorSelectorActiveNoteId(null);
   }
 
-  function deleteNote(noteId, e) {
+  function showDeleteConfirmation(noteId, e) {
     e.stopPropagation();
     e.preventDefault();
 
-    // Delete from both arrays
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-    setPinnedNotes((prevPinned) =>
-      prevPinned.filter((note) => note.id !== noteId)
-    );
+    setNoteToDelete(noteId);
+    setRenderDeleteWarning(true);
+  }
 
-    closeNote();
+  function confirmDelete() {
+    if (noteToDelete) {
+      // Delete from both arrays
+      setNotes((prevNotes) =>
+        prevNotes.filter((note) => note.id !== noteToDelete)
+      );
+      setPinnedNotes((prevPinned) =>
+        prevPinned.filter((note) => note.id !== noteToDelete)
+      );
+
+      // Also remove the color for this note
+      setNoteColors((prev) => {
+        const newColors = { ...prev };
+        delete newColors[noteToDelete];
+        return newColors;
+      });
+
+      closeNote();
+    }
+    cancelDelete();
+  }
+
+  function cancelDelete() {
+    setRenderDeleteWarning(false);
+    setNoteToDelete(null);
   }
 
   // Function to clear all notes
@@ -135,8 +159,10 @@ function Notes() {
     if (window.confirm("Are you sure you want to delete all notes?")) {
       setNotes([]);
       setPinnedNotes([]);
+      setNoteColors({});
       localStorage.removeItem("notes");
       localStorage.removeItem("pinnedNotes");
+      localStorage.removeItem("noteColors");
     }
   }
 
@@ -257,7 +283,7 @@ function Notes() {
                     setIsSearching(false); // ✅ EXIT SEARCH MODE
                   }}
                 >
-                  <i class="fa-solid fa-xmark"></i>
+                  <i className="fa-solid fa-xmark"></i>
                 </button>
               </div>
             )}
@@ -389,7 +415,9 @@ function Notes() {
 
                               <button
                                 className="dlt-btn"
-                                onClick={(e) => deleteNote(note.id, e)}
+                                onClick={(e) =>
+                                  showDeleteConfirmation(note.id, e)
+                                }
                                 title="Delete note"
                               >
                                 <i className="fa-solid fa-trash-can"></i>
@@ -416,6 +444,26 @@ function Notes() {
                   </div>
                 </div>
               )}
+            </>
+          )}
+
+          {/* Delete Confirmation Warning Modal */}
+          {renderDeleteWarning && (
+            <>
+              <div className="backdrop" onClick={cancelDelete}></div>
+              <div className="dlt-wrn">
+                <div className="wrng">
+                  <p>Are you sure ?</p>
+                </div>
+                <div className="yes-no-btn-div">
+                  <button className="btn-y" onClick={confirmDelete}>
+                    Yes
+                  </button>
+                  <button className="btn-x" onClick={cancelDelete}>
+                    No
+                  </button>
+                </div>
+              </div>
             </>
           )}
 
@@ -500,7 +548,7 @@ function Notes() {
                             title="Select Color"
                             onClick={(e) => handleColorSelector(note.id, e)}
                           >
-                            <i class="fa-solid fa-brush"></i>
+                            <i className="fa-solid fa-brush"></i>
                           </button>
                           <button
                             className="dlt-btn"
@@ -511,7 +559,7 @@ function Notes() {
                           </button>
                           <button
                             className="dlt-btn"
-                            onClick={(e) => deleteNote(note.id, e)}
+                            onClick={(e) => showDeleteConfirmation(note.id, e)}
                             title="Delete note"
                           >
                             <i className="fa-solid fa-trash-can"></i>
