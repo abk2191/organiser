@@ -727,6 +727,11 @@ html {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3),
     0 0 30px rgba(255, 255, 255, 0.2), 0 0 45px rgba(255, 255, 255, 0.1);
+  /* ✅ NEW ANIMATION */
+  animation: popIn 0.11s ease-out;
+
+  /* ✅ Smooth exit when removed */
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .color-selector::after {
@@ -843,6 +848,17 @@ html {
   border: 1px solid #8989ea;
   box-shadow: 0 0 0 3px rgba(137, 137, 234, 0.35);
   transform: translateY(-1px);
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
