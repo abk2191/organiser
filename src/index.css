@@ -775,8 +775,8 @@ html {
 .maroon {
   height: 30px;
   width: 30px;
-  border: 1px solid #570303ff;
-  background-color: #570303ff;
+  border: 1px solid #340909;
+  background-color: #1a0505;
   border-radius: 50%;
 }
 
@@ -791,8 +791,8 @@ html {
 .deep-yellow {
   height: 30px;
   width: 30px;
-  border: 1px solid #360a5e;
-  background-color: #646409;
+  border: 1px solid #43431aff;
+  background-color: #43431aff;
   border-radius: 50%;
 }
 

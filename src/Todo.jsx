@@ -24,6 +24,20 @@ function Todo() {
     return savedTasks ? JSON.parse(savedTasks) : {};
   });
 
+  // Color state management (EXACTLY like Notes.jsx)
+  const [todoColors, setTodoColors] = useState(() => {
+    const savedColors = localStorage.getItem("todoColors");
+    return savedColors ? JSON.parse(savedColors) : {};
+  });
+
+  const [colorSelectorActiveTodoId, setColorSelectorActiveTodoId] =
+    useState(null);
+
+  // Save todoColors to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("todoColors", JSON.stringify(todoColors));
+  }, [todoColors]);
+
   // Save todos to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -107,6 +121,7 @@ function Todo() {
     setSelectedTodoIndex(null);
     setIsTodoPinned(false);
     setEditingTitle("");
+    setColorSelectorActiveTodoId(null);
   }
 
   function deleteTodo(todoId, e) {
@@ -126,6 +141,13 @@ function Todo() {
       return newTasks;
     });
 
+    // Remove color for this todo
+    setTodoColors((prev) => {
+      const newColors = { ...prev };
+      delete newColors[todoId];
+      return newColors;
+    });
+
     closeTodo();
   }
 
@@ -135,9 +157,11 @@ function Todo() {
       setTodos([]);
       setPinnedTodos([]);
       setTasks({});
+      setTodoColors({});
       localStorage.removeItem("todos");
       localStorage.removeItem("pinnedTodos");
       localStorage.removeItem("todoTasks");
+      localStorage.removeItem("todoColors");
     }
   }
 
@@ -201,6 +225,28 @@ function Todo() {
         )
       );
     }
+  }
+
+  // Color selector functions (EXACTLY like Notes.jsx)
+  function handleColorSelector(todoId, e) {
+    e.stopPropagation();
+    e.preventDefault();
+    setColorSelectorActiveTodoId((prev) => (prev === todoId ? null : todoId));
+    console.log("Color selector triggered for todo:", todoId);
+  }
+
+  function changeBackgroundColor(todoId, hex, e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    setTodoColors((prev) => ({
+      ...prev,
+      [todoId]: hex,
+    }));
+
+    setColorSelectorActiveTodoId(null);
   }
 
   // Task-related functions
@@ -355,7 +401,12 @@ function Todo() {
                       className="note-item"
                       onClick={() => openTodo(todo.id)}
                     >
-                      <div className="nw-nt-div">
+                      <div
+                        className="nw-nt-div"
+                        style={{
+                          backgroundColor: todoColors[todo.id] || "#000033",
+                        }}
+                      >
                         <div className="nt-cntnt-div">
                           <h3
                             style={{
@@ -378,24 +429,73 @@ function Todo() {
                         </div>
 
                         <div className="dlt-nt-btn-div">
-                          <button
-                            className="dlt-btn"
-                            onClick={(e) => unpinTodo(todo.id, e)}
-                            title="Unpin list"
-                          >
-                            <img
-                              className="unpin-btn-img"
-                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
-                              alt="unpin"
-                            ></img>
-                          </button>
-                          <button
-                            className="dlt-btn"
-                            onClick={(e) => deleteTodo(todo.id, e)}
-                            title="Delete list"
-                          >
-                            <i className="fa-solid fa-trash-can"></i>
-                          </button>
+                          {colorSelectorActiveTodoId === todo.id && (
+                            <div className="color-selector">
+                              <div
+                                className="strict-dark"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#1a1a1a", e)
+                                }
+                              ></div>
+                              <div
+                                className="Navy"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#000033", e)
+                                }
+                              ></div>
+                              <div
+                                className="deep-green"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#256025", e)
+                                }
+                              ></div>
+                              <div
+                                className="maroon"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#1a0505", e)
+                                }
+                              ></div>
+                              <div
+                                className="darkblue"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#360a5e", e)
+                                }
+                              ></div>
+                              <div
+                                className="deep-yellow"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#43431aff", e)
+                                }
+                              ></div>
+                            </div>
+                          )}
+                          <div className="btn-cntnr">
+                            <button
+                              className="dlt-btn"
+                              title="Select Color"
+                              onClick={(e) => handleColorSelector(todo.id, e)}
+                            >
+                              <i className="fa-solid fa-brush"></i>
+                            </button>
+                            <button
+                              className="dlt-btn"
+                              onClick={(e) => unpinTodo(todo.id, e)}
+                              title="Unpin list"
+                            >
+                              <img
+                                className="unpin-btn-img"
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fk1BwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
+                                alt="unpin"
+                              ></img>
+                            </button>
+                            <button
+                              className="dlt-btn"
+                              onClick={(e) => deleteTodo(todo.id, e)}
+                              title="Delete list"
+                            >
+                              <i className="fa-solid fa-trash-can"></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -439,7 +539,12 @@ function Todo() {
                     className="note-item"
                     onClick={() => openTodo(todo.id)}
                   >
-                    <div className="nw-nt-div">
+                    <div
+                      className="nw-nt-div"
+                      style={{
+                        backgroundColor: todoColors[todo.id] || "#000033",
+                      }}
+                    >
                       <div className="nt-cntnt-div">
                         <h3
                           style={{
@@ -461,20 +566,69 @@ function Todo() {
                         </p>
                       </div>
                       <div className="dlt-nt-btn-div">
-                        <button
-                          className="dlt-btn"
-                          onClick={(e) => pinTodo(todo.id, e)}
-                          title="Pin list"
-                        >
-                          <i className="fa-solid fa-thumbtack"></i>
-                        </button>
-                        <button
-                          className="dlt-btn"
-                          onClick={(e) => deleteTodo(todo.id, e)}
-                          title="Delete list"
-                        >
-                          <i className="fa-solid fa-trash-can"></i>
-                        </button>
+                        {colorSelectorActiveTodoId === todo.id && (
+                          <div className="color-selector">
+                            <div
+                              className="strict-dark"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#1a1a1a", e)
+                              }
+                            ></div>
+                            <div
+                              className="Navy"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#000033", e)
+                              }
+                            ></div>
+                            <div
+                              className="deep-green"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#256025", e)
+                              }
+                            ></div>
+                            <div
+                              className="maroon"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#1a0505", e)
+                              }
+                            ></div>
+                            <div
+                              className="darkblue"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#360a5e", e)
+                              }
+                            ></div>
+                            <div
+                              className="deep-yellow"
+                              onClick={(e) =>
+                                changeBackgroundColor(todo.id, "#43431aff", e)
+                              }
+                            ></div>
+                          </div>
+                        )}
+                        <div className="btn-cntnr">
+                          <button
+                            className="dlt-btn"
+                            title="Select Color"
+                            onClick={(e) => handleColorSelector(todo.id, e)}
+                          >
+                            <i className="fa-solid fa-brush"></i>
+                          </button>
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => pinTodo(todo.id, e)}
+                            title="Pin list"
+                          >
+                            <i className="fa-solid fa-thumbtack"></i>
+                          </button>
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => deleteTodo(todo.id, e)}
+                            title="Delete list"
+                          >
+                            <i className="fa-solid fa-trash-can"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -489,7 +643,19 @@ function Todo() {
       {todoActive && currentTodo && (
         <>
           <div className="backdrop" onClick={closeTodo}></div>
-          <div className="notes-modal">
+          <div
+            className="notes-modal"
+            style={{
+              backgroundColor: isTodoPinned
+                ? todoColors[pinnedTodos[selectedTodoIndex]?.id] || "#000033"
+                : todoColors[todos[selectedTodoIndex]?.id] || "#000033",
+              border: `2px solid ${
+                isTodoPinned
+                  ? todoColors[pinnedTodos[selectedTodoIndex]?.id] || "#000033"
+                  : todoColors[todos[selectedTodoIndex]?.id] || "#000033"
+              }`,
+            }}
+          >
             <div className="mdl-hdr">
               <div className="nt-dt-tm">
                 <p style={{ fontWeight: "bold" }}>{currentTodo.date}</p>

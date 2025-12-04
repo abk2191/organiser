@@ -272,7 +272,7 @@ function Notes() {
                             <div
                               className="maroon"
                               onClick={(e) =>
-                                changeBackgroundColor(note.id, "#570303ff", e)
+                                changeBackgroundColor(note.id, "#1a0505", e)
                               }
                             ></div>
                             <div
@@ -389,7 +389,7 @@ function Notes() {
                           <div
                             className="maroon"
                             onClick={(e) =>
-                              changeBackgroundColor(note.id, "#570303ff", e)
+                              changeBackgroundColor(note.id, "#1a0505", e)
                             }
                           ></div>
                           <div
@@ -401,7 +401,7 @@ function Notes() {
                           <div
                             className="deep-yellow"
                             onClick={(e) =>
-                              changeBackgroundColor(note.id, "#646409", e)
+                              changeBackgroundColor(note.id, "#43431aff", e)
                             }
                           ></div>
                         </div>
