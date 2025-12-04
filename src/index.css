@@ -724,7 +724,7 @@ html {
   border-radius: 8px;
   position: fixed; /* CHANGE TO FIXED */
   z-index: 10000;
-  background: #32327a !important;
+  background: white !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   /* Position in center of screen temporarily to debug */
@@ -743,7 +743,7 @@ html {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid #32327a;
+  border-top: 8px solid white;
 }
 
 .strict-dark {
