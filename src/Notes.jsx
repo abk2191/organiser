@@ -448,11 +448,6 @@ function Notes() {
               backgroundColor: isNotePinned
                 ? noteColors[pinnedNotes[selectedNoteIndex]?.id] || "#000033"
                 : noteColors[notes[selectedNoteIndex]?.id] || "#000033",
-              border: `2px solid ${
-                isNotePinned
-                  ? noteColors[pinnedNotes[selectedNoteIndex]?.id] || "#000033"
-                  : noteColors[notes[selectedNoteIndex]?.id] || "#000033"
-              }`,
             }}
           >
             <div className="mdl-hdr">

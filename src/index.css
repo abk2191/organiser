@@ -380,6 +380,7 @@ html {
   color: #202124;
   padding: 20px;
   border-radius: 8px;
+
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -801,6 +802,7 @@ html {
   .color-selector {
     top: 60%;
   }
+
   .notes-modal {
     height: 500px;
     overflow-y: auto;

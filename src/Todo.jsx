@@ -649,11 +649,6 @@ function Todo() {
               backgroundColor: isTodoPinned
                 ? todoColors[pinnedTodos[selectedTodoIndex]?.id] || "#000033"
                 : todoColors[todos[selectedTodoIndex]?.id] || "#000033",
-              border: `2px solid ${
-                isTodoPinned
-                  ? todoColors[pinnedTodos[selectedTodoIndex]?.id] || "#000033"
-                  : todoColors[todos[selectedTodoIndex]?.id] || "#000033"
-              }`,
             }}
           >
             <div className="mdl-hdr">
