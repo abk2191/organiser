@@ -7,6 +7,9 @@ function Notes() {
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
 
+  const [hex, setHex] = useState("");
+  const [colorSelectorActiveNoteId, setColorSelectorActiveNoteId] =
+    useState(null);
   const [noteActive, setNoteActive] = useState(false);
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
   const [pinnedNotes, setPinnedNotes] = useState(() => {
@@ -16,6 +19,14 @@ function Notes() {
   });
   const [isNotePinned, setIsNotePinned] = useState(false);
   const contentRef = useRef(null);
+  const [noteColors, setNoteColors] = useState(() => {
+    const savedColors = localStorage.getItem("noteColors");
+    return savedColors ? JSON.parse(savedColors) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem("noteColors", JSON.stringify(noteColors));
+  }, [noteColors]);
 
   // Debug: Log pinned notes changes
   useEffect(() => {
@@ -101,6 +112,7 @@ function Notes() {
     setNoteActive(false);
     setSelectedNoteIndex(null);
     setIsNotePinned(false);
+    setColorSelectorActiveNoteId(null);
   }
 
   function deleteNote(noteId, e) {
@@ -169,6 +181,31 @@ function Notes() {
     }
   }
 
+  function handleColorSelector(noteId, e) {
+    e.stopPropagation(); // Prevent event from bubbling up
+    e.preventDefault(); // Prevent default behavior
+    // If the clicked note already has the selector open, close it
+    // Otherwise, open it for this note
+    setColorSelectorActiveNoteId((prev) => (prev === noteId ? null : noteId));
+    console.log("Color selector triggered for note:", noteId);
+  }
+
+  function changeBackgroundColor(noteId, hex, e) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    // Update the color for this specific note
+    setNoteColors((prev) => ({
+      ...prev,
+      [noteId]: hex,
+    }));
+
+    // Close the color selector
+    setColorSelectorActiveNoteId(null);
+  }
+
   return (
     <>
       <div className="main-kontainer">
@@ -199,7 +236,12 @@ function Notes() {
                     className="note-item"
                     onClick={() => openNote(note.id)}
                   >
-                    <div className="nw-nt-div">
+                    <div
+                      className="nw-nt-div"
+                      style={{
+                        backgroundColor: noteColors[note.id] || "#000033",
+                      }}
+                    >
                       <div className="nt-cntnt-div">
                         <p
                           dangerouslySetInnerHTML={{ __html: note.content }}
@@ -207,24 +249,43 @@ function Notes() {
                       </div>
 
                       <div className="dlt-nt-btn-div">
-                        <button
-                          className="dlt-btn"
-                          onClick={(e) => unpinNote(note.id, e)}
-                          title="Unpin note"
-                        >
-                          <img
-                            className="unpin-btn-img"
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
-                            alt="unpin"
-                          ></img>
-                        </button>
-                        <button
-                          className="dlt-btn"
-                          onClick={(e) => deleteNote(note.id, e)}
-                          title="Delete note"
-                        >
-                          <i className="fa-solid fa-trash-can"></i>
-                        </button>
+                        {colorSelectorActiveNoteId === note.id && (
+                          <div className="color-selector">
+                            <div
+                              className="strict-dark"
+                              onClick={(e) =>
+                                changeBackgroundColor(note.id, "#1a1a1a", e)
+                              }
+                            ></div>
+                          </div>
+                        )}
+                        <div className="btn-cntnr">
+                          <button
+                            className="dlt-btn"
+                            title="Select Color"
+                            onClick={(e) => handleColorSelector(note.id, e)}
+                          >
+                            <i class="fa-solid fa-brush"></i>
+                          </button>
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => unpinNote(note.id, e)}
+                            title="Pin note"
+                          >
+                            <img
+                              className="unpin-btn-img"
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fq1JwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
+                              alt="unpin"
+                            ></img>
+                          </button>
+                          <button
+                            className="dlt-btn"
+                            onClick={(e) => deleteNote(note.id, e)}
+                            title="Delete note"
+                          >
+                            <i className="fa-solid fa-trash-can"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -265,25 +326,79 @@ function Notes() {
                   className="note-item"
                   onClick={() => openNote(note.id)}
                 >
-                  <div className="nw-nt-div">
+                  <div
+                    className="nw-nt-div"
+                    style={{
+                      backgroundColor: noteColors[note.id] || "#000033",
+                    }}
+                  >
                     <div className="nt-cntnt-div">
                       <p dangerouslySetInnerHTML={{ __html: note.content }}></p>
                     </div>
                     <div className="dlt-nt-btn-div">
-                      <button
-                        className="dlt-btn"
-                        onClick={(e) => pinNote(note.id, e)}
-                        title="Pin note"
-                      >
-                        <i className="fa-solid fa-thumbtack"></i>
-                      </button>
-                      <button
-                        className="dlt-btn"
-                        onClick={(e) => deleteNote(note.id, e)}
-                        title="Delete note"
-                      >
-                        <i className="fa-solid fa-trash-can"></i>
-                      </button>
+                      {colorSelectorActiveNoteId === note.id && (
+                        <div className="color-selector">
+                          <div
+                            className="strict-dark"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#1a1a1a", e)
+                            }
+                          ></div>
+                          <div
+                            className="Navy"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#000033", e)
+                            }
+                          ></div>
+                          <div
+                            className="deep-green"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#256025", e)
+                            }
+                          ></div>
+                          <div
+                            className="maroon"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#570303ff", e)
+                            }
+                          ></div>
+                          <div
+                            className="darkblue"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#360a5e", e)
+                            }
+                          ></div>
+                          <div
+                            className="deep-yellow"
+                            onClick={(e) =>
+                              changeBackgroundColor(note.id, "#646409", e)
+                            }
+                          ></div>
+                        </div>
+                      )}
+                      <div className="btn-cntnr">
+                        <button
+                          className="dlt-btn"
+                          title="Select Color"
+                          onClick={(e) => handleColorSelector(note.id, e)}
+                        >
+                          <i class="fa-solid fa-brush"></i>
+                        </button>
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => pinNote(note.id, e)}
+                          title="Pin note"
+                        >
+                          <i className="fa-solid fa-thumbtack"></i>
+                        </button>
+                        <button
+                          className="dlt-btn"
+                          onClick={(e) => deleteNote(note.id, e)}
+                          title="Delete note"
+                        >
+                          <i className="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -297,7 +412,19 @@ function Notes() {
       {noteActive && selectedNoteIndex !== null && (
         <>
           <div className="backdrop" onClick={closeNote}></div>
-          <div className="notes-modal">
+          <div
+            className="notes-modal"
+            style={{
+              backgroundColor: isNotePinned
+                ? noteColors[pinnedNotes[selectedNoteIndex]?.id] || "#000033"
+                : noteColors[notes[selectedNoteIndex]?.id] || "#000033",
+              border: `2px solid ${
+                isNotePinned
+                  ? noteColors[pinnedNotes[selectedNoteIndex]?.id] || "#000033"
+                  : noteColors[notes[selectedNoteIndex]?.id] || "#000033"
+              }`,
+            }}
+          >
             <div className="mdl-hdr">
               <div className="nt-dt-tm">
                 <p style={{ fontWeight: "bold" }}>

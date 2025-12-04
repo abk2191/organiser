@@ -388,7 +388,7 @@ html {
   border: 1px solid #000033;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
   margin: 0;
 }
 
@@ -419,6 +419,7 @@ html {
 
 .dlt-nt-btn-div {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
@@ -427,6 +428,14 @@ html {
   transition: opacity 0.2s;
   margin-top: 8px;
   padding-top: 8px;
+  overflow: visible !important;
+}
+
+.btn-cntnr {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
 }
 
 .dlt-btn {
@@ -706,6 +715,87 @@ html {
   background-color: rgba(229, 57, 53, 0.1);
 }
 
+.color-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 50px;
+  width: 250px;
+
+  border-radius: 8px;
+  position: fixed; /* CHANGE TO FIXED */
+  z-index: 10000;
+  background: #32327a !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Position in center of screen temporarily to debug */
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.color-selector::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 25%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #32327a;
+}
+
+.strict-dark {
+  height: 30px;
+  width: 30px;
+  border: 2px solid #1a1a1a;
+  background-color: #1a1a1a;
+  border-radius: 50%;
+}
+
+.Navy {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #000033;
+  background-color: #000033;
+  border-radius: 50%;
+}
+
+.deep-green {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #256025;
+  background-color: #256025;
+  border-radius: 50%;
+}
+
+.maroon {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #570303ff;
+  background-color: #570303ff;
+  border-radius: 50%;
+}
+
+.darkblue {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #360a5e;
+  background-color: #360a5e;
+  border-radius: 50%;
+}
+
+.deep-yellow {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #360a5e;
+  background-color: #646409;
+  border-radius: 50%;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .notes-modal {
@@ -931,7 +1021,7 @@ html,
 }
 
 body {
-  background-color: rgb(50, 50, 122);
+  background-color: #32327a;
 }
 
 /* ===== EXTRA CENTERING FIXES ===== */
