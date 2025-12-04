@@ -324,7 +324,7 @@ html {
 }
 
 .crt-nt-btn:active {
-  background-color: rgb(77, 178, 77);
+  background-color: navy;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   transform: translateY(0);
 }
