@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 function Todo() {
   // Load todos from localStorage on initial render
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem("todos");
     return savedTodos ? JSON.parse(savedTodos) : [];
@@ -365,6 +367,32 @@ function Todo() {
     );
   }
 
+  // Search functionality - NOW SEARCHES BOTH TITLE AND TASK TEXT
+  function matchesSearch(todo) {
+    if (!searchQuery.trim()) return true; // if empty, show everything
+
+    const query = searchQuery.toLowerCase();
+
+    // Search in todo title
+    const titleText = todo.title.toLowerCase();
+    if (titleText.includes(query)) {
+      return true;
+    }
+
+    // Search in task text
+    const todoTasks = tasks[todo.id] || [];
+    for (const task of todoTasks) {
+      if (task.text.toLowerCase().includes(query)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  const filteredPinnedTodos = sortedPinnedTodos.filter(matchesSearch);
+  const filteredUnpinnedTodos = sortedUnpinnedTodos.filter(matchesSearch);
+
   // Get current todo in modal
   const currentTodo =
     isTodoPinned && selectedTodoIndex !== null
@@ -394,8 +422,91 @@ function Todo() {
             </button>
           </div>
 
+          {/* 🔎 Search bar - EXACTLY like Notes.jsx */}
+          <div className="search-div">
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search todo lists and tasks..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearching(true); // ✅ ENTER SEARCH MODE
+              }}
+            />
+            {isSearching && (
+              <div style={{ marginTop: "10px" }} className="cls-srch-btn-div">
+                <button
+                  className="cls-srch-btn"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setIsSearching(false); // ✅ EXIT SEARCH MODE
+                  }}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Search Result - EXACTLY like Notes.jsx */}
+          {isSearching && (
+            <div className="notes-list">
+              {filteredPinnedTodos.length === 0 &&
+              filteredUnpinnedTodos.length === 0 ? (
+                <p className="warning">No results found.</p>
+              ) : (
+                [...filteredPinnedTodos, ...filteredUnpinnedTodos].map(
+                  (todo) => {
+                    const todoTasks = tasks[todo.id] || [];
+                    const completedCount = todoTasks.filter(
+                      (t) => t.completed
+                    ).length;
+                    const totalCount = todoTasks.length;
+
+                    return (
+                      <div
+                        key={todo.id}
+                        className="note-item"
+                        onClick={() => openTodo(todo.id)}
+                      >
+                        <div
+                          className="nw-nt-div"
+                          style={{
+                            backgroundColor: todoColors[todo.id] || "#000033",
+                          }}
+                        >
+                          <div className="nt-cntnt-div">
+                            <h3
+                              style={{
+                                color: "white",
+                                marginBottom: "8px",
+                              }}
+                            >
+                              {todo.title}
+                            </h3>
+                            <p
+                              style={{
+                                fontSize: "14px",
+                                color: "white",
+                              }}
+                            >
+                              {totalCount === 0
+                                ? "No tasks"
+                                : `${completedCount}/${totalCount} completed`}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                )
+              )}
+            </div>
+          )}
+
           {/* Pinned Todos */}
-          {sortedPinnedTodos.length > 0 && (
+          {!isSearching && sortedPinnedTodos.length > 0 && (
             <div className="pinned-nts">
               <div className="wrapper">
                 <div className="page-text-2">
@@ -497,7 +608,7 @@ function Todo() {
                               onClick={(e) => unpinTodo(todo.id, e)}
                               title="Unpin list"
                             >
-                              <i class="fa-solid fa-link-slash"></i>
+                              <i className="fa-solid fa-link-slash"></i>
                             </button>
                             <button
                               className="dlt-btn"
@@ -522,131 +633,133 @@ function Todo() {
           )}
 
           {/* Display unpinned todos list */}
-          <div className="notes-list">
-            {sortedUnpinnedTodos.length === 0 &&
-            sortedPinnedTodos.length === 0 ? (
-              <div
-                style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                }}
-              >
-                <p className="warning">
-                  No todo lists yet. Create your first list!
-                </p>
-              </div>
-            ) : (
-              sortedUnpinnedTodos.map((todo) => {
-                const todoTasks = tasks[todo.id] || [];
-                const completedCount = todoTasks.filter(
-                  (t) => t.completed
-                ).length;
-                const totalCount = todoTasks.length;
+          {!isSearching && (
+            <div className="notes-list">
+              {sortedUnpinnedTodos.length === 0 &&
+              sortedPinnedTodos.length === 0 ? (
+                <div
+                  style={{
+                    textAlign: "center",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                >
+                  <p className="warning">
+                    No todo lists yet. Create your first list!
+                  </p>
+                </div>
+              ) : (
+                sortedUnpinnedTodos.map((todo) => {
+                  const todoTasks = tasks[todo.id] || [];
+                  const completedCount = todoTasks.filter(
+                    (t) => t.completed
+                  ).length;
+                  const totalCount = todoTasks.length;
 
-                return (
-                  <div
-                    key={todo.id}
-                    className="note-item"
-                    onClick={() => openTodo(todo.id)}
-                  >
+                  return (
                     <div
-                      className="nw-nt-div"
-                      style={{
-                        backgroundColor: todoColors[todo.id] || "#000033",
-                      }}
+                      key={todo.id}
+                      className="note-item"
+                      onClick={() => openTodo(todo.id)}
                     >
-                      <div className="nt-cntnt-div">
-                        <h3
-                          style={{
-                            color: "white",
-                            marginBottom: "8px",
-                          }}
-                        >
-                          {todo.title}
-                        </h3>
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            color: "white",
-                          }}
-                        >
-                          {totalCount === 0
-                            ? "No tasks"
-                            : `${completedCount}/${totalCount} completed`}
-                        </p>
-                      </div>
-                      <div className="dlt-nt-btn-div">
-                        {colorSelectorActiveTodoId === todo.id && (
-                          <div className="color-selector">
-                            <div
-                              className="strict-dark"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#1a1a1a", e)
-                              }
-                            ></div>
-                            <div
-                              className="Navy"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#000033", e)
-                              }
-                            ></div>
-                            <div
-                              className="deep-green"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#256025", e)
-                              }
-                            ></div>
-                            <div
-                              className="maroon"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#1a0505", e)
-                              }
-                            ></div>
-                            <div
-                              className="darkblue"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#360a5e", e)
-                              }
-                            ></div>
-                            <div
-                              className="deep-yellow"
-                              onClick={(e) =>
-                                changeBackgroundColor(todo.id, "#43431aff", e)
-                              }
-                            ></div>
+                      <div
+                        className="nw-nt-div"
+                        style={{
+                          backgroundColor: todoColors[todo.id] || "#000033",
+                        }}
+                      >
+                        <div className="nt-cntnt-div">
+                          <h3
+                            style={{
+                              color: "white",
+                              marginBottom: "8px",
+                            }}
+                          >
+                            {todo.title}
+                          </h3>
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              color: "white",
+                            }}
+                          >
+                            {totalCount === 0
+                              ? "No tasks"
+                              : `${completedCount}/${totalCount} completed`}
+                          </p>
+                        </div>
+                        <div className="dlt-nt-btn-div">
+                          {colorSelectorActiveTodoId === todo.id && (
+                            <div className="color-selector">
+                              <div
+                                className="strict-dark"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#1a1a1a", e)
+                                }
+                              ></div>
+                              <div
+                                className="Navy"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#000033", e)
+                                }
+                              ></div>
+                              <div
+                                className="deep-green"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#256025", e)
+                                }
+                              ></div>
+                              <div
+                                className="maroon"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#1a0505", e)
+                                }
+                              ></div>
+                              <div
+                                className="darkblue"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#360a5e", e)
+                                }
+                              ></div>
+                              <div
+                                className="deep-yellow"
+                                onClick={(e) =>
+                                  changeBackgroundColor(todo.id, "#43431aff", e)
+                                }
+                              ></div>
+                            </div>
+                          )}
+                          <div className="btn-cntnr">
+                            <button
+                              className="dlt-btn"
+                              title="Select Color"
+                              onClick={(e) => handleColorSelector(todo.id, e)}
+                            >
+                              <i className="fa-solid fa-brush"></i>
+                            </button>
+                            <button
+                              className="dlt-btn"
+                              onClick={(e) => pinTodo(todo.id, e)}
+                              title="Pin list"
+                            >
+                              <i className="fa-solid fa-thumbtack"></i>
+                            </button>
+                            <button
+                              className="dlt-btn"
+                              onClick={(e) => deleteTodo(todo.id, e)}
+                              title="Delete list"
+                            >
+                              <i className="fa-solid fa-trash-can"></i>
+                            </button>
                           </div>
-                        )}
-                        <div className="btn-cntnr">
-                          <button
-                            className="dlt-btn"
-                            title="Select Color"
-                            onClick={(e) => handleColorSelector(todo.id, e)}
-                          >
-                            <i className="fa-solid fa-brush"></i>
-                          </button>
-                          <button
-                            className="dlt-btn"
-                            onClick={(e) => pinTodo(todo.id, e)}
-                            title="Pin list"
-                          >
-                            <i className="fa-solid fa-thumbtack"></i>
-                          </button>
-                          <button
-                            className="dlt-btn"
-                            onClick={(e) => deleteTodo(todo.id, e)}
-                            title="Delete list"
-                          >
-                            <i className="fa-solid fa-trash-can"></i>
-                          </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                  );
+                })
+              )}
+            </div>
+          )}
         </div>
       </div>
 
