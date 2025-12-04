@@ -289,7 +289,14 @@ function Todo() {
   }
 
   // TaskItem component
-  function TaskItem({ todoId, task, onDelete, onToggle, onUpdate }) {
+  function TaskItem({
+    todoId,
+    task,
+    onDelete,
+    onToggle,
+    onUpdate,
+    backgroundColor,
+  }) {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(task.text);
 
@@ -311,7 +318,12 @@ function Todo() {
     };
 
     return (
-      <div className="task-container">
+      <div
+        className="task-container"
+        style={{
+          backgroundColor: backgroundColor || "#000033",
+        }}
+      >
         <input
           type="checkbox"
           checked={task.completed}
@@ -363,6 +375,9 @@ function Todo() {
 
   const currentTodoId = currentTodo?.id;
   const currentTodoTasks = currentTodoId ? tasks[currentTodoId] || [] : [];
+  const currentTodoColor = currentTodoId
+    ? todoColors[currentTodoId]
+    : "#000033";
 
   return (
     <>
@@ -482,11 +497,7 @@ function Todo() {
                               onClick={(e) => unpinTodo(todo.id, e)}
                               title="Unpin list"
                             >
-                              <img
-                                className="unpin-btn-img"
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABG0lEQVR4nNWXTW7CMBBG366oe4/gGu0VEHdpTtElJ6g4DyyQgFWRSqUepIJFgwKOFFmB2uOJ1VryJj9++WY+jydwHS+AUHhUQA3sS8Md8O7hB2BSEi5esVb5EthpIyYZ8I/cdDlF2J+Ao38nK10uAf7on2mhxeCLHmg2XH7J+fQOtB4q5w83Qmyq3PXAXyOhpmE/AN+J4BrYaMAhPGWegE9gnVORUuFNdJ41Kjc97oyB/wBvfp9j6eru9XB+ATMtUANvcjkHRhgOuVFMQrcPcp67COWm57n41ihWuUknI50Fk1BwubNQ9163ImXDJWIB8cUlrEhquAvMMk79aq3hdkYmSVa+ArZGe9Lc7f+mb3d/5aehrQlF4ZcqeAY9j95RUJE6SwAAAABJRU5ErkJggg=="
-                                alt="unpin"
-                              ></img>
+                              <i class="fa-solid fa-link-slash"></i>
                             </button>
                             <button
                               className="dlt-btn"
@@ -646,9 +657,7 @@ function Todo() {
           <div
             className="notes-modal"
             style={{
-              backgroundColor: isTodoPinned
-                ? todoColors[pinnedTodos[selectedTodoIndex]?.id] || "#000033"
-                : todoColors[todos[selectedTodoIndex]?.id] || "#000033",
+              backgroundColor: currentTodoColor,
             }}
           >
             <div className="mdl-hdr">
@@ -669,11 +678,10 @@ function Todo() {
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
-
                   padding: "20px 24px 0",
                   marginBottom: "20px",
                   outline: "none",
-                  borderBottom: "2px solid #e8eaed",
+                  borderBottom: "2px solid rgba(255, 255, 255, 0.2)",
                   paddingBottom: "10px",
                 }}
               >
@@ -716,15 +724,26 @@ function Todo() {
                     className="add-task-btn"
                     onClick={() => addTask(currentTodoId)}
                     style={{
-                      backgroundColor: "navy",
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
                       color: "white",
-                      border: "none",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
                       padding: "8px 16px",
                       borderRadius: "4px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor =
+                        "rgba(255, 255, 255, 0.3)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.5)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor =
+                        "rgba(255, 255, 255, 0.2)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.3)";
                     }}
                   >
                     <i className="fa-solid fa-plus"></i> Add Task
@@ -737,7 +756,7 @@ function Todo() {
                       className="no-tasks"
                       style={{
                         textAlign: "center",
-                        color: "#9aa0a6",
+                        color: "rgba(255, 255, 255, 0.7)",
                         padding: "20px",
                         fontStyle: "italic",
                       }}
@@ -753,6 +772,7 @@ function Todo() {
                         onDelete={deleteTask}
                         onToggle={toggleTaskCompletion}
                         onUpdate={updateTaskText}
+                        backgroundColor={currentTodoColor}
                       />
                     ))
                   )}
