@@ -427,7 +427,7 @@ function Todo() {
             <input
               className="search-input"
               type="text"
-              placeholder="Search todo lists and tasks..."
+              placeholder="Search todos..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
