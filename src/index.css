@@ -679,11 +679,11 @@ html {
 .task-edit-input {
   flex: 1;
   padding: 10px 12px;
-  font-size: 18px;
+  font-size: 25px;
   font-family: "Inter", sans-serif;
-  border: 2px solid rgb(87, 188, 87);
+
   border-radius: 6px;
-  color: rgb(87, 188, 87);
+  color: #000033;
   outline: none;
   background-color: white;
 }
@@ -798,9 +798,13 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .task-edit-input {
+    width: 90%;
+  }
+
   .color-selector {
     top: 64%;
-    left: 51.5%;
+    left: 52%;
   }
 
   .notes-modal {
