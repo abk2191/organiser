@@ -798,6 +798,9 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .color-selector {
+    top: 60%;
+  }
   .notes-modal {
     height: 500px;
     overflow-y: auto;
