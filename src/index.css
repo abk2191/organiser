@@ -978,7 +978,7 @@ html {
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .brand-name {
-    margin-bottom: 60px;
+    margin-bottom: 80px;
   }
   .week-dates {
     gap: 20px;
