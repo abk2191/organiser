@@ -979,6 +979,7 @@ html {
 @media (max-width: 768px) {
   .brand-name {
     margin-bottom: 80px;
+    margin-top: -20px;
   }
   .week-dates {
     gap: 20px;
