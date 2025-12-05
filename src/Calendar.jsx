@@ -1,4 +1,19 @@
+import { useState, useEffect } from "react";
+
 function Calendar() {
+  // Load events from localStorage on initial render
+  const [event, setEvent] = useState(() => {
+    const savedEvents = localStorage.getItem("calendarEvents");
+    return savedEvents ? JSON.parse(savedEvents) : [];
+  });
+
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // Save events to localStorage whenever event state changes
+  useEffect(() => {
+    localStorage.setItem("calendarEvents", JSON.stringify(event));
+  }, [event]);
+
   function getMonthDatesByWeekday() {
     const today = new Date();
     const year = today.getFullYear();
@@ -126,11 +141,110 @@ function Calendar() {
     return weeks;
   }
 
+  function updateEventViewer(date) {
+    setSelectedDate(date); // Track which date was clicked
+  }
+
+  function addEventForSelectedDate() {
+    const eventName = window.prompt(
+      "Enter event name:",
+      `Event for ${selectedDate}`
+    );
+    if (!selectedDate) {
+      alert("Please select a date first");
+      return;
+    }
+
+    const eventDetails = {
+      id: Date.now(),
+      date: selectedDate,
+      name: eventName,
+      // You could add more details here
+    };
+
+    setEvent((prev) => [...prev, eventDetails]);
+    console.log("Event added for date:", selectedDate);
+  }
+
+  function EventViewer({ event, selectedDate, onAddEvent }) {
+    // Filter events for the selected date
+    const eventsForSelectedDate = event.filter(
+      (item) => item.date === selectedDate
+    );
+
+    if (!selectedDate) {
+      return (
+        <p style={{ color: "white", marginTop: "40px" }}>
+          Click a date to see events
+        </p>
+      );
+    }
+
+    const day = getDayForDate(selectedDate);
+
+    return (
+      <div
+        style={{ marginTop: "20px", padding: "20px", background: "#32327a" }}
+        className="event-viewer"
+      >
+        <h3 style={{ color: "white" }}>
+          {day}, {selectedDate}
+        </h3>
+        <div className="add-evnt-btn">
+          <button className="evnt-btn" onClick={onAddEvent}>
+            Add an event
+          </button>
+        </div>
+        {eventsForSelectedDate.length === 0 ? (
+          <p style={{ color: "white", marginTop: "30px" }}>
+            No events for this date yet
+          </p>
+        ) : (
+          eventsForSelectedDate.map((item) => (
+            <div
+              style={{
+                color: "white",
+                marginTop: "30px",
+                padding: "10px",
+              }}
+              key={item.id}
+            >
+              {item.name}
+            </div>
+          ))
+        )}
+      </div>
+    );
+  }
+
+  function getDayForDate(targetDate) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const dateObj = new Date(year, month, targetDate);
+    const dayOfWeek = dateObj.getDay();
+
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return dayNames[dayOfWeek];
+  }
+
+  function hasEventsForDate(date) {
+    return event.some((item) => item.date === date);
+  }
+
   // Usage
   const monthDates = getMonthDatesByWeekday();
-  console.log(monthDates);
   const wks = getWeeks();
-  console.log("weeeeeeeeeeeeks:", wks);
+
   const date = new Date();
   const formatted = date.toLocaleString("default", {
     month: "long",
@@ -173,7 +287,12 @@ function Calendar() {
                       fontWeight: "bold",
                       fontSize: "20px",
                       border: date === todayDate ? "2px solid white" : "none",
+                      backgroundColor: hasEventsForDate(date)
+                        ? "green"
+                        : "transparent",
+                      cursor: "pointer",
                     }}
+                    onClick={() => updateEventViewer(date)}
                   >
                     {date === " " ? (
                       <span className="empty-space">
@@ -188,6 +307,11 @@ function Calendar() {
             </div>
           ))}
         </div>
+        <EventViewer
+          event={event}
+          selectedDate={selectedDate}
+          onAddEvent={addEventForSelectedDate}
+        />
       </div>
     </>
   );
