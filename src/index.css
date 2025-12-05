@@ -142,8 +142,7 @@ html {
   display: flex;
   flex-direction: column;
   gap: 25px;
-  align-items: center;
-  justify-content: center;
+
   width: 100%;
   margin-left: -5px;
   margin-top: 35px;
@@ -252,6 +251,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 4px;
+  margin-top: -40px;
 }
 
 .brand-name p {
@@ -919,8 +919,67 @@ html {
   }
 }
 
+.empty-space {
+  visibility: hidden;
+}
+
+.clndr-wrpr {
+  padding: 20px;
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  margin-top: 200px;
+}
+
+.calendar-div-main {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.week-container {
+  margin-top: 20px;
+  gap: 20px;
+  color: white;
+}
+
+.week-dates {
+  width: 100%;
+  display: flex;
+  gap: 42px;
+}
+
+.date-item {
+  height: 30px;
+  width: 60px;
+}
+
+.day-names-div {
+  display: flex;
+  width: 500px;
+  gap: 49px;
+}
+
+.day-names-div p {
+  color: white;
+  font-weight: bold;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .week-dates {
+    gap: 20px;
+  }
+  .clndr-wrpr {
+    width: 350px;
+  }
+
+  .day-names-div {
+    gap: 24px;
+  }
+
   .task-edit-input {
     width: 90%;
   }

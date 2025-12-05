@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Notes from "./Notes";
 import Todo from "./Todo";
+import Calendar from "./Calendar";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -84,7 +85,9 @@ function App() {
                   closeSidebar();
                 }}
               >
-                <h2>NOTES</h2>
+                <h2 style={{ fontSize: "33px" }}>
+                  <i class="fa-solid fa-lightbulb"></i> NOTES
+                </h2>
               </div>
               <div
                 className="sliding-div-two div-style"
@@ -93,7 +96,20 @@ function App() {
                   closeSidebar();
                 }}
               >
-                <h2>TODOS</h2>
+                <h2 style={{ fontSize: "33px" }}>
+                  <i class="fa-solid fa-list-check"></i> TODOS
+                </h2>
+              </div>
+              <div
+                className="sliding-div-two div-style"
+                onClick={() => {
+                  window.location.href = "/organiser/calendar";
+                  closeSidebar();
+                }}
+              >
+                <h2 style={{ fontSize: "33px" }}>
+                  <i class="fa-solid fa-calendar-days"></i> CALENDAR
+                </h2>
               </div>
             </div>
             <div className="brand-name">
@@ -113,6 +129,7 @@ function App() {
           <Route path="/" element={<Navigate to="/notes" />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/todo" element={<Todo />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </div>
     </Router>
