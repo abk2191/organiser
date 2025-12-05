@@ -205,7 +205,6 @@ function Calendar() {
               style={{
                 color: "white",
                 marginTop: "30px",
-                padding: "10px",
               }}
               key={item.id}
             >
