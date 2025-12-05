@@ -256,6 +256,11 @@ function Calendar() {
   return (
     <>
       <div className="calendar-div-main">
+        <div className="wrapper">
+          <div className="page-text">
+            <h1>CALENDAR</h1>
+          </div>
+        </div>
         <div className="clndr-wrpr">
           <div className="month-name">
             <h1

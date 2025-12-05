@@ -947,11 +947,10 @@ html {
 }
 
 .clndr-wrpr {
-  padding: 20px;
   display: flex;
   width: 500px;
   flex-direction: column;
-  margin-top: -90px;
+  margin-top: 20px;
 }
 
 .event-viewer {
@@ -969,7 +968,6 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
 }
 
 .week-container {
@@ -1014,6 +1012,9 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .calendar-div-main {
+    margin-top: -130px;
+  }
   .week-dates {
     gap: 20px;
   }
