@@ -1013,7 +1013,7 @@ html {
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .calendar-div-main {
-    margin-top: -130px;
+    margin-top: -100px;
   }
   .week-dates {
     gap: 20px;
