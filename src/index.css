@@ -994,7 +994,8 @@ html {
 .day-names-div {
   display: flex;
   width: 500px;
-  gap: 49px;
+  gap: 54px;
+  margin-left: 10px;
 }
 
 .day-names-div p {
@@ -1023,8 +1024,9 @@ html {
   }
 
   .day-names-div {
-    gap: 30px;
+    gap: 31px;
     margin-left: 9px;
+    margin-top: 15px;
   }
 
   .task-edit-input {
