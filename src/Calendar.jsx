@@ -131,7 +131,7 @@ function Calendar() {
   console.log(monthDates);
   const wks = getWeeks();
   console.log("weeeeeeeeeeeeks:", wks);
-  const date = new Date(2025, 11, 1); // December 1, 2025
+  const date = new Date();
   const formatted = date.toLocaleString("default", {
     month: "long",
     year: "numeric",
