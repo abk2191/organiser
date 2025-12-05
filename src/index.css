@@ -1023,7 +1023,8 @@ html {
   }
 
   .day-names-div {
-    gap: 26px;
+    gap: 30px;
+    margin-left: 9px;
   }
 
   .task-edit-input {
