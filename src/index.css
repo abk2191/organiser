@@ -954,6 +954,10 @@ html {
 .date-item {
   height: 30px;
   width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }
 
 .day-names-div {
@@ -985,7 +989,7 @@ html {
   }
 
   .day-names-div {
-    gap: 24px;
+    gap: 25px;
   }
 
   .task-edit-input {

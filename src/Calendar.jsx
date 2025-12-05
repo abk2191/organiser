@@ -136,6 +136,8 @@ function Calendar() {
     month: "long",
     year: "numeric",
   });
+  const today = new Date();
+  const todayDate = today.getDate();
 
   return (
     <>
@@ -163,7 +165,16 @@ function Calendar() {
             <div key={weekIndex} className="week-container">
               <div className="week-dates">
                 {week.map((date, dateIndex) => (
-                  <span key={dateIndex} className="date-item">
+                  <span
+                    key={dateIndex}
+                    className="date-item"
+                    style={{
+                      color: date === todayDate ? "greenyellow" : "inherit",
+                      fontWeight: "bold",
+                      fontSize: "20px",
+                      border: date === todayDate ? "2px solid white" : "none",
+                    }}
+                  >
                     {date === " " ? (
                       <span className="empty-space">
                         &nbsp;&nbsp;&nbsp;&nbsp;
