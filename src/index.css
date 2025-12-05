@@ -967,8 +967,19 @@ html {
   font-weight: bold;
 }
 
+.month-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .brand-name {
+    margin-top: -20px;
+  }
   .week-dates {
     gap: 20px;
   }

@@ -141,11 +141,15 @@ function Calendar() {
     <>
       <div className="calendar-div-main">
         <div className="clndr-wrpr">
-          <h1
-            style={{ color: "white", marginLeft: "-5px", marginBottom: "15px" }}
-          >
-            {formatted}
-          </h1>
+          <div className="month-name">
+            <h1
+              style={{
+                color: "white",
+              }}
+            >
+              {formatted}
+            </h1>
+          </div>
           <div className="day-names-div">
             <p>SU</p>
             <p>MO</p>
