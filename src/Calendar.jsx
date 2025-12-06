@@ -258,6 +258,7 @@ function Calendar() {
 
   function closeEventViewer() {
     setEventViewerActive(false);
+    setSelectedDate(false);
   }
 
   // Usage
