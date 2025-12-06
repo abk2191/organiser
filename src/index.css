@@ -451,24 +451,27 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: red;
-  border: 2px solid #000033;
+  background-color: #223a5e;
+  border: 2px solid white;
+  cursor: pointer;
 }
 
 .color-four {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #510751;
-  border: 2px solid #000033;
+  background-color: #15001f;
+  border: 2px solid white;
+  cursor: pointer;
 }
 
 .color-five {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: blue;
-  border: 2px solid #000033;
+  background-color: #050b17;
+  border: 2px solid white;
+  cursor: pointer;
 }
 
 .dlt-nt-btn-div {
@@ -985,8 +988,9 @@ html {
   width: 500px;
   flex-direction: column;
   margin-top: 20px;
-  border: 1px solid #000033;
-  background-color: #000033;
+  border: 1px solid #2c2c68;
+  background-color: #2c2c68;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   padding: 40px;
   border-radius: 10px;
 }
@@ -1040,7 +1044,7 @@ html {
 
 .date-item {
   height: 30px;
-  width: 60px;
+  width: 62px;
   display: flex;
   align-items: center;
   justify-content: center;

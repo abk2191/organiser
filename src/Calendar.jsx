@@ -228,16 +228,16 @@ function Calendar() {
               <div className="event-colors">
                 <div
                   className="color-one"
-                  onClick={() => updateEventViewerBackgroundColor("red")}
+                  onClick={() => updateEventViewerBackgroundColor("#223A5E")}
                 ></div>
 
                 <div
                   className="color-four"
-                  onClick={() => updateEventViewerBackgroundColor("#510751")}
+                  onClick={() => updateEventViewerBackgroundColor("#15001F")}
                 ></div>
                 <div
                   className="color-five"
-                  onClick={() => updateEventViewerBackgroundColor("blue")}
+                  onClick={() => updateEventViewerBackgroundColor("#001427")}
                 ></div>
               </div>
             </div>
@@ -361,11 +361,15 @@ function Calendar() {
                       key={dateIndex}
                       className="date-item"
                       style={{
-                        color: date === todayDate ? "greenyellow" : "inherit",
+                        color: date === todayDate ? "red" : "inherit",
                         fontWeight: "bold",
                         fontSize: "20px",
-                        border: date === todayDate ? "2px solid white" : "none",
+                        // border: date === todayDate ? "2px solid white" : "none",
+                        border: hasEventsForDate(date)
+                          ? "2px solid white"
+                          : "none",
                         backgroundColor: getEventColorForDate(date),
+
                         cursor: "pointer",
                       }}
                       onClick={() => updateEventViewer(date)}
