@@ -364,6 +364,7 @@ function Todo() {
           checked={task.completed}
           onChange={() => onToggle(todoId, task.id)}
           className="task-checkbox"
+          style={{ accentColor: backgroundColor }}
         />
         {isEditing ? (
           <input

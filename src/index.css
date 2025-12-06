@@ -714,9 +714,9 @@ html {
   flex-shrink: 0;
 }
 
-.task-checkbox:checked {
+/* .task-checkbox:checked {
   accent-color: #000033;
-}
+} */
 
 .task-content {
   flex: 1;
