@@ -984,7 +984,7 @@ html {
   flex-direction: column;
   align-items: center;
   margin-top: 60px;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .week-container {
