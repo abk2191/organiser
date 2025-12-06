@@ -1202,7 +1202,7 @@ html {
     width: 95%;
     max-height: 90vh;
     border-radius: 8px;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    border: 2px solid white;
   }
 
   .hamburger {
