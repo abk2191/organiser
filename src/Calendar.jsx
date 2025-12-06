@@ -217,7 +217,7 @@ function Calendar() {
               <h3 style={{ color: "white" }}>EVENT VIEWER</h3>
             </div>
             <div className="event-header">
-              <h3 style={{ color: "white", fontSize: "40px" }}>
+              <h3 style={{ color: "white", fontSize: "30px" }}>
                 {day}, {selectedDate}
               </h3>
               <button className="cls-nt-btn" onClick={closeEventViewer}>
