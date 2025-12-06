@@ -1040,9 +1040,9 @@ html {
     height: 100vh;
   }
 
-  .calendar-div-main {
+  /* .calendar-div-main {
     margin-top: 70px;
-  }
+  } */
   .week-dates {
     gap: 20px;
   }
