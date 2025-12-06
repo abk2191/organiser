@@ -1035,6 +1035,15 @@ html {
 
 .event-name-text {
   font-size: 25px;
+  height: 80px;
+  background-color: #000033;
+  padding: 15px;
+  border-radius: 10px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
