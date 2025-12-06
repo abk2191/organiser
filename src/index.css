@@ -638,7 +638,7 @@ html {
 .nt-dt-tm {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 35px;
   margin-left: 25px;
   font-size: 30px;
 
@@ -1134,6 +1134,7 @@ html {
   .notes-modal {
     height: 500px;
     overflow-y: auto;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   }
 
   .page-text-2 h2 {
@@ -1201,6 +1202,7 @@ html {
     width: 95%;
     max-height: 90vh;
     border-radius: 8px;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
   }
 
   .hamburger {
