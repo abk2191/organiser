@@ -979,12 +979,13 @@ html {
 }
 
 .calendar-div-main {
-  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 60px;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .week-container {

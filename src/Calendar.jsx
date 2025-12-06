@@ -274,68 +274,73 @@ function Calendar() {
 
   return (
     <>
-      <div className="calendar-div-main">
-        <div className="wrapper">
-          <div className="page-text">
-            <h1>CALENDAR</h1>
-          </div>
-        </div>
-        <div className="clndr-wrpr">
-          <div className="month-name">
-            <h1
-              style={{
-                color: "white",
-              }}
-            >
-              {formatted}
-            </h1>
-          </div>
-          <div className="day-names-div">
-            <p>SU</p>
-            <p>MO</p>
-            <p>TU</p>
-            <p>WE</p>
-            <p>TH</p>
-            <p>FR</p>
-            <p>SA</p>
-          </div>
-          {wks.map((week, weekIndex) => (
-            <div key={weekIndex} className="week-container">
-              <div className="week-dates">
-                {week.map((date, dateIndex) => (
-                  <span
-                    key={dateIndex}
-                    className="date-item"
-                    style={{
-                      color: date === todayDate ? "greenyellow" : "inherit",
-                      fontWeight: "bold",
-                      fontSize: "20px",
-                      border: date === todayDate ? "2px solid white" : "none",
-                      backgroundColor: hasEventsForDate(date)
-                        ? "green"
-                        : "transparent",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => updateEventViewer(date)}
-                  >
-                    {date === " " ? (
-                      <span className="empty-space">
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                      </span>
-                    ) : (
-                      date
-                    )}
-                  </span>
-                ))}
-              </div>
+      <div
+        className="calendar-div-main-main"
+        style={{ overflow: "hidden", height: "100vh" }}
+      >
+        <div className="calendar-div-main">
+          <div className="wrapper">
+            <div className="page-text">
+              <h1>CALENDAR</h1>
             </div>
-          ))}
+          </div>
+          <div className="clndr-wrpr">
+            <div className="month-name">
+              <h1
+                style={{
+                  color: "white",
+                }}
+              >
+                {formatted}
+              </h1>
+            </div>
+            <div className="day-names-div">
+              <p>SU</p>
+              <p>MO</p>
+              <p>TU</p>
+              <p>WE</p>
+              <p>TH</p>
+              <p>FR</p>
+              <p>SA</p>
+            </div>
+            {wks.map((week, weekIndex) => (
+              <div key={weekIndex} className="week-container">
+                <div className="week-dates">
+                  {week.map((date, dateIndex) => (
+                    <span
+                      key={dateIndex}
+                      className="date-item"
+                      style={{
+                        color: date === todayDate ? "greenyellow" : "inherit",
+                        fontWeight: "bold",
+                        fontSize: "20px",
+                        border: date === todayDate ? "2px solid white" : "none",
+                        backgroundColor: hasEventsForDate(date)
+                          ? "green"
+                          : "transparent",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => updateEventViewer(date)}
+                    >
+                      {date === " " ? (
+                        <span className="empty-space">
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                      ) : (
+                        date
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <EventViewer
+            event={event}
+            selectedDate={selectedDate}
+            onAddEvent={addEventForSelectedDate}
+          />
         </div>
-        <EventViewer
-          event={event}
-          selectedDate={selectedDate}
-          onAddEvent={addEventForSelectedDate}
-        />
       </div>
     </>
   );
