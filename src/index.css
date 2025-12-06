@@ -1039,6 +1039,9 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .event-viewer {
+    border: 2px solid white;
+  }
   .calendar-div-main-main {
     position: fixed;
     top: 0;
