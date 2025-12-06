@@ -182,14 +182,6 @@ function Calendar() {
       (item) => item.date === selectedDate
     );
 
-    if (!selectedDate) {
-      return (
-        <p style={{ color: "white", marginTop: "40px" }}>
-          Click a date to see events
-        </p>
-      );
-    }
-
     const day = getDayForDate(selectedDate);
     // Get background color from the first event if it exists
     const backgroundColor =
@@ -389,6 +381,9 @@ function Calendar() {
                 </div>
               </div>
             ))}
+          </div>
+          <div style={{ marginTop: "40px", color: "white", fontSize: "18px" }}>
+            <p>Click on the dates to see events.</p>
           </div>
           <EventViewer
             event={event}
