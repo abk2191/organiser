@@ -951,6 +951,10 @@ html {
   width: 500px;
   flex-direction: column;
   margin-top: 20px;
+  border: 1px solid #000033;
+  background-color: #000033;
+  padding: 40px;
+  border-radius: 10px;
 }
 
 .event-viewer {
@@ -1012,8 +1016,8 @@ html {
 .day-names-div {
   display: flex;
   width: 500px;
-  gap: 54px;
-  margin-left: 10px;
+  gap: 43px;
+  margin-left: 2px;
 }
 
 .day-names-div p {
