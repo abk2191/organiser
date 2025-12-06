@@ -152,6 +152,11 @@ function Calendar() {
       "Enter event name:",
       `Event for ${selectedDate}`
     );
+
+    if (eventName === null) {
+      return; // User cancelled
+    }
+
     if (!selectedDate) {
       alert("Please select a date first");
       return;
@@ -160,14 +165,17 @@ function Calendar() {
     const eventDetails = {
       id: Date.now(),
       date: selectedDate,
-      name: eventName,
-      // You could add more details here
+      name: eventName || `Event for ${selectedDate}`, // Handle empty names
+      backgroundColor: "#32327a", // Make sure this is included
     };
 
-    setEvent((prev) => [...prev, eventDetails]);
-    console.log("Event added for date:", selectedDate);
-  }
+    console.log(
+      "Adding event with background color:",
+      eventDetails.backgroundColor
+    );
 
+    setEvent((prev) => [...prev, eventDetails]);
+  }
   function EventViewer({ event, selectedDate, onAddEvent }) {
     // Filter events for the selected date
     const eventsForSelectedDate = event.filter(
@@ -183,6 +191,16 @@ function Calendar() {
     }
 
     const day = getDayForDate(selectedDate);
+    // Get background color from the first event if it exists
+    const backgroundColor =
+      eventsForSelectedDate.length > 0
+        ? eventsForSelectedDate[0].backgroundColor || "#32327a"
+        : "#32327a";
+
+    // DEBUG: Log what's happening
+    console.log("Events for date:", eventsForSelectedDate);
+    console.log("Background color to use:", backgroundColor);
+    console.log("Selected date:", selectedDate);
 
     return (
       <>
@@ -191,7 +209,7 @@ function Calendar() {
             style={{
               marginTop: "20px",
               padding: "20px",
-              background: "#32327a",
+              background: backgroundColor,
             }}
             className="event-viewer"
           >
@@ -207,6 +225,21 @@ function Calendar() {
               <button className="evnt-btn" onClick={onAddEvent}>
                 Add an event
               </button>
+              <div className="event-colors">
+                <div
+                  className="color-one"
+                  onClick={() => updateEventViewerBackgroundColor("red")}
+                ></div>
+
+                <div
+                  className="color-four"
+                  onClick={() => updateEventViewerBackgroundColor("#510751")}
+                ></div>
+                <div
+                  className="color-five"
+                  onClick={() => updateEventViewerBackgroundColor("blue")}
+                ></div>
+              </div>
             </div>
             {eventsForSelectedDate.length === 0 ? (
               <p style={{ color: "white", marginTop: "30px" }}>
@@ -259,6 +292,22 @@ function Calendar() {
   function closeEventViewer() {
     setEventViewerActive(false);
     setSelectedDate(false);
+  }
+
+  function updateEventViewerBackgroundColor(color) {
+    if (!selectedDate) return;
+
+    setEvent((prevEvents) =>
+      prevEvents.map((ev) =>
+        ev.date === selectedDate ? { ...ev, backgroundColor: color } : ev
+      )
+    );
+  }
+
+  function getEventColorForDate(date) {
+    const eventForDate = event.find((item) => item.date === date);
+
+    return eventForDate?.backgroundColor || "transparent";
   }
 
   // Usage
@@ -316,9 +365,7 @@ function Calendar() {
                         fontWeight: "bold",
                         fontSize: "20px",
                         border: date === todayDate ? "2px solid white" : "none",
-                        backgroundColor: hasEventsForDate(date)
-                          ? "green"
-                          : "transparent",
+                        backgroundColor: getEventColorForDate(date),
                         cursor: "pointer",
                       }}
                       onClick={() => updateEventViewer(date)}

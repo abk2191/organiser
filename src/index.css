@@ -435,6 +435,40 @@ html {
 
 .add-evnt-btn {
   margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-colors {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.color-one {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: red;
+  border: 2px solid #000033;
+}
+
+.color-four {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: #510751;
+  border: 2px solid #000033;
+}
+
+.color-five {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: blue;
+  border: 2px solid #000033;
 }
 
 .dlt-nt-btn-div {
@@ -962,7 +996,7 @@ html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #000033;
+
   padding: 0;
   border: none;
   border-radius: 8px;
@@ -1036,7 +1070,7 @@ html {
 .event-name-text {
   font-size: 25px;
   height: 80px;
-  background-color: #000033;
+  background-color: transparent;
   padding: 15px;
   border-radius: 10px;
   overflow: auto;
