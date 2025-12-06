@@ -213,6 +213,9 @@ function Calendar() {
             }}
             className="event-viewer"
           >
+            <div className="event-viewer-name">
+              <h3 style={{ color: "white" }}>EVENT VIEWER</h3>
+            </div>
             <div className="event-header">
               <h3 style={{ color: "white", fontSize: "40px" }}>
                 {day}, {selectedDate}

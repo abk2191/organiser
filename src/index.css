@@ -995,6 +995,14 @@ html {
   border-radius: 10px;
 }
 
+.event-viewer-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
 .event-viewer {
   position: fixed;
   top: 50%;
