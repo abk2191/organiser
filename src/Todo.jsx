@@ -38,6 +38,21 @@ function Todo() {
   const [colorSelectorActiveTodoId, setColorSelectorActiveTodoId] =
     useState(null);
 
+  useEffect(() => {
+    if (todoActive) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [todoActive]);
+
   // Save todoColors to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("todoColors", JSON.stringify(todoColors));
