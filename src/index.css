@@ -1035,6 +1035,11 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .calendar-div-main-main {
+    overflow: hidden;
+    height: 100vh;
+  }
+
   .calendar-div-main {
     margin-top: 70px;
   }
