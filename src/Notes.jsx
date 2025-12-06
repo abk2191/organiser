@@ -29,6 +29,21 @@ function Notes() {
   });
 
   useEffect(() => {
+    if (noteActive) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [noteActive]);
+
+  useEffect(() => {
     localStorage.setItem("noteColors", JSON.stringify(noteColors));
   }, [noteColors]);
 
