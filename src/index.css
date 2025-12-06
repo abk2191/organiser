@@ -1134,7 +1134,6 @@ html {
   .notes-modal {
     height: 500px;
     overflow-y: auto;
-    border: 2px solid white;
   }
 
   .page-text-2 h2 {
