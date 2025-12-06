@@ -382,7 +382,7 @@ function Calendar() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop: "40px", color: "white", fontSize: "18px" }}>
+          <div style={{ marginTop: "40px", color: "white", fontSize: "14px" }}>
             <p>Click on the dates to see events.</p>
           </div>
           <EventViewer
