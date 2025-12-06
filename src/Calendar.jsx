@@ -8,6 +8,7 @@ function Calendar() {
   });
 
   const [selectedDate, setSelectedDate] = useState(null);
+  const [eventViewerActive, setEventViewerActive] = useState(false);
 
   // Save events to localStorage whenever event state changes
   useEffect(() => {
@@ -143,6 +144,7 @@ function Calendar() {
 
   function updateEventViewer(date) {
     setSelectedDate(date); // Track which date was clicked
+    setEventViewerActive(true);
   }
 
   function addEventForSelectedDate() {
@@ -183,36 +185,50 @@ function Calendar() {
     const day = getDayForDate(selectedDate);
 
     return (
-      <div
-        style={{ marginTop: "20px", padding: "20px", background: "#32327a" }}
-        className="event-viewer"
-      >
-        <h3 style={{ color: "white" }}>
-          {day}, {selectedDate}
-        </h3>
-        <div className="add-evnt-btn">
-          <button className="evnt-btn" onClick={onAddEvent}>
-            Add an event
-          </button>
-        </div>
-        {eventsForSelectedDate.length === 0 ? (
-          <p style={{ color: "white", marginTop: "30px" }}>
-            No events for this date yet
-          </p>
-        ) : (
-          eventsForSelectedDate.map((item) => (
-            <div
-              style={{
-                color: "white",
-                marginTop: "30px",
-              }}
-              key={item.id}
-            >
-              {item.name}
+      <>
+        {eventViewerActive && (
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "20px",
+              background: "#32327a",
+            }}
+            className="event-viewer"
+          >
+            <div className="event-header">
+              <h3 style={{ color: "white" }}>
+                {day}, {selectedDate}
+              </h3>
+              <button className="cls-nt-btn" onClick={closeEventViewer}>
+                <i className="fa-solid fa-xmark"></i>
+              </button>
             </div>
-          ))
+            <div className="add-evnt-btn">
+              <button className="evnt-btn" onClick={onAddEvent}>
+                Add an event
+              </button>
+            </div>
+            {eventsForSelectedDate.length === 0 ? (
+              <p style={{ color: "white", marginTop: "30px" }}>
+                No events for this date yet
+              </p>
+            ) : (
+              eventsForSelectedDate.map((item) => (
+                <div
+                  style={{
+                    color: "white",
+                    marginTop: "30px",
+                  }}
+                  className="event-name-text"
+                  key={item.id}
+                >
+                  {item.name}
+                </div>
+              ))
+            )}
+          </div>
         )}
-      </div>
+      </>
     );
   }
 
@@ -238,6 +254,10 @@ function Calendar() {
 
   function hasEventsForDate(date) {
     return event.some((item) => item.date === date);
+  }
+
+  function closeEventViewer() {
+    setEventViewerActive(false);
   }
 
   // Usage
