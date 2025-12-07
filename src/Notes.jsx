@@ -11,6 +11,11 @@ function Notes() {
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
 
+  const [colorSelectorPosition, setColorSelectorPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+
   const [hex, setHex] = useState("");
   const [colorSelectorActiveNoteId, setColorSelectorActiveNoteId] =
     useState(null);
@@ -238,12 +243,25 @@ function Notes() {
   }
 
   function handleColorSelector(noteId, e) {
-    e.stopPropagation(); // Prevent event from bubbling up
-    e.preventDefault(); // Prevent default behavior
-    // If the clicked note already has the selector open, close it
-    // Otherwise, open it for this note
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Get the position of the brush button
+    const brushButton = e.currentTarget;
+    const buttonRect = brushButton.getBoundingClientRect();
+
+    // Calculate position 68% from top of screen (as per your CSS)
+    const screenHeight = window.innerHeight;
+    const targetTop = screenHeight * 0.68;
+
+    // Set the position for the color selector
+    setColorSelectorPosition({
+      top: targetTop,
+      left: window.innerWidth / 2, // Center horizontally
+    });
+
+    // Toggle the color selector
     setColorSelectorActiveNoteId((prev) => (prev === noteId ? null : noteId));
-    console.log("Color selector triggered for note:", noteId);
   }
 
   function changeBackgroundColor(noteId, hex, e) {
@@ -371,7 +389,14 @@ function Notes() {
 
                           <div className="dlt-nt-btn-div">
                             {colorSelectorActiveNoteId === note.id && (
-                              <div className="color-selector">
+                              <div
+                                className="color-selector"
+                                style={{
+                                  top: `${colorSelectorPosition.top}px`,
+                                  left: `${colorSelectorPosition.left}px`,
+                                  transform: "translate(-50%, -50%)",
+                                }}
+                              >
                                 <div
                                   className="strict-dark"
                                   onClick={(e) =>

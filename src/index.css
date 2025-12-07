@@ -774,24 +774,15 @@ html {
   gap: 10px;
   height: 50px;
   width: 250px;
-
   border-radius: 8px;
-  position: fixed; /* CHANGE TO FIXED */
+  position: fixed; /* Keep as fixed for dynamic positioning */
   z-index: 10000;
   background: white !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-  /* Position in center of screen temporarily to debug */
-  top: 68%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3),
-    0 0 30px rgba(255, 255, 255, 0.2), 0 0 45px rgba(255, 255, 255, 0.1);
-  /* ✅ NEW ANIMATION */
-  animation: popIn 0.11s ease-out;
-
-  /* ✅ Smooth exit when removed */
-  transition: opacity 0.2s ease, transform 0.2s ease;
+    0 0 30px rgba(255, 255, 255, 0.2), 0 0 45px rgba(255, 255, 255, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: wobble 0.4s;
+  margin-bottom: 45px;
 }
 
 .dlt-wrn {
@@ -1171,8 +1162,8 @@ html {
   }
 
   .color-selector {
-    top: 64%;
-    left: 52%;
+    top: 55%;
+    left: 16%;
   }
 
   .notes-modal {
