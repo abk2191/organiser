@@ -1139,6 +1139,7 @@ html {
 @media (max-width: 768px) {
   .event-viewer {
     height: 600px;
+    width: 95%;
   }
   .calendar-div-main-main {
     position: fixed;

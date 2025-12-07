@@ -421,10 +421,16 @@ function Calendar() {
     );
 
     if (existingEventIndex !== -1) {
-      // Update existing event with mood
+      // Update existing event with mood AND update the name
       setEvent((prevEvents) =>
         prevEvents.map((ev, index) =>
-          index === existingEventIndex ? { ...ev, mood: mood } : ev
+          index === existingEventIndex
+            ? {
+                ...ev,
+                mood: mood,
+                name: `Mood: ${mood}`, // Update the name too!
+              }
+            : ev
         )
       );
       alert(`Mood updated for today (${todayDate})!`);
@@ -436,7 +442,7 @@ function Calendar() {
         dateKey: dateKey,
         month: todayMonth,
         year: todayYear,
-        name: `Event for: ${todayDate}`,
+        name: `${mood}`,
         backgroundColor: "#32327a",
         mood: mood,
       };
@@ -447,7 +453,6 @@ function Calendar() {
 
     console.log("Mood updated:", mood, "for date:", todayDate);
   }
-
   // Usage - using currentMonth and currentYear state
   const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
   const wks = getWeeks();
