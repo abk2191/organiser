@@ -248,6 +248,7 @@ function Notes() {
 
     setColorSelectorActiveNoteId((prev) => (prev === noteId ? null : noteId));
   }
+
   function changeBackgroundColor(noteId, hex, e) {
     if (e) {
       e.stopPropagation();
