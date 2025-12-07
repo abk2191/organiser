@@ -271,12 +271,15 @@ function Calendar() {
       (item) => item.dateKey === dateKey
     );
 
+    // ADD THIS LINE: Get mood for selected date
+    const moodForSelectedDate = moods.find((item) => item.dateKey === dateKey);
+
     const day = getDayForDate(selectedDate);
     // Get background color from the first event if it exists
     const backgroundColor =
       eventsForSelectedDate.length > 0
-        ? eventsForSelectedDate[0].backgroundColor || "#32327a"
-        : "#32327a";
+        ? eventsForSelectedDate[0].backgroundColor || "#000033"
+        : "#000033";
 
     // DEBUG: Log what's happening
     console.log("Events for date:", eventsForSelectedDate);
@@ -326,6 +329,21 @@ function Calendar() {
                 ></div>
               </div>
             </div>
+            {moodForSelectedDate && (
+              <div
+                className="mood-display"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  fontSize: "25px",
+                }}
+              >
+                {moodForSelectedDate.mood}
+              </div>
+            )}
             {eventsForSelectedDate.length === 0 ? (
               <p style={{ color: "white", marginTop: "30px" }}>
                 No events for this date yet
@@ -494,7 +512,11 @@ function Calendar() {
               </button>
               {/* <button onClick={goToToday}>Today</button> */}
             </div>
-            <div className="mood-select" onClick={handleMood}>
+            <div
+              className="mood-select"
+              onClick={handleMood}
+              style={{ fontSize: "25px", marginBottom: "15px" }}
+            >
               {(() => {
                 const today = new Date();
                 const todayDate = today.getDate();
