@@ -339,6 +339,7 @@ function Calendar() {
                   justifyContent: "center",
                   marginTop: "10px",
                   marginBottom: "10px",
+                  fontSize: "25px",
                 }}
               >
                 {moodForSelectedDate.mood}
@@ -520,7 +521,11 @@ function Calendar() {
               </button>
               {/* <button onClick={goToToday}>Today</button> */}
             </div>
-            <div className="mood-select" onClick={handleMood}>
+            <div
+              className="mood-select"
+              onClick={handleMood}
+              style={{ fontSize: "25px" }}
+            >
               {(() => {
                 const today = new Date();
                 const todayDate = today.getDate();
