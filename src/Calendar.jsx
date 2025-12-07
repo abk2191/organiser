@@ -8,13 +8,22 @@ function Calendar() {
     return savedEvents ? JSON.parse(savedEvents) : [];
   });
 
-  const [mood, setMood] = useState("");
+  const [moods, setMoods] = useState(() => {
+    const savedMoods = localStorage.getItem("calendarMoods");
+    return savedMoods ? JSON.parse(savedMoods) : [];
+  });
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventViewerActive, setEventViewerActive] = useState(false);
 
   // Add state for current month and year
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  // Add useEffect to save moods
+  useEffect(() => {
+    localStorage.setItem("calendarMoods", JSON.stringify(moods));
+  }, [moods]);
 
   // Save events to localStorage whenever event state changes
   useEffect(() => {
@@ -396,62 +405,50 @@ function Calendar() {
     const todayMonth = today.getMonth();
     const todayYear = today.getFullYear();
 
-    // Check if we're in the current month/year being displayed
-    const isCurrentMonth =
-      todayMonth === currentMonth && todayYear === currentYear;
-
-    if (!isCurrentMonth) {
-      alert("Please navigate to the current month to add mood for today");
-      return;
-    }
-
-    // Get mood emoji from user
-    const mood = window.prompt("Enter mood");
-
-    if (mood === null) {
-      return; // User cancelled
-    }
-
-    // Create dateKey for today
+    // Create unique date key
     const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
 
-    // Find existing event for today
-    const existingEventIndex = event.findIndex(
+    // Get mood from user
+    const mood = window.prompt("Enter mood (emoji):");
+
+    if (mood === null || mood.trim() === "") {
+      return; // User cancelled or entered empty
+    }
+
+    // Check if mood already exists for today
+    const existingMoodIndex = moods.findIndex(
       (item) => item.dateKey === dateKey
     );
 
-    if (existingEventIndex !== -1) {
-      // Update existing event with mood AND update the name
-      setEvent((prevEvents) =>
-        prevEvents.map((ev, index) =>
-          index === existingEventIndex
-            ? {
-                ...ev,
-                mood: mood,
-                name: `Mood: ${mood}`, // Update the name too!
-              }
-            : ev
+    if (existingMoodIndex !== -1) {
+      // Update existing mood
+      setMoods((prev) =>
+        prev.map((m, index) =>
+          index === existingMoodIndex ? { ...m, mood: mood } : m
         )
       );
-      alert(`Mood updated for today (${todayDate})!`);
+      alert(`Mood updated for today!`);
     } else {
-      // Create new event with mood for today
-      const eventDetails = {
+      // Create new mood entry
+      const newMood = {
         id: Date.now(),
-        date: todayDate,
         dateKey: dateKey,
+        date: todayDate,
         month: todayMonth,
         year: todayYear,
-        name: `${mood}`,
-        backgroundColor: "#32327a",
         mood: mood,
       };
 
-      setEvent((prev) => [...prev, eventDetails]);
-      alert(`New mood event created for today (${todayDate})!`);
+      setMoods((prev) => [...prev, newMood]);
+      alert(`Mood added for today!`);
     }
+  }
 
-    console.log("Mood updated:", mood, "for date:", todayDate);
+  // Add function to get mood for a specific date
+  function getMoodForDate(date) {
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+    const moodEntry = moods.find((item) => item.dateKey === dateKey);
+    return moodEntry ? moodEntry.mood : null;
   }
   // Usage - using currentMonth and currentYear state
   const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
@@ -501,24 +498,21 @@ function Calendar() {
               {(() => {
                 const today = new Date();
                 const todayDate = today.getDate();
-                const todayMonth = today.getMonth(); // 0-11
+                const todayMonth = today.getMonth();
                 const todayYear = today.getFullYear();
 
-                // Check if today is in the currently displayed month
                 const isTodayInCurrentMonth =
                   todayMonth === currentMonth && todayYear === currentYear;
 
-                // Only show mood if we're viewing the current month
                 if (!isTodayInCurrentMonth) {
                   return "Navigate to current month to add mood";
                 }
 
-                // Find today's event
+                // Get mood from separate moods array
                 const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
-                const todayEvent = event.find((e) => e.dateKey === dateKey);
+                const todayMood = moods.find((m) => m.dateKey === dateKey);
 
-                // Return mood or placeholder
-                return todayEvent?.mood || "Click to add mood";
+                return todayMood?.mood || "Click to add mood";
               })()}
             </div>
             {/* <div className="today">
