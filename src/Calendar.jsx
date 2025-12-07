@@ -10,19 +10,64 @@ function Calendar() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventViewerActive, setEventViewerActive] = useState(false);
 
+  // Add state for current month and year
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
   // Save events to localStorage whenever event state changes
   useEffect(() => {
     localStorage.setItem("calendarEvents", JSON.stringify(event));
   }, [event]);
 
-  function getMonthDatesByWeekday() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth(); // 0-indexed (0 = January)
+  // Modified function to accept month and year parameters
+  function getMonthDatesByWeekday(month, year) {
+    // Handle month parameter - can be number (0-11) or month name
+    let targetMonth;
+    if (typeof month === "string") {
+      // Convert month name to number (0-11)
+      const monthNames = [
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december",
+      ];
+      const monthLower = month.toLowerCase();
+      targetMonth = monthNames.indexOf(monthLower);
+      if (targetMonth === -1) {
+        // Invalid month name, fall back to current month
+        targetMonth = currentMonth;
+      }
+    } else if (typeof month === "number" && month >= 0 && month <= 11) {
+      targetMonth = month;
+    } else {
+      // Invalid or undefined month, use current month
+      targetMonth = currentMonth;
+    }
+
+    // Handle year parameter
+    let targetYear;
+    if (year !== undefined) {
+      targetYear = Number(year);
+      if (isNaN(targetYear)) {
+        // Invalid year, fall back to current year
+        targetYear = currentYear;
+      }
+    } else {
+      // No year provided, use current year
+      targetYear = currentYear;
+    }
 
     // Get first and last day of month
-    const firstDayOfMonth = new Date(year, month, 1);
-    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const firstDayOfMonth = new Date(targetYear, targetMonth, 1);
+    const lastDayOfMonth = new Date(targetYear, targetMonth + 1, 0);
 
     // Initialize result object with arrays for each day
     const result = {
@@ -65,7 +110,7 @@ function Calendar() {
   }
 
   function getWeeks() {
-    const monthDates = getMonthDatesByWeekday();
+    const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
 
     // Find which weekday has the 1st day of the month
     let firstDayIndex = -1;
@@ -92,12 +137,8 @@ function Calendar() {
     }
 
     // Create all dates array for the month
-    const firstDayOfMonth = new Date();
-    firstDayOfMonth.setDate(1); // Set to 1st of current month
-    const year = firstDayOfMonth.getFullYear();
-    const month = firstDayOfMonth.getMonth();
-
-    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
     const totalDays = lastDayOfMonth.getDate();
 
     const allDates = [];
@@ -142,6 +183,32 @@ function Calendar() {
     return weeks;
   }
 
+  // Add navigation functions
+  function goToNextMonth() {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((prev) => prev + 1);
+    } else {
+      setCurrentMonth((prev) => prev + 1);
+    }
+  }
+
+  function goToPrevMonth() {
+    if (currentMonth === 0) {
+      // If current month is January
+      setCurrentMonth(11); // Go to December
+      setCurrentYear((prev) => prev - 1); // Previous year
+    } else {
+      setCurrentMonth((prev) => prev - 1); // Just go to previous month
+    }
+  }
+
+  function goToToday() {
+    const today = new Date();
+    setCurrentMonth(today.getMonth());
+    setCurrentYear(today.getFullYear());
+  }
+
   function updateEventViewer(date) {
     setSelectedDate(date); // Track which date was clicked
     setEventViewerActive(true);
@@ -162,9 +229,15 @@ function Calendar() {
       return;
     }
 
+    // Create a unique date key that includes month and year
+    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+
     const eventDetails = {
       id: Date.now(),
-      date: selectedDate,
+      date: selectedDate, // Keep the simple date for display
+      dateKey: dateKey, // Add a unique key with year-month-date
+      month: currentMonth, // Store month
+      year: currentYear, // Store year
       name: eventName || `Event for ${selectedDate}`, // Handle empty names
       backgroundColor: "#32327a", // Make sure this is included
     };
@@ -176,10 +249,12 @@ function Calendar() {
 
     setEvent((prev) => [...prev, eventDetails]);
   }
+
   function EventViewer({ event, selectedDate, onAddEvent }) {
-    // Filter events for the selected date
+    // Filter events for the selected date - now using dateKey
+    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
     const eventsForSelectedDate = event.filter(
-      (item) => item.date === selectedDate
+      (item) => item.dateKey === dateKey
     );
 
     const day = getDayForDate(selectedDate);
@@ -193,6 +268,7 @@ function Calendar() {
     console.log("Events for date:", eventsForSelectedDate);
     console.log("Background color to use:", backgroundColor);
     console.log("Selected date:", selectedDate);
+    console.log("Date key:", dateKey);
 
     return (
       <>
@@ -261,11 +337,7 @@ function Calendar() {
   }
 
   function getDayForDate(targetDate) {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    const dateObj = new Date(year, month, targetDate);
+    const dateObj = new Date(currentYear, currentMonth, targetDate);
     const dayOfWeek = dateObj.getDay();
 
     const dayNames = [
@@ -280,8 +352,10 @@ function Calendar() {
     return dayNames[dayOfWeek];
   }
 
+  // Update hasEventsForDate to use dateKey
   function hasEventsForDate(date) {
-    return event.some((item) => item.date === date);
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+    return event.some((item) => item.dateKey === dateKey);
   }
 
   function closeEventViewer() {
@@ -289,33 +363,41 @@ function Calendar() {
     setSelectedDate(false);
   }
 
+  // Update updateEventViewerBackgroundColor to use dateKey
   function updateEventViewerBackgroundColor(color) {
     if (!selectedDate) return;
 
+    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+
     setEvent((prevEvents) =>
       prevEvents.map((ev) =>
-        ev.date === selectedDate ? { ...ev, backgroundColor: color } : ev
+        ev.dateKey === dateKey ? { ...ev, backgroundColor: color } : ev
       )
     );
   }
 
+  // Update getEventColorForDate to use dateKey
   function getEventColorForDate(date) {
-    const eventForDate = event.find((item) => item.date === date);
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+    const eventForDate = event.find((item) => item.dateKey === dateKey);
 
     return eventForDate?.backgroundColor || "transparent";
   }
 
-  // Usage
-  const monthDates = getMonthDatesByWeekday();
+  // Usage - using currentMonth and currentYear state
+  const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
   const wks = getWeeks();
 
-  const date = new Date();
+  const date = new Date(currentYear, currentMonth);
   const formatted = date.toLocaleString("default", {
     month: "long",
     year: "numeric",
   });
+
   const today = new Date();
-  const todayDate = today.getDate();
+  const isCurrentMonth =
+    today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+  const todayDate = isCurrentMonth ? today.getDate() : null;
 
   return (
     <>
@@ -324,13 +406,11 @@ function Calendar() {
         style={{ overflow: "hidden", height: "100vh" }}
       >
         <div className="calendar-div-main">
-          <div className="wrapper">
-            <div className="page-text">
-              <h1>CALENDAR</h1>
-            </div>
-          </div>
           <div className="clndr-wrpr">
             <div className="month-name">
+              <button onClick={goToPrevMonth} className="prev-mnth-btn">
+                <i class="fa-solid fa-angles-left"></i>
+              </button>
               <h1
                 style={{
                   color: "white",
@@ -338,7 +418,18 @@ function Calendar() {
               >
                 {formatted}
               </h1>
+              <div className="next-month-btn">
+                <button onClick={goToNextMonth} className="nxt-mnth-btn">
+                  <i class="fa-solid fa-angles-right"></i>
+                </button>
+                {/* <button onClick={goToToday}>Today</button> */}
+              </div>
             </div>
+            {/* <div className="today">
+              <button onClick={goToToday} className="nxt-mnth-btn">
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div> */}
             <div className="day-names-div">
               <p>SU</p>
               <p>MO</p>
@@ -359,7 +450,6 @@ function Calendar() {
                         color: date === todayDate ? "red" : "inherit",
                         fontWeight: "bold",
                         fontSize: "20px",
-                        // border: date === todayDate ? "2px solid white" : "none",
                         border: hasEventsForDate(date)
                           ? "2px solid white"
                           : "none",
@@ -382,9 +472,7 @@ function Calendar() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop: "40px", color: "white", fontSize: "14px" }}>
-            <p>Click on the dates to see events.</p>
-          </div>
+
           <EventViewer
             event={event}
             selectedDate={selectedDate}
