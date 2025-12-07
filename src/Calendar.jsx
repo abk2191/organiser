@@ -304,7 +304,7 @@ function Calendar() {
               <div className="event-colors">
                 <div
                   className="color-one"
-                  onClick={() => updateEventViewerBackgroundColor("#223A5E")}
+                  onClick={() => updateEventViewerBackgroundColor("#0F4C3A")}
                 ></div>
 
                 <div
