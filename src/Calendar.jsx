@@ -536,14 +536,22 @@ function Calendar() {
                   todayMonth === currentMonth && todayYear === currentYear;
 
                 if (!isTodayInCurrentMonth) {
-                  return "Navigate to current month to add mood";
+                  return (
+                    <span style={{ fontSize: "12px" }}>
+                      Navigate to current month to add mood
+                    </span>
+                  );
                 }
 
                 // Get mood from separate moods array
                 const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
                 const todayMood = moods.find((m) => m.dateKey === dateKey);
 
-                return todayMood?.mood || "Click to add mood";
+                return (
+                  todayMood?.mood || (
+                    <span style={{ fontSize: "14px" }}>Click to add mood</span>
+                  )
+                );
               })()}
             </div>
             {/* <div className="today">
