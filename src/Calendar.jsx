@@ -220,6 +220,8 @@ function Calendar() {
       `Event for ${selectedDate}`
     );
 
+    const mood = window.prompt("Mood event name:", `Mood for ${selectedDate}`);
+
     if (eventName === null) {
       return; // User cancelled
     }
@@ -240,6 +242,7 @@ function Calendar() {
       year: currentYear, // Store year
       name: eventName || `Event for ${selectedDate}`, // Handle empty names
       backgroundColor: "#32327a", // Make sure this is included
+      mood: mood,
     };
 
     console.log(
@@ -414,6 +417,7 @@ function Calendar() {
               <h1
                 style={{
                   color: "white",
+                  fontSize: "22px",
                 }}
               >
                 {formatted}
