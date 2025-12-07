@@ -253,7 +253,7 @@ function Calendar() {
       month: currentMonth, // Store month
       year: currentYear, // Store year
       name: eventName || `Event for ${selectedDate}`, // Handle empty names
-      backgroundColor: "#0F4C3A", // Make sure this is included
+      backgroundColor: "#000033", // Make sure this is included
       mood: "",
     };
 
