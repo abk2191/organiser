@@ -15,6 +15,7 @@ function Calendar() {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventViewerActive, setEventViewerActive] = useState(false);
+  const [viewerBg, setViewerBg] = useState("#000033");
 
   // Add state for current month and year
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -278,8 +279,8 @@ function Calendar() {
     // Get background color from the first event if it exists
     const backgroundColor =
       eventsForSelectedDate.length > 0
-        ? eventsForSelectedDate[0].backgroundColor || "#000033"
-        : "#000033";
+        ? eventsForSelectedDate[0].backgroundColor || viewerBg
+        : viewerBg;
 
     // DEBUG: Log what's happening
     console.log("Events for date:", eventsForSelectedDate);
@@ -338,7 +339,6 @@ function Calendar() {
                   justifyContent: "center",
                   marginTop: "10px",
                   marginBottom: "10px",
-                  fontSize: "25px",
                 }}
               >
                 {moodForSelectedDate.mood}
@@ -401,11 +401,19 @@ function Calendar() {
 
     const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
 
-    setEvent((prevEvents) =>
-      prevEvents.map((ev) =>
+    // ✅ Instantly update UI
+    setViewerBg(color);
+
+    // ✅ If event exists, update it
+    setEvent((prevEvents) => {
+      const exists = prevEvents.some((ev) => ev.dateKey === dateKey);
+
+      if (!exists) return prevEvents;
+
+      return prevEvents.map((ev) =>
         ev.dateKey === dateKey ? { ...ev, backgroundColor: color } : ev
-      )
-    );
+      );
+    });
   }
 
   // Update getEventColorForDate to use dateKey
@@ -512,11 +520,7 @@ function Calendar() {
               </button>
               {/* <button onClick={goToToday}>Today</button> */}
             </div>
-            <div
-              className="mood-select"
-              onClick={handleMood}
-              style={{ fontSize: "25px", marginBottom: "15px" }}
-            >
+            <div className="mood-select" onClick={handleMood}>
               {(() => {
                 const today = new Date();
                 const todayDate = today.getDate();
