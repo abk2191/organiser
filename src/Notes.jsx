@@ -246,24 +246,8 @@ function Notes() {
     e.stopPropagation();
     e.preventDefault();
 
-    // Get the position of the brush button
-    const brushButton = e.currentTarget;
-    const buttonRect = brushButton.getBoundingClientRect();
-
-    // Calculate position 68% from top of screen (as per your CSS)
-    const screenHeight = window.innerHeight;
-    const targetTop = screenHeight * 0.68;
-
-    // Set the position for the color selector
-    setColorSelectorPosition({
-      top: targetTop,
-      left: window.innerWidth / 2, // Center horizontally
-    });
-
-    // Toggle the color selector
     setColorSelectorActiveNoteId((prev) => (prev === noteId ? null : noteId));
   }
-
   function changeBackgroundColor(noteId, hex, e) {
     if (e) {
       e.stopPropagation();
@@ -389,14 +373,7 @@ function Notes() {
 
                           <div className="dlt-nt-btn-div">
                             {colorSelectorActiveNoteId === note.id && (
-                              <div
-                                className="color-selector"
-                                style={{
-                                  top: `${colorSelectorPosition.top}px`,
-                                  left: `${colorSelectorPosition.left}px`,
-                                  transform: "translate(-50%, -50%)",
-                                }}
-                              >
+                              <div className="color-selector">
                                 <div
                                   className="strict-dark"
                                   onClick={(e) =>
