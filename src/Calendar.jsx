@@ -422,12 +422,11 @@ function Calendar() {
               >
                 {formatted}
               </h1>
-              <div className="next-month-btn">
-                <button onClick={goToNextMonth} className="nxt-mnth-btn">
-                  <i class="fa-solid fa-angles-right"></i>
-                </button>
-                {/* <button onClick={goToToday}>Today</button> */}
-              </div>
+
+              <button onClick={goToNextMonth} className="nxt-mnth-btn">
+                <i class="fa-solid fa-angles-right"></i>
+              </button>
+              {/* <button onClick={goToToday}>Today</button> */}
             </div>
             {/* <div className="today">
               <button onClick={goToToday} className="nxt-mnth-btn">

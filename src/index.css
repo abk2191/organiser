@@ -1075,7 +1075,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
   text-align: center;
   margin-bottom: 25px;
 }
