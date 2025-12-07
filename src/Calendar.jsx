@@ -489,13 +489,28 @@ function Calendar() {
               {/* <button onClick={goToToday}>Today</button> */}
             </div>
             <div className="mood-select" onClick={handleMood}>
-              {event.find((e) => {
+              {(() => {
                 const today = new Date();
-                const dateKey = `${today.getFullYear()}-${
-                  today.getMonth() + 1
-                }-${today.getDate()}`;
-                return e.dateKey === dateKey;
-              })?.mood || "Click to add mood"}
+                const todayDate = today.getDate();
+                const todayMonth = today.getMonth(); // 0-11
+                const todayYear = today.getFullYear();
+
+                // Check if today is in the currently displayed month
+                const isTodayInCurrentMonth =
+                  todayMonth === currentMonth && todayYear === currentYear;
+
+                // Only show mood if we're viewing the current month
+                if (!isTodayInCurrentMonth) {
+                  return "Navigate to current month to add mood";
+                }
+
+                // Find today's event
+                const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
+                const todayEvent = event.find((e) => e.dateKey === dateKey);
+
+                // Return mood or placeholder
+                return todayEvent?.mood || "Click to add mood";
+              })()}
             </div>
             {/* <div className="today">
               <button onClick={goToToday} className="nxt-mnth-btn">
