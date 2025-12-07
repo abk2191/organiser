@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import LiveClock from "./LiveClock";
 
 function Calendar() {
   // Load events from localStorage on initial render
@@ -435,7 +436,7 @@ function Calendar() {
         dateKey: dateKey,
         month: todayMonth,
         year: todayYear,
-        name: `Mood: ${mood}`,
+        name: `Event for: ${todayDate}`,
         backgroundColor: "#32327a",
         mood: mood,
       };
@@ -469,6 +470,9 @@ function Calendar() {
         style={{ overflow: "hidden", height: "100vh" }}
       >
         <div className="calendar-div-main">
+          <div className="time" style={{ marginTop: "20px" }}>
+            <LiveClock />
+          </div>
           <div className="clndr-wrpr">
             <div className="month-name">
               <button onClick={goToPrevMonth} className="prev-mnth-btn">
