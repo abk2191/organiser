@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import LiveClock from "./LiveClock";
 
 function Calendar() {
+  const reminderTimeoutsRef = useRef({});
   // Load events from localStorage on initial render
   const [event, setEvent] = useState(() => {
     const savedEvents = localStorage.getItem("calendarEvents");
@@ -22,6 +23,52 @@ function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
+  const [reminders, setReminders] = useState(() => {
+    const saved = localStorage.getItem("calendarReminders");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    console.log("⏳ Scheduling reminders:", reminders);
+
+    Object.values(reminderTimeoutsRef.current).forEach(clearTimeout);
+    reminderTimeoutsRef.current = {};
+
+    const now = Date.now();
+
+    reminders.forEach((reminder) => {
+      if (reminder.fired) return;
+
+      const delay = reminder.fireAt - now;
+      console.log("⏱ Reminder delay(ms):", delay, reminder);
+
+      if (delay <= 0) return;
+
+      const timeoutId = setTimeout(async () => {
+        try {
+          const reg = window.__SW_REG || (await navigator.serviceWorker.ready);
+
+          await reg.showNotification("⏰ Reminder", {
+            body: reminder.message,
+            vibrate: [200, 100, 200],
+          });
+
+          setReminders((prev) =>
+            prev.map((r) => (r.id === reminder.id ? { ...r, fired: true } : r))
+          );
+        } catch (err) {
+          console.error("Reminder error:", err);
+        }
+      }, delay);
+
+      reminderTimeoutsRef.current[reminder.id] = timeoutId;
+    });
+  }, [reminders]);
+
+  useEffect(() => {
+    localStorage.setItem("calendarReminders", JSON.stringify(reminders));
+  }, [reminders]);
+
   // Add useEffect to save moods
   useEffect(() => {
     localStorage.setItem("calendarMoods", JSON.stringify(moods));
@@ -31,6 +78,61 @@ function Calendar() {
   useEffect(() => {
     localStorage.setItem("calendarEvents", JSON.stringify(event));
   }, [event]);
+
+  async function addReminderForSelectedDate() {
+    if (!selectedDate) {
+      alert("Select a date first");
+      return;
+    }
+
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      alert("Notification permission required");
+      return;
+    }
+
+    const timeInput = prompt("Enter reminder time (HH:MM, 24h)", "09:00");
+    if (!timeInput) return;
+
+    const [hh, mm] = timeInput.split(":").map(Number);
+    if (isNaN(hh) || isNaN(mm)) {
+      alert("Invalid time format");
+      return;
+    }
+
+    const message = prompt("Reminder message:");
+    if (!message) return;
+
+    const fireDate = new Date(
+      currentYear,
+      currentMonth,
+      selectedDate,
+      hh,
+      mm,
+      0,
+      0
+    );
+
+    const fireAt = fireDate.getTime();
+
+    if (fireAt <= Date.now()) {
+      alert("Time must be in the future");
+      return;
+    }
+
+    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+
+    const newReminder = {
+      id: Date.now(),
+      dateKey,
+      fireAt,
+      message,
+      fired: false,
+    };
+
+    setReminders((prev) => [...prev, newReminder]);
+    alert("✅ Reminder saved");
+  }
 
   function ensureNotificationPermission() {
     if (!("Notification" in window)) {
@@ -296,7 +398,13 @@ function Calendar() {
     setEvent((prev) => [...prev, eventDetails]);
   }
 
-  function EventViewer({ event, selectedDate, onAddEvent }) {
+  function EventViewer({
+    event,
+    selectedDate,
+    onAddEvent,
+    onAddReminder,
+    reminders,
+  }) {
     // Filter events for the selected date - now using dateKey
     const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
     const eventsForSelectedDate = event.filter(
@@ -318,6 +426,10 @@ function Calendar() {
     console.log("Background color to use:", backgroundColor);
     console.log("Selected date:", selectedDate);
     console.log("Date key:", dateKey);
+
+    const remindersForDate = reminders.filter(
+      (r) => r.dateKey === dateKey && !r.fired
+    );
 
     return (
       <>
@@ -344,6 +456,9 @@ function Calendar() {
             <div className="add-evnt-btn">
               <button className="evnt-btn" onClick={onAddEvent}>
                 Add an event
+              </button>
+              <button className="evnt-btn" onClick={onAddReminder}>
+                Add reminder
               </button>
               <div className="event-colors">
                 <div
@@ -393,6 +508,32 @@ function Calendar() {
                   {item.name}
                 </div>
               ))
+            )}
+            {remindersForDate.length > 0 && (
+              <div
+                style={{
+                  marginTop: "25px",
+                  padding: "10px",
+                  border: "1px solid white",
+                  borderRadius: "8px",
+                  color: "white",
+                }}
+              >
+                <h4 style={{ marginBottom: "10px" }}>⏰ Reminders</h4>
+
+                {remindersForDate.map((reminder) => (
+                  <div
+                    key={reminder.id}
+                    style={{
+                      marginBottom: "8px",
+                      fontSize: "14px",
+                      opacity: 0.9,
+                    }}
+                  >
+                    • {reminder.message}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         )}
@@ -670,6 +811,8 @@ function Calendar() {
             event={event}
             selectedDate={selectedDate}
             onAddEvent={addEventForSelectedDate}
+            onAddReminder={addReminderForSelectedDate}
+            reminders={reminders}
           />
         </div>
       </div>
