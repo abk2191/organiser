@@ -6,7 +6,8 @@ import App from "./App.jsx";
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
-      const reg = await navigator.serviceWorker.register("/sw.js");
+      const reg = await navigator.serviceWorker.register("./sw.js");
+
       console.log("✅ Service Worker Registered:", reg);
       window.__SW_REG = reg; // store globally for notifications
     } catch (err) {
