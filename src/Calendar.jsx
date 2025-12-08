@@ -533,43 +533,30 @@ function Calendar() {
           <div style={{ marginTop: "10px" }}>
             <button
               onClick={async () => {
-                // 1) Show current permission
-                alert(
-                  "Current permission: " +
-                    (window.Notification?.permission || "no Notification")
-                );
-
-                // 2) If not granted, ask once more
-                if (
-                  window.Notification &&
-                  Notification.permission !== "granted"
-                ) {
-                  const result = await Notification.requestPermission();
-                  alert("After request: " + result);
-                }
-
-                // 3) Try to create a notification
-                if (!("Notification" in window)) {
-                  alert("Notification API not available in this browser.");
-                  return;
-                }
-
-                if (Notification.permission !== "granted") {
-                  alert("Still not granted, cannot show notification.");
-                  return;
-                }
-
                 try {
-                  const n = new Notification("Test from calendar", {
-                    body: "If you don’t see a popup, check the notification tray.",
-                    tag: "debug-test",
+                  const permission = await Notification.requestPermission();
+
+                  if (permission !== "granted") {
+                    alert("Permission still not granted");
+                    return;
+                  }
+
+                  if (!window.__SW_REG) {
+                    alert(
+                      "Service Worker not ready yet. Reload and try again."
+                    );
+                    return;
+                  }
+
+                  await window.__SW_REG.showNotification("✅ Test Successful", {
+                    body: "Android tray notifications are now working!",
+                    vibrate: [100, 50, 100],
                   });
-                  alert(
-                    "Notification object created. Now check your Android notification tray (swipe from top)."
-                  );
-                  console.log(n);
-                } catch (e) {
-                  alert("Error creating notification: " + e.message);
+
+                  console.log("✅ Notification fired via Service Worker");
+                } catch (err) {
+                  console.error("❌ Notification error:", err);
+                  alert(err.message);
                 }
               }}
             >
