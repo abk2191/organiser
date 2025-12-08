@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import LiveClock from "./LiveClock";
 
 function Calendar() {
@@ -30,6 +31,36 @@ function Calendar() {
   useEffect(() => {
     localStorage.setItem("calendarEvents", JSON.stringify(event));
   }, [event]);
+
+  function ensureNotificationPermission() {
+    if (!("Notification" in window)) {
+      alert("Notifications are not supported in this browser.");
+      return false;
+    }
+
+    if (Notification.permission === "granted") {
+      return true;
+    }
+
+    if (Notification.permission === "denied") {
+      alert(
+        "You have blocked notifications for this site in browser settings."
+      );
+      return false;
+    }
+
+    // permission === "default"
+    return Notification.requestPermission().then((result) => {
+      if (result === "granted") {
+        return true;
+      } else {
+        alert("Notification permission was not granted.");
+        return false;
+      }
+    });
+  }
+
+  ensureNotificationPermission();
 
   // Modified function to accept month and year parameters
   function getMonthDatesByWeekday(month, year) {
@@ -499,6 +530,20 @@ function Calendar() {
         style={{ overflow: "hidden", height: "100vh" }}
       >
         <div className="calendar-div-main">
+          <div style={{ marginTop: "10px" }}>
+            <button
+              onClick={async () => {
+                const ok = await ensureNotificationPermission();
+                if (!ok) return;
+
+                new Notification("Test notification", {
+                  body: "If you see this, tray notifications work 🎉",
+                });
+              }}
+            >
+              Test Notification
+            </button>
+          </div>
           <div className="time" style={{ marginTop: "20px" }}>
             <LiveClock />
           </div>
