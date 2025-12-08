@@ -533,12 +533,44 @@ function Calendar() {
           <div style={{ marginTop: "10px" }}>
             <button
               onClick={async () => {
-                const ok = await ensureNotificationPermission();
-                if (!ok) return;
+                // 1) Show current permission
+                alert(
+                  "Current permission: " +
+                    (window.Notification?.permission || "no Notification")
+                );
 
-                new Notification("Test notification", {
-                  body: "If you see this, tray notifications work 🎉",
-                });
+                // 2) If not granted, ask once more
+                if (
+                  window.Notification &&
+                  Notification.permission !== "granted"
+                ) {
+                  const result = await Notification.requestPermission();
+                  alert("After request: " + result);
+                }
+
+                // 3) Try to create a notification
+                if (!("Notification" in window)) {
+                  alert("Notification API not available in this browser.");
+                  return;
+                }
+
+                if (Notification.permission !== "granted") {
+                  alert("Still not granted, cannot show notification.");
+                  return;
+                }
+
+                try {
+                  const n = new Notification("Test from calendar", {
+                    body: "If you don’t see a popup, check the notification tray.",
+                    tag: "debug-test",
+                  });
+                  alert(
+                    "Notification object created. Now check your Android notification tray (swipe from top)."
+                  );
+                  console.log(n);
+                } catch (e) {
+                  alert("Error creating notification: " + e.message);
+                }
               }}
             >
               Test Notification
