@@ -1253,6 +1253,7 @@ html {
   .event-viewer {
     height: 600px;
     width: 95%;
+    border: 1px solid white;
   }
   .calendar-div-main-main {
     position: fixed;
