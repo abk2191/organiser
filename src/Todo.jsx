@@ -700,9 +700,7 @@ function Todo() {
                     display: "flex",
                   }}
                 >
-                  <p className="warning">
-                    No todo lists yet. Create your first list!
-                  </p>
+                  <p className="warning"></p>
                 </div>
               ) : (
                 sortedUnpinnedTodos.map((todo) => {

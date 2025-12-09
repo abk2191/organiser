@@ -341,18 +341,20 @@ function Notes() {
           )}
 
           {/* Pinned Notes - Always show section if there are pinned notes */}
+          {/* Pinned Notes */}
           {!isSearching && (
             <>
-              {sortedPinnedNotes.length > 0 ? (
+              {/* Show pinned notes if they exist */}
+              {sortedPinnedNotes.length > 0 && (
                 <div className="pinned-nts">
-                  {/* ✅ PINNED NOTES HEADER */}
+                  {/* PINNED NOTES HEADER */}
                   <div className="wrapper">
                     <div className="page-text-2">
                       <h2>PINNED NOTES ({sortedPinnedNotes.length})</h2>
                     </div>
                   </div>
 
-                  {/* ✅ PINNED NOTES LIST */}
+                  {/* PINNED NOTES LIST */}
                   <div className="all-pnd-nts">
                     {sortedPinnedNotes.map((note) => (
                       <div
@@ -446,19 +448,11 @@ function Notes() {
                       </div>
                     ))}
                   </div>
-
-                  {/* ✅ ALL NOTES HEADER (WHEN PINNED EXIST) */}
+                  {/* ALL NOTES HEADER - Always show this, even if there are no pinned notes */}
                   <div className="wrapper">
                     <div className="page-text-2">
                       <h2>ALL NOTES</h2>
                     </div>
-                  </div>
-                </div>
-              ) : (
-                /* ✅ NO PINNED NOTES → STILL SHOW ALL NOTES */
-                <div className="wrapper">
-                  <div className="page-text-2">
-                    <h2>ALL NOTES</h2>
                   </div>
                 </div>
               )}
@@ -495,11 +489,12 @@ function Notes() {
                     textAlign: "center",
                     justifyContent: "center",
                     display: "flex",
+                    width: "100%",
                   }}
                 >
-                  <p className="warning">
-                    No notes yet. Create your first note!
-                  </p>
+                  <div className="warning">
+                    <p> </p>
+                  </div>
                 </div>
               ) : (
                 sortedUnpinnedNotes.map((note, index) => (
