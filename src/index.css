@@ -1246,6 +1246,7 @@ html {
 @media (max-width: 768px) {
   .event-editor {
     height: 600px;
+    margin-top: 20px;
   }
   .event-viewer {
     height: 600px;
