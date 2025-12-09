@@ -448,8 +448,8 @@ function Calendar() {
               </button>
             </div>
             <div className="add-evnt-btn">
-              <button className="evnt-btn" onClick={onAddEvent}>
-                Add an event
+              <button className="evnt-reminder" onClick={onAddEvent}>
+                <i class="fa-solid fa-square-plus"></i>
               </button>
               <button className="evnt-reminder" onClick={onAddReminder}>
                 <i class="fa-solid fa-bell"></i>

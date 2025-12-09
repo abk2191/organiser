@@ -1059,11 +1059,6 @@ html {
 /* Add floating animation */
 
 /* Hover effect */
-.event-editor:hover {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px) scale(1.01);
-}
 
 /* Style form elements */
 .event-editor form {
@@ -1115,13 +1110,8 @@ html {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  border: 2px solid #32327a;
   margin-top: 20px;
-}
-
-.event-editor button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
 
 .event-header {
@@ -1227,7 +1217,7 @@ html {
 .evnt-reminder {
   height: 48px;
   width: 48px;
-  background-color: #000033;
+  background-color: transparent;
   border: none;
   color: white;
   font-size: 30px;

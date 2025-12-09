@@ -32,6 +32,9 @@ function EventEditor({ onClose, onSaveEvent }) {
   return (
     <div className="event-editor-container">
       <div className="event-editor">
+        <div className="event-viewer-name">
+          <h3 style={{ color: "white" }}>EVENT EDITOR</h3>
+        </div>
         {/* Add close button */}
         <button
           onClick={onClose}
@@ -50,12 +53,7 @@ function EventEditor({ onClose, onSaveEvent }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            transition: "background 0.3s",
           }}
-          onMouseEnter={(e) =>
-            (e.target.style.background = "rgba(255,255,255,0.1)")
-          }
-          onMouseLeave={(e) => (e.target.style.background = "transparent")}
         >
           ×
         </button>
