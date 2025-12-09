@@ -672,7 +672,7 @@ function Calendar() {
         style={{ overflow: "hidden", height: "100vh" }}
       >
         <div className="calendar-div-main">
-          <div style={{ marginTop: "10px" }}>
+          {/* <div style={{ marginTop: "10px" }}>
             <button
               onClick={async () => {
                 try {
@@ -704,7 +704,7 @@ function Calendar() {
             >
               Test Notification
             </button>
-          </div>
+          </div> */}
           <div className="time" style={{ marginTop: "20px" }}>
             <LiveClock />
           </div>
