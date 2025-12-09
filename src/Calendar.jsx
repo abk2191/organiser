@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import EventEditor from "./EventEditor";
 import LiveClock from "./LiveClock";
 
 function Calendar() {
@@ -27,6 +27,35 @@ function Calendar() {
     const saved = localStorage.getItem("calendarReminders");
     return saved ? JSON.parse(saved) : [];
   });
+
+  const [showEventEditor, setShowEventEditor] = useState(false);
+
+  // Add this function to handle saving events from EventEditor
+  const handleSaveEvent = (eventData) => {
+    if (!selectedDate) return;
+
+    // Create a unique date key
+    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+
+    // Create the event object with all form data
+    const newEvent = {
+      id: Date.now(),
+      date: selectedDate,
+      dateKey: dateKey,
+      month: currentMonth,
+      year: currentYear,
+      name: eventData.name,
+      description: eventData.description,
+      time: eventData.time,
+      location: eventData.location,
+      backgroundColor: "#000033", // Default background color
+    };
+
+    console.log("Adding event with full details:", newEvent);
+
+    // Add to events state
+    setEvent((prev) => [...prev, newEvent]);
+  };
 
   useEffect(() => {
     console.log("⏳ Scheduling reminders:", reminders);
@@ -360,42 +389,7 @@ function Calendar() {
   }
 
   function addEventForSelectedDate() {
-    const eventName = window.prompt(
-      "Enter event name:",
-      `Event for ${selectedDate}`
-    );
-
-    // const mood = window.prompt("Mood event name:", `Mood for ${selectedDate}`);
-
-    if (eventName === null) {
-      return; // User cancelled
-    }
-
-    if (!selectedDate) {
-      alert("Please select a date first");
-      return;
-    }
-
-    // Create a unique date key that includes month and year
-    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
-
-    const eventDetails = {
-      id: Date.now(),
-      date: selectedDate, // Keep the simple date for display
-      dateKey: dateKey, // Add a unique key with year-month-date
-      month: currentMonth, // Store month
-      year: currentYear, // Store year
-      name: eventName || `Event for ${selectedDate}`, // Handle empty names
-      backgroundColor: "#000033", // Make sure this is included
-      mood: "",
-    };
-
-    console.log(
-      "Adding event with background color:",
-      eventDetails.backgroundColor
-    );
-
-    setEvent((prev) => [...prev, eventDetails]);
+    setShowEventEditor(true);
   }
 
   function EventViewer({
@@ -457,8 +451,8 @@ function Calendar() {
               <button className="evnt-btn" onClick={onAddEvent}>
                 Add an event
               </button>
-              <button className="evnt-btn" onClick={onAddReminder}>
-                Add reminder
+              <button className="evnt-reminder" onClick={onAddReminder}>
+                <i class="fa-solid fa-bell"></i>
               </button>
               <div className="event-colors">
                 <div
@@ -476,6 +470,7 @@ function Calendar() {
                 ></div>
               </div>
             </div>
+
             {moodForSelectedDate && (
               <div
                 className="mood-display"
@@ -498,42 +493,48 @@ function Calendar() {
             ) : (
               eventsForSelectedDate.map((item) => (
                 <div
+                  key={item.id}
+                  className="event-name-text"
                   style={{
                     color: "white",
-                    marginTop: "30px",
+                    marginTop: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    padding: "15px",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    borderRadius: "8px",
                   }}
-                  className="event-name-text"
-                  key={item.id}
                 >
-                  {item.name}
+                  {/* Event Name */}
+                  <div style={{ fontSize: "22px", fontWeight: "bold" }}>
+                    <i class="fa-solid fa-tag"></i> Event Name: {item.name}
+                  </div>
+
+                  {/* Event Description */}
+                  {item.description && (
+                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                      <i class="fa-solid fa-circle-info"></i> Description:{" "}
+                      {item.description}
+                    </div>
+                  )}
+
+                  {/* Event Time */}
+                  {item.time && (
+                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                      <i class="fa-solid fa-clock"></i> Time: {item.time}
+                    </div>
+                  )}
+
+                  {/* Event Location */}
+                  {item.location && (
+                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                      <i class="fa-solid fa-location-dot"></i> Location:{" "}
+                      {item.location}
+                    </div>
+                  )}
                 </div>
               ))
-            )}
-            {remindersForDate.length > 0 && (
-              <div
-                style={{
-                  marginTop: "25px",
-                  padding: "10px",
-                  border: "1px solid white",
-                  borderRadius: "8px",
-                  color: "white",
-                }}
-              >
-                <h4 style={{ marginBottom: "10px" }}>⏰ Reminders</h4>
-
-                {remindersForDate.map((reminder) => (
-                  <div
-                    key={reminder.id}
-                    style={{
-                      marginBottom: "8px",
-                      fontSize: "14px",
-                      opacity: 0.9,
-                    }}
-                  >
-                    • {reminder.message}
-                  </div>
-                ))}
-              </div>
             )}
           </div>
         )}
@@ -814,6 +815,13 @@ function Calendar() {
             onAddReminder={addReminderForSelectedDate}
             reminders={reminders}
           />
+          {/* Pass handleSaveEvent to EventEditor */}
+          {showEventEditor && (
+            <EventEditor
+              onClose={() => setShowEventEditor(false)}
+              onSaveEvent={handleSaveEvent}
+            />
+          )}
         </div>
       </div>
     </>

@@ -1013,6 +1013,117 @@ html {
   animation: modalAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.event-editor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.event-editor {
+  position: relative; /* CHANGED from fixed */
+  /* Remove top: 50%, left: 50%, transform: translate(-50%, -50%) */
+
+  min-height: 400px;
+  width: 90%;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 30px;
+
+  background: rgba(0, 0, 51, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  animation: none; /* Remove float animation */
+  z-index: 15001;
+}
+
+/* Add floating animation */
+
+/* Hover effect */
+.event-editor:hover {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px) scale(1.01);
+}
+
+/* Style form elements */
+.event-editor form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Add gap between form elements */
+}
+
+.event-editor form div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.event-editor label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: white;
+  font-weight: 500;
+}
+
+.event-editor input {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.event-editor input:focus {
+  outline: none;
+  border-color: rgba(100, 150, 255, 0.8);
+  box-shadow: 0 0 0 2px rgba(100, 150, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.event-editor button {
+  width: 100%;
+  padding: 15px;
+  background: #000033;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  margin-top: 20px;
+}
+
+.event-editor button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
 .event-header {
   display: flex;
   align-items: center;
@@ -1113,17 +1224,32 @@ html {
   margin-bottom: 15px;
 }
 
+.evnt-reminder {
+  height: 48px;
+  width: 48px;
+  background-color: #000033;
+  border: none;
+  color: white;
+  font-size: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .event-name-text {
   font-size: 25px;
-  height: 80px;
+  height: 180px;
   background-color: transparent;
   padding: 15px;
   border-radius: 10px;
   overflow: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  flex-direction: column;
+  text-align: left;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
