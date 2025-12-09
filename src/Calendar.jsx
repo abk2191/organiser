@@ -487,9 +487,9 @@ function Calendar() {
               </div>
             )}
             {eventsForSelectedDate.length === 0 ? (
-              <p style={{ color: "white", marginTop: "30px" }}>
-                No events for this date yet
-              </p>
+              <div className="warn">
+                <p style={{ color: "white", marginTop: "30px" }}>No Events.</p>
+              </div>
             ) : (
               eventsForSelectedDate.map((item) => (
                 <div

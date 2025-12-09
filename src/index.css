@@ -1241,6 +1241,13 @@ html {
   text-align: left;
 }
 
+.warn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .event-editor {
