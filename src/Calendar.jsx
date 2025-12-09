@@ -478,7 +478,7 @@ function Calendar() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginTop: "10px",
+                  marginTop: "15px",
                   marginBottom: "10px",
                   fontSize: "25px",
                 }}
