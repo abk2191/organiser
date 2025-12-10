@@ -420,6 +420,29 @@ function Calendar() {
     }
   }
 
+  function getOrdinalSuffix(date) {
+    if (!date) return "";
+
+    const lastDigit = date % 10;
+    const lastTwoDigits = date % 100;
+
+    // Special cases for 11th, 12th, 13th
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+      return `${date}th`;
+    }
+
+    switch (lastDigit) {
+      case 1:
+        return `${date}st`;
+      case 2:
+        return `${date}nd`;
+      case 3:
+        return `${date}rd`;
+      default:
+        return `${date}th`;
+    }
+  }
+
   function EventViewer({
     event,
     selectedDate,
@@ -471,7 +494,7 @@ function Calendar() {
             </div>
             <div className="event-header">
               <h3 style={{ color: "white", fontSize: "30px" }}>
-                {day}, {selectedDate}
+                {day}, {getOrdinalSuffix(selectedDate)}
               </h3>
               <button className="cls-nt-btn" onClick={closeEventViewer}>
                 <i className="fa-solid fa-xmark"></i>
