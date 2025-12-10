@@ -16,23 +16,23 @@ function App() {
   const [shouldRenderSidebar, setShouldRenderSidebar] = useState(false);
   const sidebarRef = useRef(null);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (
-        isSidebarOpen &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(e.target)
-      ) {
-        toggleSidebar(); // reuse your existing animation-safe close
-      }
-    }
+  // useEffect(() => {
+  //   function handleClickOutside(e) {
+  //     if (
+  //       isSidebarOpen &&
+  //       sidebarRef.current &&
+  //       !sidebarRef.current.contains(e.target)
+  //     ) {
+  //       toggleSidebar(); // reuse your existing animation-safe close
+  //     }
+  //   }
 
-    document.addEventListener("mousedown", handleClickOutside);
+  //   document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isSidebarOpen]);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [isSidebarOpen]);
 
   // Toggle sidebar function
   const toggleSidebar = () => {
