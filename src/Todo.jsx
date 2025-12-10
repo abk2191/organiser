@@ -540,7 +540,7 @@ function Todo() {
               <div className="notes-container">
                 <div
                   className="pushable-container"
-                  style={{ marginBottom: "70px" }}
+                  style={{ marginBottom: "30px" }}
                 >
                   <button className="pushable" onClick={newTodo}>
                     <span className="shadow"></span>

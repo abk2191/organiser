@@ -349,7 +349,7 @@ function Notes() {
               <div className="notes-container">
                 <div
                   className="pushable-container"
-                  style={{ marginBottom: "70px" }}
+                  style={{ marginBottom: "30px" }}
                 >
                   <button className="pushable" onClick={newNote}>
                     <span className="shadow"></span>
