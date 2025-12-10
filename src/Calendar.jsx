@@ -516,7 +516,7 @@ function Calendar() {
                   {item.description && (
                     <div
                       style={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         lineHeight: "1.6",
                       }}
                     >
@@ -529,7 +529,7 @@ function Calendar() {
                   {item.time && (
                     <div
                       style={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         lineHeight: "1.6",
                       }}
                     >
@@ -541,7 +541,7 @@ function Calendar() {
                   {item.location && (
                     <div
                       style={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         lineHeight: "1.6",
                       }}
                     >
