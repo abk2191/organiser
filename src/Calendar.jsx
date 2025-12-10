@@ -491,7 +491,7 @@ function Calendar() {
                 <p style={{ color: "white", marginTop: "30px" }}>No Events.</p>
               </div>
             ) : (
-              eventsForSelectedDate.map((item) => (
+              eventsForSelectedDate.map((item, index) => (
                 <div
                   key={item.id}
                   className="event-name-text"
@@ -508,7 +508,8 @@ function Calendar() {
                 >
                   {/* Event Name */}
                   <div style={{ fontSize: "22px", fontWeight: "bold" }}>
-                    <i class="fa-solid fa-tag"></i> Event Name: {item.name}
+                    {index + 1}. <i class="fa-solid fa-tag"></i> Name:{" "}
+                    {item.name}
                   </div>
 
                   {/* Event Description */}
