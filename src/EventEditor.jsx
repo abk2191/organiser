@@ -52,7 +52,8 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
       <div className="event-editor">
         <div className="event-viewer-name">
           <h3 style={{ color: "white" }}>
-            {editingEvent ? "EDIT EVENT" : "ADD EVENT"}
+            {/* {editingEvent ? "EDIT EVENT" : "ADD EVENT"} */}
+            EVENT EDITOR
           </h3>
         </div>
 
