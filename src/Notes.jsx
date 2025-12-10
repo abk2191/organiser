@@ -347,7 +347,10 @@ function Notes() {
           {!isSearching && (
             <>
               <div className="notes-container">
-                <div className="pushable-container">
+                <div
+                  className="pushable-container"
+                  style={{ marginBottom: "70px" }}
+                >
                   <button className="pushable" onClick={newNote}>
                     <span className="shadow"></span>
                     <span className="edge"></span>
