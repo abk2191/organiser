@@ -1409,8 +1409,8 @@ html {
   }
 
   .color-selector {
-    top: 55%;
-    left: 13%;
+    /* top: 55%; */
+    left: 16%;
   }
 
   .notes-modal {
