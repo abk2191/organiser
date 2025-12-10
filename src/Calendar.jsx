@@ -556,7 +556,7 @@ function Calendar() {
 
                     gap: "10px",
                     padding: "15px",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    border: "2px solid white",
                     borderRadius: "8px",
                   }}
                 >
@@ -576,7 +576,7 @@ function Calendar() {
 
                   <hr
                     style={{
-                      borderColor: "rgba(255,255,255,0.2)",
+                      borderColor: "white",
                       margin: "10px 0",
                     }}
                   />
@@ -628,7 +628,7 @@ function Calendar() {
 
                   <hr
                     style={{
-                      borderColor: "rgba(255,255,255,0.2)",
+                      borderColor: "white",
                       margin: "10px 0",
                     }}
                   />
