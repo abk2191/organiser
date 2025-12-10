@@ -523,6 +523,13 @@ function Calendar() {
                     Name: {item.name}
                   </div>
 
+                  <hr
+                    style={{
+                      borderColor: "rgba(255,255,255,0.2)",
+                      margin: "10px 0",
+                    }}
+                  />
+
                   {/* Event Description */}
                   {item.description && (
                     <div
@@ -567,6 +574,13 @@ function Calendar() {
                       Location: {item.location}
                     </div>
                   )}
+
+                  <hr
+                    style={{
+                      borderColor: "rgba(255,255,255,0.2)",
+                      margin: "10px 0",
+                    }}
+                  />
                   <div className="event-dlt-btn">
                     <button
                       className="dlt-evnt-btn"
