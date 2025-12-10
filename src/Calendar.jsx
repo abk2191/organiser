@@ -547,7 +547,7 @@ function Calendar() {
                     <span style={{ color: "gold" }}>
                       <i class="fa-solid fa-tag"></i>
                     </span>{" "}
-                    Name: {item.name}
+                    {item.name}
                   </div>
 
                   <hr
