@@ -1241,11 +1241,11 @@ html {
 
 .event-name-text {
   font-size: 25px;
-  height: 250px;
+  height: 260px;
   background-color: transparent;
   padding: 15px;
   border-radius: 10px;
-  overflow: auto;
+
   display: flex;
   flex-direction: column;
   text-align: left;
