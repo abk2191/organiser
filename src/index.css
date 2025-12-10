@@ -1194,6 +1194,19 @@ html {
   text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
+.event-dlt-btn {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.dlt-evnt-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: white;
+}
+
 .nxt-mnth-btn {
   background: none;
   border: none;

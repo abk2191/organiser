@@ -29,6 +29,8 @@ function Calendar() {
   });
 
   const [showEventEditor, setShowEventEditor] = useState(false);
+  const [deleteWarningActive, setDeleteWarningActive] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
 
   // Add this function to handle saving events from EventEditor
   const handleSaveEvent = (eventData) => {
@@ -397,6 +399,7 @@ function Calendar() {
     selectedDate,
     onAddEvent,
     onAddReminder,
+    onEventDelete,
     reminders,
   }) {
     // Filter events for the selected date - now using dateKey
@@ -549,6 +552,14 @@ function Calendar() {
                       {item.location}
                     </div>
                   )}
+                  <div className="event-dlt-btn">
+                    <button
+                      className="dlt-evnt-btn"
+                      onClick={() => onEventDelete(item.id)}
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
               ))
             )}
@@ -666,6 +677,58 @@ function Calendar() {
     const moodEntry = moods.find((item) => item.dateKey === dateKey);
     return moodEntry ? moodEntry.mood : null;
   }
+
+  function onEventDelete() {
+    setDeleteWarningActive(true);
+  }
+
+  function onEventDelete(eventId) {
+    setEventToDelete(eventId); // Store the ID of the event to delete
+    setDeleteWarningActive(true);
+  }
+
+  function cancelDelete() {
+    setDeleteWarningActive(false);
+    setEventToDelete(null); // Clear the event ID
+  }
+
+  function confirmDelete() {
+    if (!eventToDelete) {
+      setDeleteWarningActive(false);
+      return;
+    }
+
+    // Find the event to get its date for cleanup (optional)
+    const eventToRemove = event.find((e) => e.id === eventToDelete);
+
+    // Filter out only the specific event by ID
+    setEvent((prevEvents) =>
+      prevEvents.filter((event) => event.id !== eventToDelete)
+    );
+
+    // Note: We're NOT deleting moods or reminders here since those are date-specific
+    // and you might want to keep them for other events on the same date
+
+    // Close the warning modal and clear the event ID
+    setDeleteWarningActive(false);
+    setEventToDelete(null);
+
+    // Check if there are still events for this date
+    if (eventToRemove) {
+      const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+      const remainingEvents = event.filter(
+        (e) => e.id !== eventToDelete && e.dateKey === dateKey
+      );
+
+      // If no events remain for this date, close the event viewer
+      if (remainingEvents.length === 0) {
+        setEventViewerActive(false);
+      }
+    }
+
+    alert("Event deleted successfully!");
+  }
+
   // Usage - using currentMonth and currentYear state
   const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
   const wks = getWeeks();
@@ -829,6 +892,7 @@ function Calendar() {
             selectedDate={selectedDate}
             onAddEvent={addEventForSelectedDate}
             onAddReminder={addReminderForSelectedDate}
+            onEventDelete={onEventDelete} // Add this prop
             reminders={reminders}
           />
           {/* Pass handleSaveEvent to EventEditor */}
@@ -837,6 +901,26 @@ function Calendar() {
               onClose={() => setShowEventEditor(false)}
               onSaveEvent={handleSaveEvent}
             />
+          )}
+
+          {/* Delete Confirmation Warning Modal */}
+          {deleteWarningActive && (
+            <>
+              <div className="backdrop" onClick={cancelDelete}></div>
+              <div className="dlt-wrn">
+                <div className="wrng">
+                  <p>Are you sure ?</p>
+                </div>
+                <div className="yes-no-btn-div">
+                  <button className="btn-y" onClick={confirmDelete}>
+                    Yes
+                  </button>
+                  <button className="btn-x" onClick={cancelDelete}>
+                    No
+                  </button>
+                </div>
+              </div>
+            </>
           )}
 
           <div
