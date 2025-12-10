@@ -531,7 +531,7 @@ function Calendar() {
                         lineHeight: "1.6",
                       }}
                     >
-                      <span style={{ color: "blue" }}>
+                      <span style={{ color: "orange" }}>
                         <i class="fa-solid fa-circle-info"></i>
                       </span>{" "}
                       Description: {item.description}
