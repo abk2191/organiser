@@ -31,6 +31,7 @@ function Calendar() {
   const [showEventEditor, setShowEventEditor] = useState(false);
   const [deleteWarningActive, setDeleteWarningActive] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
+  const [editingEvent, setEditingEvent] = useState(null);
 
   // Add this function to handle saving events from EventEditor
   const handleSaveEvent = (eventData) => {
@@ -39,24 +40,41 @@ function Calendar() {
     // Create a unique date key
     const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
 
-    // Create the event object with all form data
-    const newEvent = {
-      id: Date.now(),
-      date: selectedDate,
-      dateKey: dateKey,
-      month: currentMonth,
-      year: currentYear,
-      name: eventData.name,
-      description: eventData.description,
-      time: eventData.time,
-      location: eventData.location,
-      backgroundColor: "#000033", // Default background color
-    };
+    if (editingEvent) {
+      // Update existing event
+      setEvent((prev) =>
+        prev.map((ev) =>
+          ev.id === editingEvent.id
+            ? {
+                ...ev,
+                name: eventData.name,
+                description: eventData.description,
+                time: eventData.time,
+                location: eventData.location,
+                backgroundColor: ev.backgroundColor, // Keep existing background color
+              }
+            : ev
+        )
+      );
+      setEditingEvent(null); // Clear editing state
+    } else {
+      // Create new event
+      const newEvent = {
+        id: Date.now(),
+        date: selectedDate,
+        dateKey: dateKey,
+        month: currentMonth,
+        year: currentYear,
+        name: eventData.name,
+        description: eventData.description,
+        time: eventData.time,
+        location: eventData.location,
+        backgroundColor: "#000033", // Default background color
+      };
 
-    console.log("Adding event with full details:", newEvent);
-
-    // Add to events state
-    setEvent((prev) => [...prev, newEvent]);
+      console.log("Adding event with full details:", newEvent);
+      setEvent((prev) => [...prev, newEvent]);
+    }
   };
 
   useEffect(() => {
@@ -394,12 +412,21 @@ function Calendar() {
     setShowEventEditor(true);
   }
 
+  function handleEditEvent(eventId) {
+    const eventToEdit = event.find((e) => e.id === eventId);
+    if (eventToEdit) {
+      setEditingEvent(eventToEdit);
+      setShowEventEditor(true);
+    }
+  }
+
   function EventViewer({
     event,
     selectedDate,
     onAddEvent,
     onAddReminder,
     onEventDelete,
+    onEventEdit,
     reminders,
   }) {
     // Filter events for the selected date - now using dateKey
@@ -582,9 +609,24 @@ function Calendar() {
                     }}
                   />
                   <div className="event-dlt-btn">
+                    {/* EDIT BUTTON */}
+                    <button
+                      className="dlt-evnt-btn"
+                      onClick={() => onEventEdit(item.id)}
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    {/* DELETE BUTTON */}
                     <button
                       className="dlt-evnt-btn"
                       onClick={() => onEventDelete(item.id)}
+                      style={{
+                        cursor: "pointer",
+                      }}
                     >
                       <i class="fa-solid fa-trash"></i>
                     </button>
@@ -705,10 +747,6 @@ function Calendar() {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
     const moodEntry = moods.find((item) => item.dateKey === dateKey);
     return moodEntry ? moodEntry.mood : null;
-  }
-
-  function onEventDelete() {
-    setDeleteWarningActive(true);
   }
 
   function onEventDelete(eventId) {
@@ -921,14 +959,19 @@ function Calendar() {
             selectedDate={selectedDate}
             onAddEvent={addEventForSelectedDate}
             onAddReminder={addReminderForSelectedDate}
-            onEventDelete={onEventDelete} // Add this prop
+            onEventDelete={onEventDelete}
+            onEventEdit={handleEditEvent}
             reminders={reminders}
           />
           {/* Pass handleSaveEvent to EventEditor */}
           {showEventEditor && (
             <EventEditor
-              onClose={() => setShowEventEditor(false)}
+              onClose={() => {
+                setShowEventEditor(false);
+                setEditingEvent(null);
+              }}
               onSaveEvent={handleSaveEvent}
+              editingEvent={editingEvent}
             />
           )}
 

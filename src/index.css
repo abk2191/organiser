@@ -1198,6 +1198,7 @@ html {
   display: flex;
   justify-content: right;
   align-items: center;
+  gap: 20px;
 }
 
 .dlt-evnt-btn {
