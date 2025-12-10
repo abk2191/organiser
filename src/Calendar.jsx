@@ -580,7 +580,7 @@ function Calendar() {
                         lineHeight: "1.6",
                       }}
                     >
-                      <span style={{ color: "red" }}>
+                      <span style={{ color: "yellow" }}>
                         <i class="fa-solid fa-clock"></i>
                       </span>{" "}
                       Time: {item.time}
