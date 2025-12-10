@@ -275,8 +275,10 @@ function Notes() {
         </div>
         <div className="kontainer">
           <div className="crt-nt-btn-div">
-            <button className="crt-nt-btn" onClick={newNote}>
-              Create New Note
+            <button className="pushable" onClick={newNote}>
+              <span className="shadow"></span>
+              <span className="edge"></span>
+              <span className="front"> Create Note </span>
             </button>
           </div>
 
