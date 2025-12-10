@@ -237,7 +237,6 @@ html {
 .page-text {
   padding: 8px 16px;
   font-size: 32px;
-  color: #8989ea;
   height: 64px;
   display: flex;
   align-items: center;
@@ -254,8 +253,8 @@ html {
   font-weight: 500;
   letter-spacing: -0.5px;
   font-family: "Inter", sans-serif;
-  text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
-  color: white;
+  text-shadow: 0 0 10px #32327a, 0 0 20px rgba(255, 255, 255, 0.5);
+  color: #32327a;
   font-weight: bold;
 }
 
@@ -1202,11 +1201,11 @@ html {
 
 .clock {
   font-family: "Inter", sans-serif;
-  color: white;
+  color: #32327a;
   font-weight: bold;
   font-size: 25px;
   margin-top: 20px;
-  text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 10px #32327a, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .event-dlt-btn {
@@ -1260,7 +1259,7 @@ html {
   background-color: transparent;
   padding: 15px;
   border-radius: 10px;
-
+  font-family: "Inter", sans-serif;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -1635,7 +1634,8 @@ html,
 }
 
 body {
-  background-color: #32327a;
+  /* background-color: #32327a; */
+  background-color: whitesmoke;
   font-family: "Inter", sans-serif;
 }
 

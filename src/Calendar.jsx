@@ -553,6 +553,7 @@ function Calendar() {
                     marginTop: "20px",
                     display: "flex",
                     flexDirection: "column",
+
                     gap: "10px",
                     padding: "15px",
                     border: "1px solid rgba(255,255,255,0.2)",
