@@ -510,9 +510,17 @@ function Calendar() {
                   }}
                 >
                   {/* Event Name */}
-                  <div style={{ fontSize: "22px", fontWeight: "bold" }}>
-                    {index + 1}. <i class="fa-solid fa-tag"></i> Name:{" "}
-                    {item.name}
+                  <div
+                    style={{
+                      fontSize: "22px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {index + 1}.{" "}
+                    <span style={{ color: "gold" }}>
+                      <i class="fa-solid fa-tag"></i>
+                    </span>{" "}
+                    Name: {item.name}
                   </div>
 
                   {/* Event Description */}
@@ -523,8 +531,10 @@ function Calendar() {
                         lineHeight: "1.6",
                       }}
                     >
-                      <i class="fa-solid fa-circle-info"></i> Description:{" "}
-                      {item.description}
+                      <span style={{ color: "blue" }}>
+                        <i class="fa-solid fa-circle-info"></i>
+                      </span>{" "}
+                      Description: {item.description}
                     </div>
                   )}
 
@@ -536,7 +546,10 @@ function Calendar() {
                         lineHeight: "1.6",
                       }}
                     >
-                      <i class="fa-solid fa-clock"></i> Time: {item.time}
+                      <span style={{ color: "red" }}>
+                        <i class="fa-solid fa-clock"></i>
+                      </span>{" "}
+                      Time: {item.time}
                     </div>
                   )}
 
@@ -548,8 +561,10 @@ function Calendar() {
                         lineHeight: "1.6",
                       }}
                     >
-                      <i class="fa-solid fa-location-dot"></i> Location:{" "}
-                      {item.location}
+                      <span style={{ color: "green" }}>
+                        <i class="fa-solid fa-location-dot"></i>
+                      </span>{" "}
+                      Location: {item.location}
                     </div>
                   )}
                   <div className="event-dlt-btn">
