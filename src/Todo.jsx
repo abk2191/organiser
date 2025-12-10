@@ -451,8 +451,10 @@ function Todo() {
         </div>
         <div className="kontainer">
           <div className="crt-nt-btn-div">
-            <button className="crt-nt-btn" onClick={newTodo}>
-              Create New Todo List
+            <button className="pushable" onClick={newTodo}>
+              <span className="shadow"></span>
+              <span className="edge"></span>
+              <span className="front"> Create Note </span>
             </button>
           </div>
 
