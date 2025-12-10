@@ -85,9 +85,10 @@ function App() {
                   closeSidebar();
                 }}
               >
-                <h2 style={{ fontSize: "33px" }}>
-                  <i class="fa-solid fa-lightbulb"></i> NOTES
-                </h2>
+                <div className="sidebar-menu-items">
+                  <i class="fa-solid fa-lightbulb"></i>
+                  <h2 style={{ fontSize: "25px" }}>NOTES</h2>
+                </div>
               </div>
               <div
                 className="sliding-div-two div-style"
@@ -96,9 +97,10 @@ function App() {
                   closeSidebar();
                 }}
               >
-                <h2 style={{ fontSize: "33px" }}>
-                  <i class="fa-solid fa-list-check"></i> TODOS
-                </h2>
+                <div className="sidebar-menu-items">
+                  <i class="fa-solid fa-list-check"></i>
+                  <h2 style={{ fontSize: "25px" }}>TODOS</h2>
+                </div>
               </div>
               <div
                 className="sliding-div-two div-style"
@@ -107,9 +109,10 @@ function App() {
                   closeSidebar();
                 }}
               >
-                <h2 style={{ fontSize: "33px" }}>
-                  <i class="fa-solid fa-calendar-days"></i> CALENDAR
-                </h2>
+                <div className="sidebar-menu-items">
+                  <i class="fa-solid fa-calendar-days"></i>
+                  <h2 style={{ fontSize: "25px" }}>CALENDAR</h2>
+                </div>
               </div>
             </div>
             <div className="brand-name">

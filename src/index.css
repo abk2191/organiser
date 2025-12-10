@@ -115,6 +115,7 @@ html {
   width: 280px;
   height: 100vh;
   background: #000033;
+
   color: #202124;
   z-index: 9998;
   transform: translateX(-100%);
@@ -141,15 +142,27 @@ html {
 .sliding-div-container {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  text-align: left;
+  justify-content: left;
+  gap: 8px;
 
   width: 100%;
   margin-left: -5px;
   margin-top: 35px;
 }
 
+.sidebar-menu-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  color: white;
+  font-size: 25px;
+  gap: 20px;
+}
+
 .div-style {
-  width: 250px;
+  width: fit-content;
   padding: 10px;
   height: 68px;
   display: flex;
@@ -160,6 +173,7 @@ html {
   transition: background-color 0.2s;
   border: 1px solid #000033;
   border-radius: 10px;
+  margin-left: 10px;
 }
 
 .div-style h2 {
