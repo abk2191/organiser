@@ -494,7 +494,7 @@ function Calendar() {
             </div>
             <div className="event-header">
               <h3 style={{ color: "white", fontSize: "30px" }}>
-                {day}, {getOrdinalSuffix(selectedDate)}
+                {day}, {getOrdinalSuffix(selectedDate)}.
               </h3>
               <button className="cls-nt-btn" onClick={closeEventViewer}>
                 <i className="fa-solid fa-xmark"></i>
@@ -510,16 +510,16 @@ function Calendar() {
               <div className="event-colors">
                 <div
                   className="color-one"
-                  onClick={() => updateEventViewerBackgroundColor("#0F4C3A")}
+                  onClick={() => updateEventViewerBackgroundColor("#3949ab")}
                 ></div>
 
                 <div
                   className="color-four"
-                  onClick={() => updateEventViewerBackgroundColor("#15001F")}
+                  onClick={() => updateEventViewerBackgroundColor("#00796b")}
                 ></div>
                 <div
                   className="color-five"
-                  onClick={() => updateEventViewerBackgroundColor("#001427")}
+                  onClick={() => updateEventViewerBackgroundColor("#e91e63")}
                 ></div>
               </div>
             </div>

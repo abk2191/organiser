@@ -465,7 +465,7 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #0f4c3a;
+  background-color: #3949ab;
   border: 2px solid white;
   cursor: pointer;
 }
@@ -474,7 +474,7 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #15001f;
+  background-color: #00796b;
   border: 2px solid white;
   cursor: pointer;
 }
@@ -483,7 +483,7 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #050b17;
+  background-color: #e91e63;
   border: 2px solid white;
   cursor: pointer;
 }
