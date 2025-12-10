@@ -536,7 +536,7 @@ html {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  z-index: 19998;
   animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -807,7 +807,7 @@ html {
 
   border-radius: 8px;
   position: fixed; /* CHANGE TO FIXED */
-  z-index: 10000;
+  z-index: 50000;
   background: #000033 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
