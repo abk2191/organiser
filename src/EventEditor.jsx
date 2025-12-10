@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function EventEditor({ onClose, onSaveEvent }) {
-  // Add onSaveEvent prop
+function EventEditor({ onClose, onSaveEvent, editingEvent }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -9,33 +8,55 @@ function EventEditor({ onClose, onSaveEvent }) {
     time: "",
   });
 
+  // ✅ Auto-fill form when editing an existing event
+  useEffect(() => {
+    if (editingEvent) {
+      setFormData({
+        name: editingEvent.name || "",
+        description: editingEvent.description || "",
+        location: editingEvent.location || "",
+        time: editingEvent.time || "",
+      });
+    } else {
+      // Reset when creating new event
+      setFormData({
+        name: "",
+        description: "",
+        location: "",
+        time: "",
+      });
+    }
+  }, [editingEvent]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
 
-    // Call onSaveEvent with the form data
     if (onSaveEvent) {
       onSaveEvent(formData);
     }
 
-    if (onClose) onClose(); // Close after submit
+    if (onClose) onClose();
   };
 
   return (
     <div className="event-editor-container">
       <div className="event-editor">
         <div className="event-viewer-name">
-          <h3 style={{ color: "white" }}>EVENT EDITOR</h3>
+          <h3 style={{ color: "white" }}>
+            {editingEvent ? "EDIT EVENT" : "ADD EVENT"}
+          </h3>
         </div>
-        {/* Add close button */}
+
+        {/* Close Button */}
         <button
           onClick={onClose}
           style={{
@@ -107,7 +128,9 @@ function EventEditor({ onClose, onSaveEvent }) {
             />
           </div>
 
-          <button type="submit">Save</button>
+          <button type="submit">
+            {editingEvent ? "Update Event" : "Save Event"}
+          </button>
         </form>
       </div>
     </div>
