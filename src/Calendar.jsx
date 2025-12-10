@@ -822,6 +822,13 @@ function Calendar() {
               onSaveEvent={handleSaveEvent}
             />
           )}
+
+          <div
+            className="calendar-warning"
+            style={{ marginTop: "35px", color: "white" }}
+          >
+            <p>Click on dates to see or add events.</p>
+          </div>
         </div>
       </div>
     </>

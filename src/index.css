@@ -1191,6 +1191,7 @@ html {
   font-weight: bold;
   font-size: 25px;
   margin-top: 20px;
+  text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .nxt-mnth-btn {
@@ -1327,6 +1328,10 @@ html {
 
 .pushable:focus:not(:focus-visible) {
   outline: none;
+}
+
+.calendar-warning {
+  font-family: "Inter", sans-serif;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
