@@ -89,8 +89,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
               value={formData.name}
               onChange={handleChange}
               required
-              maxLength={18}
-              placeholder="Upto 18 characters.."
+              placeholder="Enter event name.."
             />
           </div>
 
@@ -103,7 +102,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
               value={formData.description}
               onChange={handleChange}
               required
-              placeholder="Enter description.."
+              placeholder="Enter event description.."
             />
           </div>
 
@@ -128,8 +127,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
               value={formData.location}
               onChange={handleChange}
               required
-              maxLength={18}
-              placeholder="Upto 18 characters.."
+              placeholder="Enter event Location.."
             />
           </div>
 
