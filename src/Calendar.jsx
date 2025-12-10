@@ -514,7 +514,9 @@ function Calendar() {
 
                   {/* Event Description */}
                   {item.description && (
-                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                    <div
+                      style={{ fontSize: "16px", opacity: 0.9, color: "gray" }}
+                    >
                       <i class="fa-solid fa-circle-info"></i> Description:{" "}
                       {item.description}
                     </div>
@@ -522,14 +524,18 @@ function Calendar() {
 
                   {/* Event Time */}
                   {item.time && (
-                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                    <div
+                      style={{ fontSize: "16px", opacity: 0.9, color: "gray" }}
+                    >
                       <i class="fa-solid fa-clock"></i> Time: {item.time}
                     </div>
                   )}
 
                   {/* Event Location */}
                   {item.location && (
-                    <div style={{ fontSize: "16px", opacity: 0.9 }}>
+                    <div
+                      style={{ fontSize: "16px", opacity: 0.9, color: "gray" }}
+                    >
                       <i class="fa-solid fa-location-dot"></i> Location:{" "}
                       {item.location}
                     </div>
