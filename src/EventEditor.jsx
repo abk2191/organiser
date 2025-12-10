@@ -103,8 +103,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
               value={formData.description}
               onChange={handleChange}
               required
-              maxLength={18}
-              placeholder="Upto 18 characters.."
+              placeholder="Enter description.."
             />
           </div>
 
