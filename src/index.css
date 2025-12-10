@@ -81,7 +81,7 @@ html {
 
 /* Hover Effects */
 .hamburger:hover {
-  background-color: navy;
+  background-color: #32327a;
   transform: scale(1.05);
 }
 
@@ -100,7 +100,7 @@ html {
 }
 
 .hamburger.open:hover {
-  background-color: navy;
+  background-color: #32327a;
 }
 
 /* ===== GOOGLE-STYLE SIDEBAR ===== */
