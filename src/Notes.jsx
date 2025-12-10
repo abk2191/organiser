@@ -273,40 +273,40 @@ function Notes() {
             <h1>NOTES</h1>
           </div>
         </div>
+
+        {/* 🔎 Search bar */}
+        <div className="search-div">
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search notes..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setIsSearching(true); // ✅ ENTER SEARCH MODE
+            }}
+          />
+          {isSearching && (
+            <div style={{ marginTop: "10px" }} className="cls-srch-btn-div">
+              <button
+                className="cls-srch-btn"
+                onClick={() => {
+                  setSearchQuery("");
+                  setIsSearching(false); // ✅ EXIT SEARCH MODE
+                }}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          )}
+        </div>
         <div className="kontainer">
           <div className="crt-nt-btn-div">
-            <button className="pushable" onClick={newNote}>
+            {/* <button className="pushable" onClick={newNote}>
               <span className="shadow"></span>
               <span className="edge"></span>
               <span className="front"> ADD NOTE </span>
-            </button>
-          </div>
-
-          {/* 🔎 Search bar */}
-          <div className="search-div">
-            <input
-              className="search-input"
-              type="text"
-              placeholder="Search notes..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setIsSearching(true); // ✅ ENTER SEARCH MODE
-              }}
-            />
-            {isSearching && (
-              <div style={{ marginTop: "10px" }} className="cls-srch-btn-div">
-                <button
-                  className="cls-srch-btn"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setIsSearching(false); // ✅ EXIT SEARCH MODE
-                  }}
-                >
-                  <i className="fa-solid fa-xmark"></i>
-                </button>
-              </div>
-            )}
+            </button> */}
           </div>
 
           {/*Search Result*/}
@@ -346,118 +346,156 @@ function Notes() {
           {/* Pinned Notes */}
           {!isSearching && (
             <>
-              {/* Show pinned notes if they exist */}
-              {sortedPinnedNotes.length > 0 && (
-                <div className="pinned-nts">
-                  {/* PINNED NOTES HEADER */}
-                  <div className="wrapper">
-                    <div className="page-text-2">
-                      <h2>PINNED NOTES ({sortedPinnedNotes.length})</h2>
+              <div className="notes-container">
+                <div className="pushable-container">
+                  <button className="pushable" onClick={newNote}>
+                    <span className="shadow"></span>
+                    <span className="edge"></span>
+                    <span className="front"> ADD NOTE </span>
+                  </button>
+                </div>
+
+                {/* Show pinned notes if they exist */}
+                {sortedPinnedNotes.length > 0 && (
+                  <div className="pinned-nts">
+                    {/* PINNED NOTES HEADER */}
+                    <div className="wrapper">
+                      <div className="page-text-2">
+                        <h2>PINNED NOTES ({sortedPinnedNotes.length})</h2>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* PINNED NOTES LIST */}
-                  <div className="all-pnd-nts">
-                    {sortedPinnedNotes.map((note) => (
-                      <div
-                        key={note.id}
-                        className="note-item"
-                        onClick={() => openNote(note.id)}
-                      >
+                    {/* PINNED NOTES LIST */}
+                    <div className="all-pnd-nts">
+                      {sortedPinnedNotes.map((note) => (
                         <div
-                          className="nw-nt-div"
-                          style={{
-                            backgroundColor: noteColors[note.id] || "#000033",
-                          }}
+                          key={note.id}
+                          className="note-item"
+                          onClick={() => openNote(note.id)}
                         >
-                          <div className="nt-cntnt-div">
-                            <p
-                              dangerouslySetInnerHTML={{ __html: note.content }}
-                            ></p>
-                          </div>
+                          <div
+                            className="nw-nt-div"
+                            style={{
+                              backgroundColor: noteColors[note.id] || "#000033",
+                            }}
+                          >
+                            <div className="nt-cntnt-div">
+                              <p
+                                dangerouslySetInnerHTML={{
+                                  __html: note.content,
+                                }}
+                              ></p>
+                            </div>
 
-                          <div className="dlt-nt-btn-div">
-                            {colorSelectorActiveNoteId === note.id && (
-                              <div className="color-selector">
-                                <div
-                                  className="strict-dark"
+                            <div className="dlt-nt-btn-div">
+                              {colorSelectorActiveNoteId === note.id && (
+                                <div className="color-selector">
+                                  <div
+                                    className="strict-dark"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#1a1a1a",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                  <div
+                                    className="Navy"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#000033",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                  <div
+                                    className="deep-green"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#256025",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                  <div
+                                    className="maroon"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#1a0505",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                  <div
+                                    className="darkblue"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#360a5e",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                  <div
+                                    className="deep-yellow"
+                                    onClick={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        "#646409",
+                                        e
+                                      )
+                                    }
+                                  ></div>
+                                </div>
+                              )}
+
+                              <div className="btn-cntnr">
+                                <button
+                                  className="dlt-btn"
+                                  title="Select Color"
                                   onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#1a1a1a", e)
+                                    handleColorSelector(note.id, e)
                                   }
-                                ></div>
-                                <div
-                                  className="Navy"
+                                >
+                                  <i className="fa-solid fa-brush"></i>
+                                </button>
+
+                                <button
+                                  className="dlt-btn"
+                                  onClick={(e) => unpinNote(note.id, e)}
+                                  title="Unpin note"
+                                >
+                                  <i className="fa-solid fa-link-slash"></i>
+                                </button>
+
+                                <button
+                                  className="dlt-btn"
                                   onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#000033", e)
+                                    showDeleteConfirmation(note.id, e)
                                   }
-                                ></div>
-                                <div
-                                  className="deep-green"
-                                  onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#256025", e)
-                                  }
-                                ></div>
-                                <div
-                                  className="maroon"
-                                  onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#1a0505", e)
-                                  }
-                                ></div>
-                                <div
-                                  className="darkblue"
-                                  onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#360a5e", e)
-                                  }
-                                ></div>
-                                <div
-                                  className="deep-yellow"
-                                  onClick={(e) =>
-                                    changeBackgroundColor(note.id, "#646409", e)
-                                  }
-                                ></div>
+                                  title="Delete note"
+                                >
+                                  <i className="fa-solid fa-trash-can"></i>
+                                </button>
                               </div>
-                            )}
-
-                            <div className="btn-cntnr">
-                              <button
-                                className="dlt-btn"
-                                title="Select Color"
-                                onClick={(e) => handleColorSelector(note.id, e)}
-                              >
-                                <i className="fa-solid fa-brush"></i>
-                              </button>
-
-                              <button
-                                className="dlt-btn"
-                                onClick={(e) => unpinNote(note.id, e)}
-                                title="Unpin note"
-                              >
-                                <i className="fa-solid fa-link-slash"></i>
-                              </button>
-
-                              <button
-                                className="dlt-btn"
-                                onClick={(e) =>
-                                  showDeleteConfirmation(note.id, e)
-                                }
-                                title="Delete note"
-                              >
-                                <i className="fa-solid fa-trash-can"></i>
-                              </button>
                             </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
+                    {/* ALL NOTES HEADER - Always show this, even if there are no pinned notes */}
+                    <div className="wrapper">
+                      <div className="page-text-2">
+                        <h2>ALL NOTES</h2>
                       </div>
-                    ))}
-                  </div>
-                  {/* ALL NOTES HEADER - Always show this, even if there are no pinned notes */}
-                  <div className="wrapper">
-                    <div className="page-text-2">
-                      <h2>ALL NOTES</h2>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </>
           )}
 

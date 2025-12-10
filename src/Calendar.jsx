@@ -1021,7 +1021,7 @@ function Calendar() {
 
           <div
             className="calendar-warning"
-            style={{ marginTop: "35px", color: "white" }}
+            style={{ marginTop: "35px", color: "#000033" }}
           >
             <p>Click on dates to see or add events.</p>
           </div>
