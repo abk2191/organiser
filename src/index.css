@@ -401,7 +401,7 @@ html {
 }
 
 .nw-nt-div {
-  height: 280px;
+  height: auto;
   width: 350px;
   background: #030342;
   color: #202124;
@@ -1467,7 +1467,8 @@ html {
   }
 
   .nw-nt-div {
-    height: 240px;
+    height: auto;
+
     width: 350px;
   }
 
