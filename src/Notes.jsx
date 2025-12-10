@@ -278,7 +278,7 @@ function Notes() {
             <button className="pushable" onClick={newNote}>
               <span className="shadow"></span>
               <span className="edge"></span>
-              <span className="front"> Create Note </span>
+              <span className="front"> ADD NOTE </span>
             </button>
           </div>
 

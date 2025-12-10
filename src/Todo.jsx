@@ -454,7 +454,7 @@ function Todo() {
             <button className="pushable" onClick={newTodo}>
               <span className="shadow"></span>
               <span className="edge"></span>
-              <span className="front"> CREATE TODO </span>
+              <span className="front"> ADD TODO </span>
             </button>
           </div>
 
