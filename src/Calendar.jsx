@@ -560,6 +560,7 @@ function Calendar() {
                 >
                   {/* Event Name */}
                   <div
+                    className="event-name"
                     style={{
                       lineHeight: "1.6",
                       fontWeight: "bold",
@@ -584,6 +585,7 @@ function Calendar() {
                   {/* Event Description */}
                   {item.description && (
                     <div
+                      className="event-desc"
                       style={{
                         lineHeight: "1.6",
                         fontWeight: "bold",
@@ -601,6 +603,7 @@ function Calendar() {
                   {/* Event Time */}
                   {item.time && (
                     <div
+                      className="event-time"
                       style={{
                         lineHeight: "1.6",
                         fontWeight: "bold",
@@ -618,6 +621,7 @@ function Calendar() {
                   {/* Event Location */}
                   {item.location && (
                     <div
+                      className="event-loc"
                       style={{
                         lineHeight: "1.6",
                         fontWeight: "bold",

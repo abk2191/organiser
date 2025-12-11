@@ -1261,11 +1261,7 @@ html {
   display: flex;
   flex-direction: column;
   text-align: left;
-  box-shadow: 
-    /* White outer glow */ 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 0 0 2px rgba(255, 255, 255, 0.05),
-    /* Your original shadows */ 0 5px 15px rgba(60, 60, 60, 0.15),
-    0 15px 35px rgba(60, 60, 60, 0.2), 0 25px 50px rgba(60, 60, 60, 0.25);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .warn {
@@ -1374,6 +1370,12 @@ html {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+  .event-desc,
+  .event-loc,
+  .event-time {
+    font-size: 20px;
+  }
+
   .event-editor {
     height: 600px;
     margin-top: 20px;
