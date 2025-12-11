@@ -15,6 +15,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [shouldRenderSidebar, setShouldRenderSidebar] = useState(false);
   const sidebarRef = useRef(null);
+  const [lightTheme, setLightTheme] = useState(false);
 
   // useEffect(() => {
   //   function handleClickOutside(e) {
@@ -72,6 +73,10 @@ function App() {
       toggleSidebar();
     }
   };
+
+  function handleThemeSwitch() {
+    setLightTheme((prev) => !prev);
+  }
 
   return (
     <Router basename="/organiser">
@@ -133,14 +138,25 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="brand-name">
+
+            <div className="theme-holder">
+              <h2 className="theme-text">{lightTheme ? "Light" : "Dark"} </h2>
+              <div class="toggle-border">
+                <input id="one" type="checkbox" onClick={handleThemeSwitch} />
+                <label for="one">
+                  <div class="handle"></div>
+                </label>
+              </div>
+            </div>
+
+            {/* <div className="brand-name">
               <p
                 style={{ color: "white", fontSize: "20px", fontWeight: "bold" }}
               >
                 <i class="fa-solid fa-flask"></i> Aphelion Labs.
               </p>
               <p style={{ color: "white" }}>&copy; All rights reserved 2025</p>
-            </div>
+            </div> */}
           </div>
         )}
         {/* Navbar and Sidebar Logic Ends */}
