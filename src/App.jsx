@@ -86,6 +86,26 @@ function App() {
           <div className="logo">
             <h3 style={{ color: "white" }}>Andromeda.</h3>
           </div>
+          <div className="theme-holder">
+            <h2 className="theme-text">
+              {" "}
+              {lightTheme ? (
+                <>
+                  <i className="fa-solid fa-sun"></i> Light
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-moon"></i> Dark
+                </>
+              )}{" "}
+            </h2>
+            <div class="toggle-border">
+              <input id="one" type="checkbox" onClick={handleThemeSwitch} />
+              <label for="one">
+                <div class="handle"></div>
+              </label>
+            </div>
+          </div>
           <button
             className={`hamburger ${isSidebarOpen ? "open" : ""}`}
             onClick={toggleSidebar}
