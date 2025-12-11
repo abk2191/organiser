@@ -533,7 +533,7 @@ function Calendar() {
                   justifyContent: "center",
                   marginTop: "15px",
                   marginBottom: "10px",
-                  fontSize: "25px",
+                  fontSize: "15px",
                   color: "white",
                 }}
               >
@@ -909,7 +909,7 @@ function Calendar() {
             <div
               className="mood-select"
               onClick={handleMood}
-              style={{ fontSize: "20px", color: "white", marginBottom: "12px" }}
+              style={{ fontSize: "15px", color: "white", marginBottom: "12px" }}
             >
               {(() => {
                 const today = new Date();
