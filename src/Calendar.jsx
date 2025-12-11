@@ -670,7 +670,7 @@ function Calendar() {
                   marginTop: "15px",
                   marginBottom: "10px",
                   fontSize: "15px",
-                  color: "yellow",
+                  color: "greenyellow",
                 }}
               >
                 {moodForSelectedDate.mood}
@@ -1115,7 +1115,7 @@ function Calendar() {
               onClick={handleMood}
               style={{
                 fontSize: "15px",
-                color: "yellow",
+                color: "greenyellow",
                 marginBottom: "12px",
               }}
             >
