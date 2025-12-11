@@ -1261,7 +1261,7 @@ html {
   display: flex;
   flex-direction: column;
   text-align: left;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .warn {

@@ -554,7 +554,6 @@ function Calendar() {
                     marginTop: "20px",
                     gap: "10px",
                     padding: "15px",
-
                     borderRadius: "8px",
                   }}
                 >
