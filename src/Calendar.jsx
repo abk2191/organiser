@@ -587,6 +587,7 @@ function Calendar() {
                       style={{
                         fontSize: "16px",
                         lineHeight: "1.6",
+                        fontWeight: "bold",
                       }}
                     >
                       <span style={{ color: "orange" }}>
@@ -602,6 +603,7 @@ function Calendar() {
                       style={{
                         fontSize: "16px",
                         lineHeight: "1.6",
+                        fontWeight: "bold",
                       }}
                     >
                       <span style={{ color: "yellow" }}>
@@ -617,6 +619,7 @@ function Calendar() {
                       style={{
                         fontSize: "16px",
                         lineHeight: "1.6",
+                        fontWeight: "bold",
                       }}
                     >
                       <span style={{ color: "green" }}>
