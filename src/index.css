@@ -1373,7 +1373,7 @@ html {
   .event-desc,
   .event-loc,
   .event-time {
-    font-size: 20px;
+    font-size: 22px !important;
   }
 
   .event-editor {
