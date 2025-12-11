@@ -140,7 +140,18 @@ function App() {
             </div>
 
             <div className="theme-holder">
-              <h2 className="theme-text">{lightTheme ? "Light" : "Dark"} </h2>
+              <h2 className="theme-text">
+                {" "}
+                {lightTheme ? (
+                  <>
+                    <i className="fa-solid fa-sun"></i> Light
+                  </>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-moon"></i> Dark
+                  </>
+                )}{" "}
+              </h2>
               <div class="toggle-border">
                 <input id="one" type="checkbox" onClick={handleThemeSwitch} />
                 <label for="one">
