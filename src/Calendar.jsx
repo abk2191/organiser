@@ -1016,6 +1016,11 @@ function Calendar() {
                           style={{
                             fontWeight: "bold",
                             fontSize: "20px",
+                            visibility: "hidden",
+                            pointerEvents: "none",
+                            minWidth: "40px", // Match the width of actual dates
+                            textAlign: "center",
+                            display: "inline-block",
                           }}
                         >
                           <span className="empty-space">
