@@ -6,6 +6,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
     description: "",
     location: "",
     time: "",
+    endDate: "", // Add endDate to formData
   });
 
   // ✅ Auto-fill form when editing an existing event
@@ -16,6 +17,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
         description: editingEvent.description || "",
         location: editingEvent.location || "",
         time: editingEvent.time || "",
+        endDate: editingEvent.endDate ? editingEvent.endDate.toString() : "", // Handle endDate
       });
     } else {
       // Reset when creating new event
@@ -24,6 +26,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
         description: "",
         location: "",
         time: "",
+        endDate: "", // Reset endDate
       });
     }
   }, [editingEvent]);
@@ -41,7 +44,14 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
     console.log("Form submitted:", formData);
 
     if (onSaveEvent) {
-      onSaveEvent(formData);
+      // Pass all form data including endDate
+      onSaveEvent({
+        name: formData.name,
+        description: formData.description,
+        time: formData.time,
+        location: formData.location,
+        endDate: formData.endDate, // Include endDate
+      });
     }
 
     if (onClose) onClose();
@@ -117,6 +127,23 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
               onChange={handleChange}
               required
             />
+          </div>
+
+          <div>
+            <label htmlFor="endDate">End Date (optional):</label>
+            <input
+              type="number"
+              id="endDate"
+              name="endDate"
+              min="1"
+              max="31"
+              placeholder="Leave empty for single day"
+              value={formData.endDate}
+              onChange={handleChange}
+            />
+            <small>
+              Enter the ending day number if event spans multiple days
+            </small>
           </div>
 
           <div>

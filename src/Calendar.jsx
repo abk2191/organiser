@@ -37,8 +37,24 @@ function Calendar() {
   const handleSaveEvent = (eventData) => {
     if (!selectedDate) return;
 
-    // Create a unique date key
-    const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
+    // Parse start and end dates
+    const startDate = parseInt(selectedDate);
+    const endDate = eventData.endDate ? parseInt(eventData.endDate) : startDate;
+
+    // Ensure startDate is not greater than endDate
+    const actualStartDate = Math.min(startDate, endDate);
+    const actualEndDate = Math.max(startDate, endDate);
+
+    // Generate an array of all dates between start and end
+    const eventDates = [];
+    for (let d = actualStartDate; d <= actualEndDate; d++) {
+      eventDates.push(d);
+    }
+
+    // Create date keys for all dates
+    const dateKeys = eventDates.map(
+      (date) => `${currentYear}-${currentMonth + 1}-${date}`
+    );
 
     if (editingEvent) {
       // Update existing event
@@ -51,7 +67,11 @@ function Calendar() {
                 description: eventData.description,
                 time: eventData.time,
                 location: eventData.location,
-                backgroundColor: ev.backgroundColor, // Keep existing background color
+                startDate: actualStartDate,
+                endDate: actualEndDate,
+                eventDates: eventDates,
+                dateKeys: dateKeys,
+                backgroundColor: ev.backgroundColor,
               }
             : ev
         )
@@ -61,8 +81,10 @@ function Calendar() {
       // Create new event
       const newEvent = {
         id: Date.now(),
-        date: selectedDate,
-        dateKey: dateKey,
+        startDate: actualStartDate,
+        endDate: actualEndDate,
+        eventDates: eventDates,
+        dateKeys: dateKeys,
         month: currentMonth,
         year: currentYear,
         name: eventData.name,
@@ -72,7 +94,7 @@ function Calendar() {
         backgroundColor: "#000033", // Default background color
       };
 
-      console.log("Adding event with full details:", newEvent);
+      console.log("Adding multi-day event:", newEvent);
       setEvent((prev) => [...prev, newEvent]);
     }
   };
@@ -452,10 +474,10 @@ function Calendar() {
     onEventEdit,
     reminders,
   }) {
-    // Filter events for the selected date - now using dateKey
+    // Filter events for the selected date - check if date is in eventDates
     const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
     const eventsForSelectedDate = event.filter(
-      (item) => item.dateKey === dateKey
+      (item) => item.dateKeys && item.dateKeys.includes(dateKey)
     );
 
     // ADD THIS LINE: Get mood for selected date
@@ -572,6 +594,18 @@ function Calendar() {
                       <i class="fa-solid fa-tag"></i>
                     </span>{" "}
                     {item.name}
+                    {/* Show date range if multi-day event */}
+                    {item.eventDates && item.eventDates.length > 1 && (
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          color: "#ccc",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        ({item.startDate} - {item.endDate})
+                      </span>
+                    )}
                   </div>
 
                   <hr
@@ -689,10 +723,14 @@ function Calendar() {
     return dayNames[dayOfWeek];
   }
 
-  // Update hasEventsForDate to use dateKey
+  // Update hasEventsForDate to check all events
   function hasEventsForDate(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
-    return event.some((item) => item.dateKey === dateKey);
+
+    // Check if any event includes this date in its dateKeys array
+    return event.some(
+      (item) => item.dateKeys && item.dateKeys.includes(dateKey)
+    );
   }
 
   function closeEventViewer() {
@@ -700,7 +738,7 @@ function Calendar() {
     setSelectedDate(false);
   }
 
-  // Update updateEventViewerBackgroundColor to use dateKey
+  // Update updateEventViewerBackgroundColor to use dateKey array
   function updateEventViewerBackgroundColor(color) {
     if (!selectedDate) return;
 
@@ -709,24 +747,63 @@ function Calendar() {
     // ✅ Instantly update UI
     setViewerBg(color);
 
-    // ✅ If event exists, update it
+    // ✅ Update all events that include this date
     setEvent((prevEvents) => {
-      const exists = prevEvents.some((ev) => ev.dateKey === dateKey);
-
-      if (!exists) return prevEvents;
-
-      return prevEvents.map((ev) =>
-        ev.dateKey === dateKey ? { ...ev, backgroundColor: color } : ev
-      );
+      return prevEvents.map((ev) => {
+        if (ev.dateKeys && ev.dateKeys.includes(dateKey)) {
+          return { ...ev, backgroundColor: color };
+        }
+        return ev;
+      });
     });
   }
 
-  // Update getEventColorForDate to use dateKey
+  // Update getEventColorForDate to check dateKeys array
   function getEventColorForDate(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
-    const eventForDate = event.find((item) => item.dateKey === dateKey);
+
+    // Find the first event that includes this date
+    const eventForDate = event.find(
+      (item) => item.dateKeys && item.dateKeys.includes(dateKey)
+    );
 
     return eventForDate?.backgroundColor || "transparent";
+  }
+
+  // Helper function to get border style for multi-day events
+  function getEventBorderStyle(date) {
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+
+    // Find all events that include this date
+    const eventsForDate = event.filter(
+      (item) => item.dateKeys && item.dateKeys.includes(dateKey)
+    );
+
+    if (eventsForDate.length === 0) {
+      return "none";
+    }
+
+    // For simplicity, we'll use the first event to determine border style
+    const eventItem = eventsForDate[0];
+
+    if (!eventItem.eventDates || eventItem.eventDates.length === 1) {
+      return hasEventsForDate(date) ? "2px solid white" : "none";
+    }
+
+    // Multi-day event - determine if this is start, middle, or end
+    const isStart = eventItem.eventDates[0] === date;
+    const isEnd =
+      eventItem.eventDates[eventItem.eventDates.length - 1] === date;
+
+    if (isStart && isEnd) {
+      return "2px solid white"; // Single day (shouldn't happen here but just in case)
+    } else if (isStart) {
+      return "2px solid white"; // Start of multi-day event
+    } else if (isEnd) {
+      return "2px solid white"; // End of multi-day event
+    } else {
+      return "2px solid white"; // Middle of multi-day event
+    }
   }
 
   function handleMood() {
@@ -798,7 +875,7 @@ function Calendar() {
       return;
     }
 
-    // Find the event to get its date for cleanup (optional)
+    // Find the event to get its date for cleanup
     const eventToRemove = event.find((e) => e.id === eventToDelete);
 
     // Filter out only the specific event by ID
@@ -806,18 +883,16 @@ function Calendar() {
       prevEvents.filter((event) => event.id !== eventToDelete)
     );
 
-    // Note: We're NOT deleting moods or reminders here since those are date-specific
-    // and you might want to keep them for other events on the same date
-
     // Close the warning modal and clear the event ID
     setDeleteWarningActive(false);
     setEventToDelete(null);
 
-    // Check if there are still events for this date
-    if (eventToRemove) {
+    // Check if there are still events for this selected date
+    if (eventToRemove && selectedDate) {
       const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
       const remainingEvents = event.filter(
-        (e) => e.id !== eventToDelete && e.dateKey === dateKey
+        (e) =>
+          e.id !== eventToDelete && e.dateKeys && e.dateKeys.includes(dateKey)
       );
 
       // If no events remain for this date, close the event viewer
@@ -851,39 +926,6 @@ function Calendar() {
         style={{ overflow: "hidden", height: "100vh" }}
       >
         <div className="calendar-div-main">
-          {/* <div style={{ marginTop: "10px" }}>
-            <button
-              onClick={async () => {
-                try {
-                  const permission = await Notification.requestPermission();
-
-                  if (permission !== "granted") {
-                    alert("Permission still not granted");
-                    return;
-                  }
-
-                  if (!window.__SW_REG) {
-                    alert(
-                      "Service Worker not ready yet. Reload and try again."
-                    );
-                    return;
-                  }
-
-                  await window.__SW_REG.showNotification("✅ Test Successful", {
-                    body: "Android tray notifications are now working!",
-                    vibrate: [100, 50, 100],
-                  });
-
-                  console.log("✅ Notification fired via Service Worker");
-                } catch (err) {
-                  console.error("❌ Notification error:", err);
-                  alert(err.message);
-                }
-              }}
-            >
-              Test Notification
-            </button>
-          </div> */}
           <div className="time" style={{ marginTop: "20px" }}>
             <LiveClock />
           </div>
@@ -904,7 +946,6 @@ function Calendar() {
               <button onClick={goToNextMonth} className="nxt-mnth-btn">
                 <i class="fa-solid fa-angles-right"></i>
               </button>
-              {/* <button onClick={goToToday}>Today</button> */}
             </div>
             <div
               className="mood-select"
@@ -941,11 +982,6 @@ function Calendar() {
                 );
               })()}
             </div>
-            {/* <div className="today">
-              <button onClick={goToToday} className="nxt-mnth-btn">
-                <i class="fa-solid fa-rotate"></i>
-              </button>
-            </div> */}
             <div className="day-names-div">
               <p>SU</p>
               <p>MO</p>
@@ -966,14 +1002,11 @@ function Calendar() {
                         color: date === todayDate ? "red" : "inherit",
                         fontWeight: "bold",
                         fontSize: "20px",
-                        border: hasEventsForDate(date)
-                          ? "2px solid white"
-                          : "none",
+                        border: getEventBorderStyle(date),
                         backgroundColor: getEventColorForDate(date),
-
                         cursor: "pointer",
                       }}
-                      onClick={() => updateEventViewer(date)}
+                      onClick={() => date !== " " && updateEventViewer(date)}
                     >
                       {date === " " ? (
                         <span className="empty-space">
