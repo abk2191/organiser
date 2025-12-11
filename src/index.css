@@ -1142,7 +1142,7 @@ html {
 }
 
 .date-item {
-  height: 40px; /* FIX */
+  height: 35px; /* FIX */
   width: 30px !important;
   display: flex;
   align-items: center;
