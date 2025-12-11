@@ -136,7 +136,7 @@ function App() {
               <h2 className="theme-text">
                 {lightTheme ? (
                   <>
-                    <i className="fa-solid fa-moon"></i> Dark
+                    <i class="fa-solid fa-cloud-moon"></i> Dark
                   </>
                 ) : (
                   <>
