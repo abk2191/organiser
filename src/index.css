@@ -1631,6 +1631,12 @@ html {
   }
 }
 
+@media all and (display-mode: standalone) {
+  .brand-name {
+    margin-top: -70px;
+  }
+}
+
 @media (max-width: 400px) {
   .all-pnd-nts {
     display: flex;
