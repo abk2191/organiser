@@ -15,25 +15,17 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [shouldRenderSidebar, setShouldRenderSidebar] = useState(false);
   const sidebarRef = useRef(null);
-  const [lightTheme, setLightTheme] = useState(false);
 
-  // useEffect(() => {
-  //   function handleClickOutside(e) {
-  //     if (
-  //       isSidebarOpen &&
-  //       sidebarRef.current &&
-  //       !sidebarRef.current.contains(e.target)
-  //     ) {
-  //       toggleSidebar(); // reuse your existing animation-safe close
-  //     }
-  //   }
+  // Load theme from localStorage on initial render
+  const [lightTheme, setLightTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("lightTheme");
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
 
-  //   document.addEventListener("mousedown", handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [isSidebarOpen]);
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("lightTheme", JSON.stringify(lightTheme));
+  }, [lightTheme]);
 
   // Toggle sidebar function
   const toggleSidebar = () => {
@@ -86,26 +78,7 @@ function App() {
           <div className="logo">
             <h3 style={{ color: "white" }}>Andromeda.</h3>
           </div>
-          <div className="theme-holder">
-            <h2 className="theme-text">
-              {" "}
-              {lightTheme ? (
-                <>
-                  <i className="fa-solid fa-moon"></i>
-                </>
-              ) : (
-                <>
-                  <i className="fa-solid fa-sun"></i>
-                </>
-              )}{" "}
-            </h2>
-            <div class="toggle-border">
-              <input id="one" type="checkbox" onClick={handleThemeSwitch} />
-              <label for="one">
-                <div class="handle"></div>
-              </label>
-            </div>
-          </div>
+
           <button
             className={`hamburger ${isSidebarOpen ? "open" : ""}`}
             onClick={toggleSidebar}
@@ -129,7 +102,7 @@ function App() {
                 }}
               >
                 <div className="sidebar-menu-items">
-                  <i class="fa-solid fa-lightbulb"></i>
+                  <i className="fa-solid fa-lightbulb"></i>
                   <h2 style={{ fontSize: "25px" }}>NOTES</h2>
                 </div>
               </div>
@@ -141,7 +114,7 @@ function App() {
                 }}
               >
                 <div className="sidebar-menu-items">
-                  <i class="fa-solid fa-list-check"></i>
+                  <i className="fa-solid fa-list-check"></i>
                   <h2 style={{ fontSize: "25px" }}>TODOS</h2>
                 </div>
               </div>
@@ -153,41 +126,36 @@ function App() {
                 }}
               >
                 <div className="sidebar-menu-items">
-                  <i class="fa-solid fa-calendar-days"></i>
+                  <i className="fa-solid fa-calendar-days"></i>
                   <h2 style={{ fontSize: "25px" }}>CALENDAR</h2>
                 </div>
               </div>
             </div>
 
-            {/* <div className="theme-holder">
+            <div className="theme-holder">
               <h2 className="theme-text">
-                {" "}
                 {lightTheme ? (
-                  <>
-                    <i className="fa-solid fa-sun"></i> Light
-                  </>
-                ) : (
                   <>
                     <i className="fa-solid fa-moon"></i> Dark
                   </>
-                )}{" "}
+                ) : (
+                  <>
+                    <i className="fa-solid fa-sun"></i> Light
+                  </>
+                )}
               </h2>
-              <div class="toggle-border">
-                <input id="one" type="checkbox" onClick={handleThemeSwitch} />
-                <label for="one">
-                  <div class="handle"></div>
+              <div className="toggle-border">
+                <input
+                  id="one"
+                  type="checkbox"
+                  checked={lightTheme}
+                  onChange={handleThemeSwitch}
+                />
+                <label htmlFor="one">
+                  <div className="handle"></div>
                 </label>
               </div>
-            </div> */}
-
-            {/* <div className="brand-name">
-              <p
-                style={{ color: "white", fontSize: "20px", fontWeight: "bold" }}
-              >
-                <i class="fa-solid fa-flask"></i> Aphelion Labs.
-              </p>
-              <p style={{ color: "white" }}>&copy; All rights reserved 2025</p>
-            </div> */}
+            </div>
           </div>
         )}
         {/* Navbar and Sidebar Logic Ends */}
