@@ -91,11 +91,11 @@ function App() {
               {" "}
               {lightTheme ? (
                 <>
-                  <i className="fa-solid fa-moon"></i> Dark
+                  <i className="fa-solid fa-moon"></i>
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-sun"></i> Light
+                  <i className="fa-solid fa-sun"></i>
                 </>
               )}{" "}
             </h2>
