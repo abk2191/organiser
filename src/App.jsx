@@ -91,11 +91,11 @@ function App() {
               {" "}
               {lightTheme ? (
                 <>
-                  <i className="fa-solid fa-sun"></i> Light
+                  <i className="fa-solid fa-moon"></i> Dark
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-moon"></i> Dark
+                  <i className="fa-solid fa-sun"></i> Light
                 </>
               )}{" "}
             </h2>
@@ -159,7 +159,7 @@ function App() {
               </div>
             </div>
 
-            <div className="theme-holder">
+            {/* <div className="theme-holder">
               <h2 className="theme-text">
                 {" "}
                 {lightTheme ? (
@@ -178,7 +178,7 @@ function App() {
                   <div class="handle"></div>
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* <div className="brand-name">
               <p
