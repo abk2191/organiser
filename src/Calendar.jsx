@@ -648,7 +648,7 @@ function Calendar() {
                   marginTop: "15px",
                   marginBottom: "10px",
                   fontSize: "15px",
-                  color: "white",
+                  color: "gold",
                 }}
               >
                 {moodForSelectedDate.mood}
@@ -1091,7 +1091,11 @@ function Calendar() {
             <div
               className="mood-select"
               onClick={handleMood}
-              style={{ fontSize: "15px", color: "white", marginBottom: "12px" }}
+              style={{
+                fontSize: "15px",
+                color: "gold",
+                marginBottom: "12px",
+              }}
             >
               {(() => {
                 const today = new Date();
