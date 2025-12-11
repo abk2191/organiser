@@ -1339,12 +1339,12 @@ html.dark-theme {
   justify-content: center;
   text-align: center;
   margin-bottom: 3px;
-  color: yellow;
-  text-shadow: 0 0 10px green, 0 0 20px rgba(255, 255, 255, 0.5);
+  color: greenyellow;
+  text-shadow: 0 0 10px greenyellow, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .mood-display {
-  text-shadow: 0 0 10px green, 0 0 20px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 10px greenyellow, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 /* From Uiverse.io by cssbuttons-io */
