@@ -739,7 +739,7 @@ html {
   padding: 10px 12px;
   font-size: 25px;
   font-family: "Inter", sans-serif;
-
+  outline: none;
   border-radius: 6px;
   color: #000033;
   outline: none;
