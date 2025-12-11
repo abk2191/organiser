@@ -1151,6 +1151,35 @@ html {
   transition: all 0.2s ease;
 }
 
+.date-item.connected-right {
+  position: relative;
+}
+
+.date-item.connected-right::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: white;
+  z-index: 1;
+}
+
+.date-item.last-day-connected {
+  border-right: 2px dashed white !important;
+}
+
+.date-item.has-event {
+  transition: all 0.3s ease;
+}
+
+.date-item.has-event:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
 /* ===== CONNECTING LINES FOR MULTI-DAY EVENTS ===== */
 .date-item.connected-right::after {
   content: "";

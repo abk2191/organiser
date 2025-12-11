@@ -33,7 +33,7 @@ function Calendar() {
   const [eventToDelete, setEventToDelete] = useState(null);
   const [editingEvent, setEditingEvent] = useState(null);
 
-  // Add this function to handle saving events from EventEditor
+  // UPDATED: Proper handleSaveEvent with correct multi-month calculation
   const handleSaveEvent = (eventData) => {
     if (!selectedDate) return;
 
@@ -41,61 +41,153 @@ function Calendar() {
     const startDate = parseInt(selectedDate);
     const endDate = eventData.endDate ? parseInt(eventData.endDate) : startDate;
 
-    // Ensure startDate is not greater than endDate
-    const actualStartDate = Math.min(startDate, endDate);
-    const actualEndDate = Math.max(startDate, endDate);
+    // Get the last day of the current month
+    const lastDayOfCurrentMonth = new Date(
+      currentYear,
+      currentMonth + 1,
+      0
+    ).getDate();
 
-    // Generate an array of all dates between start and end
-    const eventDates = [];
-    for (let d = actualStartDate; d <= actualEndDate; d++) {
-      eventDates.push(d);
-    }
+    // Check if event spans across months
+    // If endDate is less than startDate, it means next month
+    const spansToNextMonth = endDate < startDate;
 
-    // Create date keys for all dates
-    const dateKeys = eventDates.map(
-      (date) => `${currentYear}-${currentMonth + 1}-${date}`
-    );
+    if (spansToNextMonth) {
+      // Event spans to next month
+      const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+      const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
 
-    if (editingEvent) {
-      // Update existing event
-      setEvent((prev) =>
-        prev.map((ev) =>
-          ev.id === editingEvent.id
-            ? {
-                ...ev,
-                name: eventData.name,
-                description: eventData.description,
-                time: eventData.time,
-                location: eventData.location,
-                startDate: actualStartDate,
-                endDate: actualEndDate,
-                eventDates: eventDates,
-                dateKeys: dateKeys,
-                backgroundColor: ev.backgroundColor,
-              }
-            : ev
-        )
-      );
-      setEditingEvent(null); // Clear editing state
+      // Generate dates for current month (from startDate to end of month)
+      const currentMonthDates = [];
+      const currentMonthKeys = [];
+      for (let d = startDate; d <= lastDayOfCurrentMonth; d++) {
+        currentMonthDates.push(d);
+        currentMonthKeys.push(`${currentYear}-${currentMonth + 1}-${d}`);
+      }
+
+      // Generate dates for next month (from 1st to endDate)
+      const nextMonthDates = [];
+      const nextMonthKeys = [];
+      for (let d = 1; d <= endDate; d++) {
+        nextMonthDates.push(d);
+        nextMonthKeys.push(`${nextYear}-${nextMonth + 1}-${d}`);
+      }
+
+      // Combine all dates and keys
+      const eventDates = [...currentMonthDates, ...nextMonthDates];
+      const dateKeys = [...currentMonthKeys, ...nextMonthKeys];
+
+      // The actual end date is calculated differently
+      const actualEndDate = endDate + lastDayOfCurrentMonth - startDate + 1;
+
+      if (editingEvent) {
+        // Update existing event
+        setEvent((prev) =>
+          prev.map((ev) =>
+            ev.id === editingEvent.id
+              ? {
+                  ...ev,
+                  name: eventData.name,
+                  description: eventData.description,
+                  time: eventData.time,
+                  location: eventData.location,
+                  startDate: startDate,
+                  endDate: actualEndDate,
+                  eventDates: eventDates,
+                  dateKeys: dateKeys,
+                  backgroundColor: ev.backgroundColor,
+                  startMonth: currentMonth,
+                  startYear: currentYear,
+                  endMonth: nextMonth,
+                  endYear: nextYear,
+                  spansMonths: true,
+                }
+              : ev
+          )
+        );
+        setEditingEvent(null);
+      } else {
+        // Create new event
+        const newEvent = {
+          id: Date.now(),
+          startDate: startDate,
+          endDate: actualEndDate,
+          eventDates: eventDates,
+          dateKeys: dateKeys,
+          month: currentMonth,
+          year: currentYear,
+          startMonth: currentMonth,
+          startYear: currentYear,
+          endMonth: nextMonth,
+          endYear: nextYear,
+          name: eventData.name,
+          description: eventData.description,
+          time: eventData.time,
+          location: eventData.location,
+          backgroundColor: "#000033",
+          spansMonths: true,
+        };
+
+        console.log("Adding multi-month event:", newEvent);
+        setEvent((prev) => [...prev, newEvent]);
+      }
     } else {
-      // Create new event
-      const newEvent = {
-        id: Date.now(),
-        startDate: actualStartDate,
-        endDate: actualEndDate,
-        eventDates: eventDates,
-        dateKeys: dateKeys,
-        month: currentMonth,
-        year: currentYear,
-        name: eventData.name,
-        description: eventData.description,
-        time: eventData.time,
-        location: eventData.location,
-        backgroundColor: "#000033", // Default background color
-      };
+      // Event stays within current month
+      const actualStartDate = Math.min(startDate, endDate);
+      const actualEndDate = Math.max(startDate, endDate);
 
-      console.log("Adding multi-day event:", newEvent);
-      setEvent((prev) => [...prev, newEvent]);
+      const eventDates = [];
+      for (let d = actualStartDate; d <= actualEndDate; d++) {
+        eventDates.push(d);
+      }
+
+      const dateKeys = eventDates.map(
+        (date) => `${currentYear}-${currentMonth + 1}-${date}`
+      );
+
+      if (editingEvent) {
+        // Update existing event
+        setEvent((prev) =>
+          prev.map((ev) =>
+            ev.id === editingEvent.id
+              ? {
+                  ...ev,
+                  name: eventData.name,
+                  description: eventData.description,
+                  time: eventData.time,
+                  location: eventData.location,
+                  startDate: actualStartDate,
+                  endDate: actualEndDate,
+                  eventDates: eventDates,
+                  dateKeys: dateKeys,
+                  backgroundColor: ev.backgroundColor,
+                  spansMonths: false,
+                }
+              : ev
+          )
+        );
+        setEditingEvent(null);
+      } else {
+        // Create new event
+        const newEvent = {
+          id: Date.now(),
+          startDate: actualStartDate,
+          endDate: actualEndDate,
+          eventDates: eventDates,
+          dateKeys: dateKeys,
+          month: currentMonth,
+          year: currentYear,
+          name: eventData.name,
+          description: eventData.description,
+          time: eventData.time,
+          location: eventData.location,
+          backgroundColor: "#000033",
+          spansMonths: false,
+        };
+
+        console.log("Adding single-month event:", newEvent);
+        setEvent((prev) => [...prev, newEvent]);
+      }
     }
   };
 
@@ -770,17 +862,52 @@ function Calendar() {
     return eventForDate?.backgroundColor || "transparent";
   }
 
-  // NEW: Check if a date needs connection to the right
+  // UPDATED: Simple and reliable needsConnectionToRight function
   function needsConnectionToRight(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Don't show connection on the last day (it will have special styling)
+    if (date === lastDayOfMonth) {
+      return false;
+    }
 
     // Check all events
     for (const ev of event) {
       if (ev.dateKeys && ev.dateKeys.includes(dateKey)) {
-        // Check if this event continues to the next day
-        if (ev.eventDates && ev.eventDates.length > 1) {
-          const nextDate = date + 1;
-          if (ev.eventDates.includes(nextDate)) {
+        // Check if there's a next date in the same month
+        const nextDate = date + 1;
+        const nextDateKey = `${currentYear}-${currentMonth + 1}-${nextDate}`;
+
+        if (ev.dateKeys.includes(nextDateKey)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // UPDATED: Check if event continues to next month
+  function needsConnectionToNextMonth(date) {
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Only check on the last day of the month
+    if (date !== lastDayOfMonth) {
+      return false;
+    }
+
+    // Check all events
+    for (const ev of event) {
+      if (ev.dateKeys && ev.dateKeys.includes(dateKey)) {
+        // If this is a multi-month event
+        if (ev.spansMonths) {
+          // Check if there's a date in the next month
+          const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+          const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+          const nextMonthFirstDayKey = `${nextYear}-${nextMonth + 1}-1`;
+
+          if (ev.dateKeys.includes(nextMonthFirstDayKey)) {
             return true;
           }
         }
@@ -789,7 +916,7 @@ function Calendar() {
     return false;
   }
 
-  // NEW: Get event connection info for a date
+  // Get event connection info for proper styling
   function getEventConnectionInfo(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
     const eventsForDate = event.filter(
@@ -797,25 +924,27 @@ function Calendar() {
     );
 
     if (eventsForDate.length === 0) {
-      return { hasEvent: false, isStart: false, isEnd: false, isMiddle: false };
+      return {
+        hasEvent: false,
+        connectionClass: "",
+      };
     }
 
-    // Get the first multi-day event that includes this date
-    const multiDayEvent = eventsForDate.find(
-      (ev) => ev.eventDates && ev.eventDates.length > 1
-    );
+    // Determine connection classes
+    const needsRightConnection = needsConnectionToRight(date);
+    const needsNextMonthConnection = needsConnectionToNextMonth(date);
+    let connectionClass = "";
 
-    if (!multiDayEvent) {
-      // Single day event
-      return { hasEvent: true, isStart: true, isEnd: true, isMiddle: false };
+    if (needsNextMonthConnection) {
+      connectionClass = "last-day-connected";
+    } else if (needsRightConnection) {
+      connectionClass = "connected-right";
     }
 
-    const isStart = multiDayEvent.eventDates[0] === date;
-    const isEnd =
-      multiDayEvent.eventDates[multiDayEvent.eventDates.length - 1] === date;
-    const isMiddle = !isStart && !isEnd;
-
-    return { hasEvent: true, isStart, isEnd, isMiddle };
+    return {
+      hasEvent: true,
+      connectionClass,
+    };
   }
 
   function handleMood() {
@@ -1032,25 +1161,22 @@ function Calendar() {
 
                     const connection = getEventConnectionInfo(date);
                     const hasEvent = connection.hasEvent;
-                    const needsConnection = needsConnectionToRight(date);
-
-                    // Add a class for dates that need connection
-                    const connectionClass = needsConnection
-                      ? "connected-right"
-                      : "";
+                    const connectionClass = connection.connectionClass;
 
                     let borderStyle = {};
                     if (hasEvent) {
                       borderStyle = {
                         border: "2px solid white",
-                        borderRadius: "8px", // Always use 0 radius for all dates
+                        borderRadius: "8px",
                       };
                     }
 
                     return (
                       <span
                         key={dateIndex}
-                        className={`date-item ${connectionClass}`}
+                        className={`date-item ${connectionClass} ${
+                          hasEvent ? "has-event" : ""
+                        }`}
                         style={{
                           color: date === todayDate ? "red" : "inherit",
                           fontWeight: "bold",
@@ -1067,6 +1193,21 @@ function Calendar() {
                         onClick={() => date !== " " && updateEventViewer(date)}
                       >
                         {date}
+                        {/* Add a visual indicator for events that span months */}
+                        {connectionClass === "last-day-connected" && (
+                          <span
+                            style={{
+                              position: "absolute",
+                              right: "-5px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              fontSize: "12px",
+                              color: "white",
+                            }}
+                          >
+                            →
+                          </span>
+                        )}
                       </span>
                     );
                   })}
