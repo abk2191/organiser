@@ -33,6 +33,28 @@ function Calendar() {
   const [eventToDelete, setEventToDelete] = useState(null);
   const [editingEvent, setEditingEvent] = useState(null);
 
+  useEffect(() => {
+    // Calculate milliseconds until next midnight
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+
+    console.log(
+      `Page will reload at midnight in ${timeUntilMidnight / 1000} seconds`
+    );
+
+    const timeoutId = setTimeout(() => {
+      console.log("Midnight reached, reloading page...");
+      window.location.reload();
+    }, timeUntilMidnight);
+
+    // Clean up timeout if component unmounts
+    return () => clearTimeout(timeoutId);
+  }, []); // Empty dependency array means this runs once on mount
+
   // UPDATED: Proper handleSaveEvent with correct multi-month calculation
   const handleSaveEvent = (eventData) => {
     if (!selectedDate) return;
