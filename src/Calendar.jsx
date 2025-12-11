@@ -515,11 +515,11 @@ function Calendar() {
 
                 <div
                   className="color-four"
-                  onClick={() => updateEventViewerBackgroundColor("#00796b")}
+                  onClick={() => updateEventViewerBackgroundColor("#191970 ")}
                 ></div>
                 <div
                   className="color-five"
-                  onClick={() => updateEventViewerBackgroundColor("#e91e63")}
+                  onClick={() => updateEventViewerBackgroundColor("#36013F")}
                 ></div>
               </div>
             </div>
@@ -534,6 +534,7 @@ function Calendar() {
                   marginTop: "15px",
                   marginBottom: "10px",
                   fontSize: "25px",
+                  color: "white",
                 }}
               >
                 {moodForSelectedDate.mood}
@@ -551,20 +552,19 @@ function Calendar() {
                   style={{
                     color: "white",
                     marginTop: "20px",
-                    display: "flex",
-                    flexDirection: "column",
-
                     gap: "10px",
                     padding: "15px",
-                    border: "2px solid white",
+
                     borderRadius: "8px",
                   }}
                 >
                   {/* Event Name */}
                   <div
                     style={{
-                      fontSize: "22px",
+                      lineHeight: "1.6",
                       fontWeight: "bold",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "30px",
                     }}
                   >
                     {index + 1}.{" "}
@@ -585,9 +585,10 @@ function Calendar() {
                   {item.description && (
                     <div
                       style={{
-                        fontSize: "16px",
                         lineHeight: "1.6",
                         fontWeight: "bold",
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "25px",
                       }}
                     >
                       <span style={{ color: "orange" }}>
@@ -601,9 +602,10 @@ function Calendar() {
                   {item.time && (
                     <div
                       style={{
-                        fontSize: "16px",
                         lineHeight: "1.6",
                         fontWeight: "bold",
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "25px",
                       }}
                     >
                       <span style={{ color: "yellow" }}>
@@ -617,9 +619,10 @@ function Calendar() {
                   {item.location && (
                     <div
                       style={{
-                        fontSize: "16px",
                         lineHeight: "1.6",
                         fontWeight: "bold",
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "25px",
                       }}
                     >
                       <span style={{ color: "green" }}>
@@ -903,7 +906,7 @@ function Calendar() {
             <div
               className="mood-select"
               onClick={handleMood}
-              style={{ fontSize: "25px" }}
+              style={{ fontSize: "20px", color: "white", marginBottom: "12px" }}
             >
               {(() => {
                 const today = new Date();
@@ -928,7 +931,9 @@ function Calendar() {
 
                 return (
                   todayMood?.mood || (
-                    <span style={{ fontSize: "14px" }}>Click to add mood</span>
+                    <span style={{ fontSize: "14px" }}>
+                      Click to add thought of the day
+                    </span>
                   )
                 );
               })()}

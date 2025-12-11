@@ -474,7 +474,7 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #00796b;
+  background-color: #191970;
   border: 2px solid white;
   cursor: pointer;
 }
@@ -483,7 +483,7 @@ html {
   height: 35px;
   width: 35px;
   border-radius: 50%;
-  background-color: #e91e63;
+  background-color: #36013f;
   border: 2px solid white;
   cursor: pointer;
 }
@@ -1252,7 +1252,7 @@ html {
 }
 
 .event-name-text {
-  font-size: 25px;
+  font-size: 55px;
   height: auto;
   background-color: transparent;
   padding: 15px;
@@ -1261,6 +1261,11 @@ html {
   display: flex;
   flex-direction: column;
   text-align: left;
+  box-shadow: 
+    /* White outer glow */ 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 0 2px rgba(255, 255, 255, 0.05),
+    /* Your original shadows */ 0 5px 15px rgba(60, 60, 60, 0.15),
+    0 15px 35px rgba(60, 60, 60, 0.2), 0 25px 50px rgba(60, 60, 60, 0.25);
 }
 
 .warn {
