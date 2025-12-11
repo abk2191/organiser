@@ -132,28 +132,39 @@ function App() {
               </div>
             </div>
 
-            <div className="theme-holder">
-              <h2 className="theme-text">
-                {lightTheme ? (
-                  <>
-                    <i class="fa-solid fa-cloud-moon"></i> Dark
-                  </>
-                ) : (
-                  <>
-                    <i className="fa-solid fa-sun"></i> Light
-                  </>
-                )}
-              </h2>
-              <div className="toggle-border">
-                <input
-                  id="one"
-                  type="checkbox"
-                  checked={lightTheme}
-                  onChange={handleThemeSwitch}
-                />
-                <label htmlFor="one">
-                  <div className="handle"></div>
-                </label>
+            <div className="theme-holder-main">
+              <div className="theme-holder">
+                <h2 className="theme-text">
+                  {lightTheme ? (
+                    <>
+                      <i class="fa-solid fa-cloud-moon"></i> Dark
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-sun"></i> Light
+                    </>
+                  )}
+                </h2>
+                <div className="toggle-border">
+                  <input
+                    id="one"
+                    type="checkbox"
+                    checked={lightTheme}
+                    onChange={handleThemeSwitch}
+                  />
+                  <label htmlFor="one">
+                    <div className="handle"></div>
+                  </label>
+                </div>
+              </div>
+
+              <div className="name-brand">
+                <h2 style={{ color: "white", fontSize: "30px" }}>
+                  <i class="fa-solid fa-flask"></i> Aphelion Labs.
+                  <p style={{ fontSize: "18px", textAlign: "center" }}>
+                    &copy; All Rights Reserved 2025.
+                  </p>
+                </h2>
               </div>
             </div>
           </div>

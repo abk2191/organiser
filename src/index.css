@@ -1388,12 +1388,24 @@ html {
   text-shadow: 0 0 10px #32327a, 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
+.theme-holder-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+}
+
 .theme-holder {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin-top: -60px;
+  margin-top: -160px;
+}
+
+.name-brand {
+  font-family: "Inter", sans-serif;
 }
 
 .theme-text {
