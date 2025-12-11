@@ -770,40 +770,52 @@ function Calendar() {
     return eventForDate?.backgroundColor || "transparent";
   }
 
-  // Helper function to get border style for multi-day events
-  function getEventBorderStyle(date) {
+  // NEW: Check if a date needs connection to the right
+  function needsConnectionToRight(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
 
-    // Find all events that include this date
+    // Check all events
+    for (const ev of event) {
+      if (ev.dateKeys && ev.dateKeys.includes(dateKey)) {
+        // Check if this event continues to the next day
+        if (ev.eventDates && ev.eventDates.length > 1) {
+          const nextDate = date + 1;
+          if (ev.eventDates.includes(nextDate)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  // NEW: Get event connection info for a date
+  function getEventConnectionInfo(date) {
+    const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
     const eventsForDate = event.filter(
       (item) => item.dateKeys && item.dateKeys.includes(dateKey)
     );
 
     if (eventsForDate.length === 0) {
-      return "none";
+      return { hasEvent: false, isStart: false, isEnd: false, isMiddle: false };
     }
 
-    // For simplicity, we'll use the first event to determine border style
-    const eventItem = eventsForDate[0];
+    // Get the first multi-day event that includes this date
+    const multiDayEvent = eventsForDate.find(
+      (ev) => ev.eventDates && ev.eventDates.length > 1
+    );
 
-    if (!eventItem.eventDates || eventItem.eventDates.length === 1) {
-      return hasEventsForDate(date) ? "2px solid white" : "none";
+    if (!multiDayEvent) {
+      // Single day event
+      return { hasEvent: true, isStart: true, isEnd: true, isMiddle: false };
     }
 
-    // Multi-day event - determine if this is start, middle, or end
-    const isStart = eventItem.eventDates[0] === date;
+    const isStart = multiDayEvent.eventDates[0] === date;
     const isEnd =
-      eventItem.eventDates[eventItem.eventDates.length - 1] === date;
+      multiDayEvent.eventDates[multiDayEvent.eventDates.length - 1] === date;
+    const isMiddle = !isStart && !isEnd;
 
-    if (isStart && isEnd) {
-      return "2px solid white"; // Single day (shouldn't happen here but just in case)
-    } else if (isStart) {
-      return "2px solid white"; // Start of multi-day event
-    } else if (isEnd) {
-      return "2px solid white"; // End of multi-day event
-    } else {
-      return "2px solid white"; // Middle of multi-day event
-    }
+    return { hasEvent: true, isStart, isEnd, isMiddle };
   }
 
   function handleMood() {
@@ -991,32 +1003,68 @@ function Calendar() {
               <p>FR</p>
               <p>SA</p>
             </div>
+
             {wks.map((week, weekIndex) => (
               <div key={weekIndex} className="week-container">
                 <div className="week-dates">
-                  {week.map((date, dateIndex) => (
-                    <span
-                      key={dateIndex}
-                      className="date-item"
-                      style={{
-                        color: date === todayDate ? "red" : "inherit",
-                        fontWeight: "bold",
-                        fontSize: "20px",
-                        border: getEventBorderStyle(date),
-                        backgroundColor: getEventColorForDate(date),
-                        cursor: "pointer",
-                      }}
-                      onClick={() => date !== " " && updateEventViewer(date)}
-                    >
-                      {date === " " ? (
-                        <span className="empty-space">
-                          &nbsp;&nbsp;&nbsp;&nbsp;
+                  {week.map((date, dateIndex) => {
+                    if (date === " ") {
+                      return (
+                        <span
+                          key={dateIndex}
+                          className="date-item"
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: "20px",
+                          }}
+                        >
+                          <span className="empty-space">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                          </span>
                         </span>
-                      ) : (
-                        date
-                      )}
-                    </span>
-                  ))}
+                      );
+                    }
+
+                    const connection = getEventConnectionInfo(date);
+                    const hasEvent = connection.hasEvent;
+                    const needsConnection = needsConnectionToRight(date);
+
+                    // Add a class for dates that need connection
+                    const connectionClass = needsConnection
+                      ? "connected-right"
+                      : "";
+
+                    let borderStyle = {};
+                    if (hasEvent) {
+                      borderStyle = {
+                        border: "2px solid white",
+                        borderRadius: "8px", // Always use 0 radius for all dates
+                      };
+                    }
+
+                    return (
+                      <span
+                        key={dateIndex}
+                        className={`date-item ${connectionClass}`}
+                        style={{
+                          color: date === todayDate ? "red" : "inherit",
+                          fontWeight: "bold",
+                          fontSize: "20px",
+                          backgroundColor: getEventColorForDate(date),
+                          cursor: "pointer",
+                          ...borderStyle,
+                          padding: "2px 8px",
+                          display: "inline-block",
+                          minWidth: "40px",
+                          textAlign: "center",
+                          position: "relative",
+                        }}
+                        onClick={() => date !== " " && updateEventViewer(date)}
+                      >
+                        {date}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             ))}

@@ -60,13 +60,6 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
   return (
     <div className="event-editor-container">
       <div className="event-editor">
-        <div className="event-viewer-name">
-          <h3 style={{ color: "white" }}>
-            {/* {editingEvent ? "EDIT EVENT" : "ADD EVENT"} */}
-            EVENT EDITOR
-          </h3>
-        </div>
-
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -92,7 +85,7 @@ function EventEditor({ onClose, onSaveEvent, editingEvent }) {
 
         <form
           onSubmit={handleSubmit}
-          style={{ color: "white", width: "100%", marginTop: "65px" }}
+          style={{ color: "white", width: "100%", marginTop: "140px" }}
         >
           <div>
             <label htmlFor="name">Event Name:</label>

@@ -1031,7 +1031,7 @@ html {
   position: relative; /* CHANGED from fixed */
   /* Remove top: 50%, left: 50%, transform: translate(-50%, -50%) */
 
-  min-height: 400px;
+  max-height: 600px;
   width: 90%;
   max-width: 500px;
 
@@ -1137,16 +1137,98 @@ html {
 .week-dates {
   width: 100%;
   display: flex;
-  gap: 42px;
+  gap: 25px;
+  position: relative;
 }
 
 .date-item {
-  height: 30px;
-  width: 62px;
+  height: 40px; /* FIX */
+  width: 30px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* ===== CONNECTING LINES FOR MULTI-DAY EVENTS ===== */
+.date-item.connected-right::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -42px; /* Half of the 42px gap */
+  transform: translateY(-50%);
+  width: 42px; /* The gap between dates */
+  height: 4px;
+  background-color: white;
+  z-index: 0;
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7); /* Glowing white shadow */
+}
+
+/* For dates that are connected on both sides (middle of event) */
+.date-item.connected-both::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -21px; /* Half of the 42px gap */
+  transform: translateY(-50%);
+  width: 42px; /* The gap between dates */
+  height: 4px;
+  background-color: white;
+  z-index: 0;
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7); /* Glowing white shadow */
+}
+
+.date-item.connected-both::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -21px; /* Half of the 42px gap */
+  transform: translateY(-50%);
+  width: 42px; /* The gap between dates */
+  height: 4px;
+  background-color: white;
+  z-index: 0;
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7); /* Glowing white shadow */
+}
+
+/* For dates that are connected on the left only (end of event) */
+.date-item.connected-left::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -21px; /* Half of the 42px gap */
+  transform: translateY(-50%);
+  width: 42px; /* The gap between dates */
+  height: 4px;
+  background-color: white;
+  z-index: 0;
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7); /* Glowing white shadow */
+}
+
+/* Adjust for week-dates gap */
+.week-dates {
+  position: relative;
+}
+
+/* Fix for the first date in a row */
+.week-dates span:first-child.connected-left::before {
+  display: none; /* Don't show left connection for first item */
+}
+
+/* Fix for the last date in a row */
+.week-dates span:last-child.connected-right::after {
+  display: none; /* Don't show right connection for last item */
+}
+
+/* Fix for the first date in a row to not have negative margin */
+.week-dates span:first-child {
+  margin-left: 0 !important;
+}
+
+/* Fix for the last date in a row to not have negative margin */
+.week-dates span:last-child {
+  margin-right: 0 !important;
 }
 
 .day-names-div {
