@@ -25,7 +25,24 @@ function App() {
   // Save theme to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("lightTheme", JSON.stringify(lightTheme));
+
+    // Apply theme class to body
+    if (lightTheme) {
+      document.body.classList.add("dark-theme");
+      document.documentElement.classList.add("dark-theme");
+    } else {
+      document.body.classList.remove("dark-theme");
+      document.documentElement.classList.remove("dark-theme");
+    }
   }, [lightTheme]);
+
+  // Apply theme on initial render
+  useEffect(() => {
+    if (lightTheme) {
+      document.body.classList.add("dark-theme");
+      document.documentElement.classList.add("dark-theme");
+    }
+  }, []);
 
   // Toggle sidebar function
   const toggleSidebar = () => {
@@ -137,7 +154,7 @@ function App() {
                 <h2 className="theme-text">
                   {lightTheme ? (
                     <>
-                      <i class="fa-solid fa-cloud-moon"></i> Dark
+                      <i className="fa-solid fa-cloud-moon"></i> Dark
                     </>
                   ) : (
                     <>
@@ -160,7 +177,7 @@ function App() {
 
               <div className="name-brand">
                 <h2 style={{ color: "white", fontSize: "30px" }}>
-                  <i class="fa-solid fa-flask"></i> Aphelion Labs.
+                  <i className="fa-solid fa-flask"></i> Aphelion Labs.
                   <p style={{ fontSize: "18px", textAlign: "center" }}>
                     &copy; All Rights Reserved 2025.
                   </p>
