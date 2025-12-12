@@ -28,19 +28,19 @@ function App() {
 
     // Apply theme class to body
     if (lightTheme) {
-      document.body.classList.add("dark-theme");
-      document.documentElement.classList.add("dark-theme");
-    } else {
       document.body.classList.remove("dark-theme");
       document.documentElement.classList.remove("dark-theme");
+    } else {
+      document.body.classList.add("dark-theme");
+      document.documentElement.classList.add("dark-theme");
     }
   }, [lightTheme]);
 
   // Apply theme on initial render
   useEffect(() => {
     if (lightTheme) {
-      document.body.classList.add("dark-theme");
-      document.documentElement.classList.add("dark-theme");
+      document.body.classList.remove("dark-theme");
+      document.documentElement.classList.remove("dark-theme");
     }
   }, []);
 
@@ -154,11 +154,11 @@ function App() {
                 <h2 className="theme-text">
                   {lightTheme ? (
                     <>
-                      <i className="fa-solid fa-cloud-moon"></i> Dark
+                      <i className="fa-solid fa-sun"></i> Light
                     </>
                   ) : (
                     <>
-                      <i className="fa-solid fa-sun"></i> Light
+                      <i className="fa-solid fa-cloud-moon"></i> Dark
                     </>
                   )}
                 </h2>

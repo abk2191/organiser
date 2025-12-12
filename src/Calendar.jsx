@@ -33,27 +33,59 @@ function Calendar() {
   const [eventToDelete, setEventToDelete] = useState(null);
   const [editingEvent, setEditingEvent] = useState(null);
 
+  // NEW: Add state for date-specific colors
+  const [dateColors, setDateColors] = useState(() => {
+    const savedColors = localStorage.getItem("calendarDateColors");
+    return savedColors ? JSON.parse(savedColors) : {};
+  });
+
   useEffect(() => {
-    // Calculate milliseconds until next midnight
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+    const todayKey = new Date().toDateString();
+    const lastOpen = localStorage.getItem("lastCalendarOpen");
 
-    const timeUntilMidnight = tomorrow.getTime() - now.getTime();
-
-    console.log(
-      `Page will reload at midnight in ${timeUntilMidnight / 1000} seconds`
-    );
-
-    const timeoutId = setTimeout(() => {
-      console.log("Midnight reached, reloading page...");
+    if (lastOpen !== todayKey) {
+      localStorage.setItem("lastCalendarOpen", todayKey);
       window.location.reload();
-    }, timeUntilMidnight);
+    } else {
+      localStorage.setItem("lastCalendarOpen", todayKey);
+    }
+  }, []); // <-- IMPORTANT!
 
-    // Clean up timeout if component unmounts
-    return () => clearTimeout(timeoutId);
-  }, []); // Empty dependency array means this runs once on mount
+  // Fix existing events with wrong endDate calculation on load
+  useEffect(() => {
+    const fixExistingEvents = () => {
+      const savedEvents = localStorage.getItem("calendarEvents");
+      if (!savedEvents) return;
+
+      const events = JSON.parse(savedEvents);
+
+      const fixedEvents = events.map((ev) => {
+        // If it's a multi-month event with wrong endDate calculation
+        if (ev.spansMonths && ev.eventDates && ev.endDate > 31) {
+          // The endDate should be the last day number in the eventDates array
+          const lastDate = ev.eventDates[ev.eventDates.length - 1];
+          return {
+            ...ev,
+            endDate: lastDate,
+          };
+        }
+        return ev;
+      });
+
+      // Only update if there were changes
+      if (JSON.stringify(events) !== JSON.stringify(fixedEvents)) {
+        localStorage.setItem("calendarEvents", JSON.stringify(fixedEvents));
+        setEvent(fixedEvents);
+      }
+    };
+
+    fixExistingEvents();
+  }, []);
+
+  // NEW: Save date colors to localStorage
+  useEffect(() => {
+    localStorage.setItem("calendarDateColors", JSON.stringify(dateColors));
+  }, [dateColors]);
 
   // UPDATED: Proper handleSaveEvent with correct multi-month calculation
   const handleSaveEvent = (eventData) => {
@@ -99,8 +131,11 @@ function Calendar() {
       const eventDates = [...currentMonthDates, ...nextMonthDates];
       const dateKeys = [...currentMonthKeys, ...nextMonthKeys];
 
-      // The actual end date is calculated differently
-      const actualEndDate = endDate + lastDayOfCurrentMonth - startDate + 1;
+      // Store actual end date (the day number in next month)
+      const actualEndDate = endDate; // This is the day in next month (e.g., 4)
+
+      // Calculate total days
+      const totalDays = eventDates.length;
 
       if (editingEvent) {
         // Update existing event
@@ -113,11 +148,11 @@ function Calendar() {
                   description: eventData.description,
                   time: eventData.time,
                   location: eventData.location,
-                  startDate: startDate,
-                  endDate: actualEndDate,
+                  startDate: startDate, // Day in current month (e.g., 27)
+                  endDate: actualEndDate, // Day in next month (e.g., 4)
+                  totalDays: totalDays,
                   eventDates: eventDates,
                   dateKeys: dateKeys,
-                  backgroundColor: ev.backgroundColor,
                   startMonth: currentMonth,
                   startYear: currentYear,
                   endMonth: nextMonth,
@@ -132,8 +167,9 @@ function Calendar() {
         // Create new event
         const newEvent = {
           id: Date.now(),
-          startDate: startDate,
-          endDate: actualEndDate,
+          startDate: startDate, // Day in current month (e.g., 27)
+          endDate: actualEndDate, // Day in next month (e.g., 4)
+          totalDays: totalDays,
           eventDates: eventDates,
           dateKeys: dateKeys,
           month: currentMonth,
@@ -146,7 +182,6 @@ function Calendar() {
           description: eventData.description,
           time: eventData.time,
           location: eventData.location,
-          backgroundColor: "#000033",
           spansMonths: true,
         };
 
@@ -167,6 +202,9 @@ function Calendar() {
         (date) => `${currentYear}-${currentMonth + 1}-${date}`
       );
 
+      // Calculate total days
+      const totalDays = eventDates.length;
+
       if (editingEvent) {
         // Update existing event
         setEvent((prev) =>
@@ -180,9 +218,9 @@ function Calendar() {
                   location: eventData.location,
                   startDate: actualStartDate,
                   endDate: actualEndDate,
+                  totalDays: totalDays,
                   eventDates: eventDates,
                   dateKeys: dateKeys,
-                  backgroundColor: ev.backgroundColor,
                   spansMonths: false,
                 }
               : ev
@@ -195,6 +233,7 @@ function Calendar() {
           id: Date.now(),
           startDate: actualStartDate,
           endDate: actualEndDate,
+          totalDays: totalDays,
           eventDates: eventDates,
           dateKeys: dateKeys,
           month: currentMonth,
@@ -203,7 +242,6 @@ function Calendar() {
           description: eventData.description,
           time: eventData.time,
           location: eventData.location,
-          backgroundColor: "#000033",
           spansMonths: false,
         };
 
@@ -598,11 +636,9 @@ function Calendar() {
     const moodForSelectedDate = moods.find((item) => item.dateKey === dateKey);
 
     const day = getDayForDate(selectedDate);
-    // Get background color from the first event if it exists
-    const backgroundColor =
-      eventsForSelectedDate.length > 0
-        ? eventsForSelectedDate[0].backgroundColor || viewerBg
-        : viewerBg;
+
+    // NEW: Get background color for this specific date from dateColors
+    const backgroundColor = dateColors[dateKey] || viewerBg;
 
     // DEBUG: Log what's happening
     console.log("Events for date:", eventsForSelectedDate);
@@ -852,7 +888,7 @@ function Calendar() {
     setSelectedDate(false);
   }
 
-  // Update updateEventViewerBackgroundColor to use dateKey array
+  // NEW: Update event viewer background color for this specific date only
   function updateEventViewerBackgroundColor(color) {
     if (!selectedDate) return;
 
@@ -861,27 +897,29 @@ function Calendar() {
     // ✅ Instantly update UI
     setViewerBg(color);
 
-    // ✅ Update all events that include this date
-    setEvent((prevEvents) => {
-      return prevEvents.map((ev) => {
-        if (ev.dateKeys && ev.dateKeys.includes(dateKey)) {
-          return { ...ev, backgroundColor: color };
-        }
-        return ev;
-      });
-    });
+    // ✅ Update color for this specific date only
+    setDateColors((prev) => ({
+      ...prev,
+      [dateKey]: color,
+    }));
   }
 
-  // Update getEventColorForDate to check dateKeys array
+  // UPDATED: Get event color for a specific date from dateColors
   function getEventColorForDate(date) {
     const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
 
-    // Find the first event that includes this date
+    // Check if this date has a specific color
+    if (dateColors[dateKey]) {
+      return dateColors[dateKey];
+    }
+
+    // If no specific color, check if there's an event for this date
     const eventForDate = event.find(
       (item) => item.dateKeys && item.dateKeys.includes(dateKey)
     );
 
-    return eventForDate?.backgroundColor || "transparent";
+    // Return default color if there's an event, otherwise transparent
+    return eventForDate ? "#000033" : "transparent";
   }
 
   // UPDATED: Simple and reliable needsConnectionToRight function
