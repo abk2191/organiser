@@ -1084,6 +1084,18 @@ function Calendar() {
       prevEvents.filter((event) => event.id !== eventToDelete)
     );
 
+    // NEW: Clear colors for all dates that were part of this event
+    if (eventToRemove && eventToRemove.dateKeys) {
+      setDateColors((prevColors) => {
+        const newColors = { ...prevColors };
+        // Remove color entries for all date keys of this event
+        eventToRemove.dateKeys.forEach((dateKey) => {
+          delete newColors[dateKey];
+        });
+        return newColors;
+      });
+    }
+
     // Close the warning modal and clear the event ID
     setDeleteWarningActive(false);
     setEventToDelete(null);
