@@ -1344,7 +1344,7 @@ function Calendar() {
                       hasEvent ? "has-event" : ""
                     }`}
                     style={{
-                      fontSize: "10px",
+                      fontSize: "8px",
                       textAlign: "center",
                       padding: "2px 0",
                       backgroundColor: hasEvent ? "#000033" : "transparent",
