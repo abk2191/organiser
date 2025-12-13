@@ -732,20 +732,15 @@ function Calendar() {
               <button className="evnt-reminder" onClick={onAddReminder}>
                 <i class="fa-solid fa-bell"></i>
               </button>
-              <div className="event-colors">
-                <div
-                  className="color-one"
-                  onClick={() => updateEventViewerBackgroundColor("#3949ab")}
-                ></div>
-
-                <div
-                  className="color-four"
-                  onClick={() => updateEventViewerBackgroundColor("#191970 ")}
-                ></div>
-                <div
-                  className="color-five"
-                  onClick={() => updateEventViewerBackgroundColor("#36013F")}
-                ></div>
+              <div>
+                <input
+                  type="color"
+                  className="color-picker"
+                  value={backgroundColor}
+                  onChange={(e) =>
+                    updateEventViewerBackgroundColor(e.target.value)
+                  }
+                />
               </div>
             </div>
 
@@ -947,14 +942,21 @@ function Calendar() {
 
     const dateKey = `${currentYear}-${currentMonth + 1}-${selectedDate}`;
 
+    // Check if there's an event for this date
+    const hasEventForDate = event.some(
+      (item) => item.dateKeys && item.dateKeys.includes(dateKey)
+    );
+
     // ✅ Instantly update UI
     setViewerBg(color);
 
-    // ✅ Update color for this specific date only
-    setDateColors((prev) => ({
-      ...prev,
-      [dateKey]: color,
-    }));
+    // ✅ ONLY update dateColors if there's an event for this date
+    if (hasEventForDate) {
+      setDateColors((prev) => ({
+        ...prev,
+        [dateKey]: color,
+      }));
+    }
   }
 
   // UPDATED: Get event color for a specific date from dateColors
@@ -1308,6 +1310,10 @@ function Calendar() {
                         }`}
                         style={{
                           color: date === todayDate ? "red" : "inherit",
+                          textShadow:
+                            date === todayDate
+                              ? "0 0 10px red, 0 0 20px rgba(255, 255, 255, 0.5)"
+                              : "none",
                           fontWeight: "bold",
                           fontSize: "20px",
                           backgroundColor: getEventColorForDate(date),
