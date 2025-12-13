@@ -1111,8 +1111,8 @@ function Calendar() {
                     style={{
                       backgroundColor: "#000033",
                       borderRadius: "10px",
-                      padding: "10px",
-                      minHeight: "200px",
+                      padding: "5px",
+                      minHeight: "150px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     }}
                   >
