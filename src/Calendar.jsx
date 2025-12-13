@@ -10,6 +10,9 @@ function Calendar() {
     return savedEvents ? JSON.parse(savedEvents) : [];
   });
 
+  const [showMonth, setShowMonth] = useState(true);
+  const [showYear, setShowYear] = useState(false);
+
   const [moods, setMoods] = useState(() => {
     const savedMoods = localStorage.getItem("calendarMoods");
     return savedMoods ? JSON.parse(savedMoods) : [];
@@ -18,6 +21,9 @@ function Calendar() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [eventViewerActive, setEventViewerActive] = useState(false);
   const [viewerBg, setViewerBg] = useState("#000033");
+
+  const [currentView, setCurrentView] = useState("month"); // "month" or "year"
+  const [yearViewYear, setYearViewYear] = useState(new Date().getFullYear());
 
   // Add state for current month and year
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -442,6 +448,11 @@ function Calendar() {
 
   // Modified function to accept month and year parameters
   function getMonthDatesByWeekday(month, year) {
+    // Get current date for fallback
+    const now = new Date();
+    const defaultMonth = now.getMonth();
+    const defaultYear = now.getFullYear();
+
     // Handle month parameter - can be number (0-11) or month name
     let targetMonth;
     if (typeof month === "string") {
@@ -463,14 +474,14 @@ function Calendar() {
       const monthLower = month.toLowerCase();
       targetMonth = monthNames.indexOf(monthLower);
       if (targetMonth === -1) {
-        // Invalid month name, fall back to current month
-        targetMonth = currentMonth;
+        // Invalid month name, fall back to current REAL month (not state)
+        targetMonth = defaultMonth;
       }
     } else if (typeof month === "number" && month >= 0 && month <= 11) {
       targetMonth = month;
     } else {
-      // Invalid or undefined month, use current month
-      targetMonth = currentMonth;
+      // Invalid or undefined month, use current REAL month (not state)
+      targetMonth = defaultMonth;
     }
 
     // Handle year parameter
@@ -478,12 +489,12 @@ function Calendar() {
     if (year !== undefined) {
       targetYear = Number(year);
       if (isNaN(targetYear)) {
-        // Invalid year, fall back to current year
-        targetYear = currentYear;
+        // Invalid year, fall back to current REAL year (not state)
+        targetYear = defaultYear;
       }
     } else {
-      // No year provided, use current year
-      targetYear = currentYear;
+      // No year provided, use current REAL year (not state)
+      targetYear = defaultYear;
     }
 
     // Get first and last day of month
@@ -530,8 +541,12 @@ function Calendar() {
     return result;
   }
 
-  function getWeeks() {
-    const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
+  // const january1991DatesByName = getMonthDatesByWeekday("january", 1991);
+  // console.log("january1991DatesByName:", january1991DatesByName);
+
+  function getWeeks(month = currentMonth, year = currentYear) {
+    const monthDates = getMonthDatesByWeekday(month, year);
+    console.log(`${year}-${month + 1} dates:`, monthDates);
 
     // Find which weekday has the 1st day of the month
     let firstDayIndex = -1;
@@ -558,8 +573,8 @@ function Calendar() {
     }
 
     // Create all dates array for the month
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
     const totalDays = lastDayOfMonth.getDate();
 
     const allDates = [];
@@ -604,6 +619,37 @@ function Calendar() {
     return weeks;
   }
 
+  function getAllMonthsForYear(targetYear) {
+    const monthsData = {};
+
+    for (let month = 0; month < 12; month++) {
+      const monthName = new Date(targetYear, month).toLocaleString("default", {
+        month: "long",
+      });
+
+      // Get dates by weekday
+      const monthDates = getMonthDatesByWeekday(month, targetYear);
+
+      // Get weeks structure
+      const weeks = getWeeks(month, targetYear);
+
+      monthsData[monthName] = {
+        monthNumber: month,
+        year: targetYear,
+        monthDates: monthDates, // Grouped by weekday
+        weeks: weeks, // Calendar grid structure
+        totalDays: new Date(targetYear, month + 1, 0).getDate(),
+        firstDay: new Date(targetYear, month, 1).getDay(), // 0=Sunday, 1=Monday, etc.
+        monthName: monthName,
+      };
+    }
+
+    return monthsData;
+  }
+
+  const year1991Data = getAllMonthsForYear(1991);
+  const january1991Weeks = year1991Data.January.weeks;
+  console.log("Year 1991 data:", january1991Weeks);
   // Add navigation functions
   function goToNextMonth() {
     if (currentMonth === 11) {
@@ -668,6 +714,29 @@ function Calendar() {
       default:
         return `${date}th`;
     }
+  }
+
+  function goToNextYear() {
+    setYearViewYear((prev) => prev + 1);
+  }
+
+  function goToPrevYear() {
+    setYearViewYear((prev) => prev - 1);
+  }
+
+  function goToYearView() {
+    setYearViewYear(currentYear);
+    setCurrentView("year");
+  }
+
+  function goToMonthView() {
+    setCurrentView("month");
+  }
+
+  function goToTodayYearView() {
+    const today = new Date();
+    setYearViewYear(today.getFullYear());
+    setCurrentView("year");
   }
 
   function EventViewer({
@@ -901,6 +970,411 @@ function Calendar() {
             )}
           </div>
         )}
+      </>
+    );
+  }
+
+  function YearView({ year }) {
+    const yearData = getAllMonthsForYear(year);
+
+    // Month names in order
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    // Day abbreviations for the header
+    const dayAbbreviations = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+    // Navigation functions for year view
+    const handlePrevYear = () => {
+      setYearViewYear((prev) => prev - 1);
+    };
+
+    const handleNextYear = () => {
+      setYearViewYear((prev) => prev + 1);
+    };
+
+    const handleGoToToday = () => {
+      const today = new Date();
+      setYearViewYear(today.getFullYear());
+    };
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="year-view-container"
+          style={{
+            overflowY: "auto",
+            padding: "10px",
+          }}
+        >
+          <div
+            className="year-header"
+            style={{
+              textAlign: "center",
+              marginBottom: "20px",
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "15px",
+              position: "relative",
+            }}
+          >
+            {/* Previous Year Button */}
+            <button
+              onClick={handlePrevYear}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#000033",
+                fontSize: "40px",
+                cursor: "pointer",
+              }}
+              title="Previous Year"
+            >
+              <i class="fa-solid fa-angles-left"></i>
+            </button>
+
+            {/* Year Display with Today Button */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <h2 style={{ fontSize: "28px", margin: 0, color: "#000033" }}>
+                {year}
+              </h2>
+            </div>
+
+            {/* Next Year Button */}
+            <button
+              onClick={handleNextYear}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#000033",
+                fontSize: "40px",
+                cursor: "pointer",
+              }}
+            >
+              <i class="fa-solid fa-angles-right"></i>
+            </button>
+          </div>
+
+          <div
+            className="months-container"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "5px",
+            }}
+          >
+            {/* Row 1: January, February, March */}
+            <div
+              className="month-row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "5px",
+                marginBottom: "5px",
+                border: "1px solid blue",
+              }}
+            >
+              {monthNames.slice(0, 3).map((monthName) => {
+                const monthData = yearData[monthName];
+                const weeks = monthData?.weeks || [];
+
+                return (
+                  <div
+                    key={monthName}
+                    className="month-card"
+                    style={{
+                      backgroundColor: "#000033",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      minHeight: "200px",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <MonthContent
+                      monthName={monthName}
+                      monthData={monthData}
+                      weeks={weeks}
+                      year={year}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Row 2: April, May, June */}
+            <div
+              className="month-row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "5px",
+                marginBottom: "5px",
+              }}
+            >
+              {monthNames.slice(3, 6).map((monthName) => {
+                const monthData = yearData[monthName];
+                const weeks = monthData?.weeks || [];
+
+                return (
+                  <div
+                    key={monthName}
+                    className="month-card"
+                    style={{
+                      backgroundColor: "#000033",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      minHeight: "200px",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <MonthContent
+                      monthName={monthName}
+                      monthData={monthData}
+                      weeks={weeks}
+                      year={year}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Row 3: July, August, September */}
+            <div
+              className="month-row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "5px",
+                marginBottom: "5px",
+              }}
+            >
+              {monthNames.slice(6, 9).map((monthName) => {
+                const monthData = yearData[monthName];
+                const weeks = monthData?.weeks || [];
+
+                return (
+                  <div
+                    key={monthName}
+                    className="month-card"
+                    style={{
+                      backgroundColor: "#000033",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      minHeight: "200px",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <MonthContent
+                      monthName={monthName}
+                      monthData={monthData}
+                      weeks={weeks}
+                      year={year}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Row 4: October, November, December */}
+            <div
+              className="month-row"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "5px",
+              }}
+            >
+              {monthNames.slice(9, 12).map((monthName) => {
+                const monthData = yearData[monthName];
+                const weeks = monthData?.weeks || [];
+
+                return (
+                  <div
+                    key={monthName}
+                    className="month-card"
+                    style={{
+                      backgroundColor: "#000033",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      minHeight: "200px",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <MonthContent
+                      monthName={monthName}
+                      monthData={monthData}
+                      weeks={weeks}
+                      year={year}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function MonthContent({ monthName, monthData, weeks, year }) {
+    const dayAbbreviations = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+    return (
+      <>
+        <div
+          className="month-header"
+          style={{
+            textAlign: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <h3
+            className="month-title"
+            style={{
+              margin: 0,
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            {monthName.substring(0, 3)}
+          </h3>
+        </div>
+
+        {/* Day headers */}
+        <div
+          className="month-day-headers"
+          style={{
+            display: "flex",
+            marginBottom: "5px",
+          }}
+        >
+          {dayAbbreviations.map((day) => (
+            <span
+              key={day}
+              className="day-header"
+              style={{
+                fontSize: "11px",
+                textAlign: "center",
+                color: "#ccc",
+                fontWeight: "bold",
+                flex: "1", // Equal width for each day
+                minWidth: "0",
+              }}
+            >
+              {day}
+            </span>
+          ))}
+        </div>
+
+        {/* Calendar weeks - using flexbox */}
+        <div className="month-weeks">
+          {weeks.map((week, weekIndex) => (
+            <div
+              key={weekIndex}
+              className="month-week"
+              style={{
+                display: "flex",
+                marginBottom: "2px",
+              }}
+            >
+              {week.map((date, dateIndex) => {
+                // Empty cell
+                if (date === " ") {
+                  return (
+                    <span
+                      key={dateIndex}
+                      className="month-date empty"
+                      style={{
+                        fontSize: "12px",
+                        textAlign: "center",
+                        padding: "2px 0",
+                        flex: "1", // Equal width
+                        minWidth: "0",
+                      }}
+                    >
+                      &nbsp;
+                    </span>
+                  );
+                }
+
+                // Check if this is today
+                const today = new Date();
+                const isToday =
+                  year === today.getFullYear() &&
+                  monthData.monthNumber === today.getMonth() &&
+                  date === today.getDate();
+
+                // Check if has event
+                const dateKey = `${year}-${monthData.monthNumber + 1}-${date}`;
+                const hasEvent = event.some(
+                  (item) => item.dateKeys && item.dateKeys.includes(dateKey)
+                );
+
+                return (
+                  <span
+                    key={dateIndex}
+                    className={`month-date ${isToday ? "today" : ""} ${
+                      hasEvent ? "has-event" : ""
+                    }`}
+                    style={{
+                      fontSize: "12px",
+                      textAlign: "center",
+                      padding: "2px 0",
+                      backgroundColor: hasEvent ? "#000033" : "transparent",
+                      color: isToday ? "red" : hasEvent ? "white" : "#ddd",
+                      textShadow: isToday ? "0 0 3px red" : "none",
+                      borderRadius: hasEvent ? "3px" : "0",
+                      cursor: hasEvent ? "pointer" : "default",
+                      fontWeight: hasEvent ? "bold" : "normal",
+                      border: hasEvent ? "1px solid white" : "none",
+                      flex: "1", // Equal width
+                      minWidth: "0",
+                    }}
+                    onClick={() => {
+                      if (hasEvent) {
+                        // Switch to month view and select this date
+                        setCurrentMonth(monthData.monthNumber);
+                        setCurrentYear(year);
+                        setSelectedDate(date);
+                        setEventViewerActive(true);
+                        setCurrentView("month");
+                      }
+                    }}
+                  >
+                    {date}
+                  </span>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </>
     );
   }
@@ -1187,219 +1661,254 @@ function Calendar() {
     today.getMonth() === currentMonth && today.getFullYear() === currentYear;
   const todayDate = isCurrentMonth ? today.getDate() : null;
 
+  function handleShowYear() {
+    setShowYear(true);
+    setShowMonth(false);
+  }
+
+  function handleShowMonth() {
+    setShowYear(false);
+    setShowMonth(true);
+  }
+
   return (
     <>
+      <div className="time" style={{ marginTop: "70px" }}>
+        <LiveClock />
+      </div>
       <div
-        className="calendar-div-main-main"
-        style={{ overflow: "hidden", height: "100vh" }}
+        className="two-buttons"
+        style={{
+          position: "relative",
+          zIndex: 1000,
+          marginBottom: "20px",
+        }}
       >
-        <div className="calendar-div-main">
-          <div className="time" style={{ marginTop: "20px" }}>
-            <LiveClock />
-          </div>
-          <div className="clndr-wrpr">
-            <div className="month-name">
-              <button onClick={goToPrevMonth} className="prev-mnth-btn">
-                <i class="fa-solid fa-angles-left"></i>
-              </button>
-              <h1
+        <button className="pushable" onClick={handleShowYear}>
+          <span className="shadow"></span>
+          <span className="edge"></span>
+          <span className="front"> Year </span>
+        </button>
+
+        <button className="pushable" onClick={handleShowMonth}>
+          <span className="shadow"></span>
+          <span className="edge"></span>
+          <span className="front"> Month </span>
+        </button>
+      </div>
+      {showMonth && (
+        <div
+          className="calendar-div-main-main"
+          style={{ overflow: "hidden", height: "100vh" }}
+        >
+          <div className="calendar-div-main">
+            <div className="clndr-wrpr">
+              <div className="month-name">
+                <button onClick={goToPrevMonth} className="prev-mnth-btn">
+                  <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <h1
+                  style={{
+                    color: "white",
+                    fontSize: "22px",
+                  }}
+                >
+                  {formatted}
+                </h1>
+
+                <button onClick={goToNextMonth} className="nxt-mnth-btn">
+                  <i class="fa-solid fa-angles-right"></i>
+                </button>
+              </div>
+              <div
+                className="mood-select"
+                onClick={handleMood}
                 style={{
-                  color: "white",
-                  fontSize: "22px",
+                  fontSize: "15px",
+                  color: "greenyellow",
+                  marginBottom: "12px",
                 }}
               >
-                {formatted}
-              </h1>
+                {(() => {
+                  const today = new Date();
+                  const todayDate = today.getDate();
+                  const todayMonth = today.getMonth();
+                  const todayYear = today.getFullYear();
 
-              <button onClick={goToNextMonth} className="nxt-mnth-btn">
-                <i class="fa-solid fa-angles-right"></i>
-              </button>
-            </div>
-            <div
-              className="mood-select"
-              onClick={handleMood}
-              style={{
-                fontSize: "15px",
-                color: "greenyellow",
-                marginBottom: "12px",
-              }}
-            >
-              {(() => {
-                const today = new Date();
-                const todayDate = today.getDate();
-                const todayMonth = today.getMonth();
-                const todayYear = today.getFullYear();
+                  const isTodayInCurrentMonth =
+                    todayMonth === currentMonth && todayYear === currentYear;
 
-                const isTodayInCurrentMonth =
-                  todayMonth === currentMonth && todayYear === currentYear;
+                  if (!isTodayInCurrentMonth) {
+                    return (
+                      <span style={{ fontSize: "12px" }}>
+                        Navigate to current month to add mood
+                      </span>
+                    );
+                  }
 
-                if (!isTodayInCurrentMonth) {
+                  // Get mood from separate moods array
+                  const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
+                  const todayMood = moods.find((m) => m.dateKey === dateKey);
+
                   return (
-                    <span style={{ fontSize: "12px" }}>
-                      Navigate to current month to add mood
-                    </span>
+                    todayMood?.mood || (
+                      <span style={{ fontSize: "14px" }}>
+                        Click to add thought of the day
+                      </span>
+                    )
                   );
-                }
+                })()}
+              </div>
+              <div className="day-names-div">
+                <p>SU</p>
+                <p>MO</p>
+                <p>TU</p>
+                <p>WE</p>
+                <p>TH</p>
+                <p>FR</p>
+                <p>SA</p>
+              </div>
 
-                // Get mood from separate moods array
-                const dateKey = `${todayYear}-${todayMonth + 1}-${todayDate}`;
-                const todayMood = moods.find((m) => m.dateKey === dateKey);
+              {wks.map((week, weekIndex) => (
+                <div key={weekIndex} className="week-container">
+                  <div className="week-dates">
+                    {week.map((date, dateIndex) => {
+                      if (date === " ") {
+                        return (
+                          <span
+                            key={dateIndex}
+                            className="date-item"
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: "20px",
+                              visibility: "hidden",
+                              pointerEvents: "none",
+                              minWidth: "40px", // Match the width of actual dates
+                              textAlign: "center",
+                              display: "inline-block",
+                            }}
+                          >
+                            <span className="empty-space">
+                              &nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
+                          </span>
+                        );
+                      }
 
-                return (
-                  todayMood?.mood || (
-                    <span style={{ fontSize: "14px" }}>
-                      Click to add thought of the day
-                    </span>
-                  )
-                );
-              })()}
-            </div>
-            <div className="day-names-div">
-              <p>SU</p>
-              <p>MO</p>
-              <p>TU</p>
-              <p>WE</p>
-              <p>TH</p>
-              <p>FR</p>
-              <p>SA</p>
-            </div>
+                      const connection = getEventConnectionInfo(date);
+                      const hasEvent = connection.hasEvent;
+                      const connectionClass = connection.connectionClass;
 
-            {wks.map((week, weekIndex) => (
-              <div key={weekIndex} className="week-container">
-                <div className="week-dates">
-                  {week.map((date, dateIndex) => {
-                    if (date === " ") {
+                      let borderStyle = {};
+                      if (hasEvent) {
+                        borderStyle = {
+                          border: "2px solid white",
+                          borderRadius: "8px",
+                        };
+                      }
+
                       return (
                         <span
                           key={dateIndex}
-                          className="date-item"
+                          className={`date-item ${connectionClass} ${
+                            hasEvent ? "has-event" : ""
+                          }`}
                           style={{
+                            color: date === todayDate ? "red" : "inherit",
+                            textShadow:
+                              date === todayDate
+                                ? "0 0 10px red, 0 0 20px rgba(255, 255, 255, 0.5)"
+                                : "none",
                             fontWeight: "bold",
                             fontSize: "20px",
-                            visibility: "hidden",
-                            pointerEvents: "none",
-                            minWidth: "40px", // Match the width of actual dates
-                            textAlign: "center",
+                            backgroundColor: getEventColorForDate(date),
+                            cursor: "pointer",
+                            ...borderStyle,
+                            padding: "2px 8px",
                             display: "inline-block",
+                            minWidth: "40px",
+                            textAlign: "center",
+                            position: "relative",
                           }}
+                          onClick={() =>
+                            date !== " " && updateEventViewer(date)
+                          }
                         >
-                          <span className="empty-space">
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                          </span>
+                          {date}
+                          {/* Add a visual indicator for events that span months */}
+                          {connectionClass === "last-day-connected" && (
+                            <span
+                              style={{
+                                position: "absolute",
+                                right: "-5px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                fontSize: "12px",
+                                color: "white",
+                              }}
+                            >
+                              →
+                            </span>
+                          )}
                         </span>
                       );
-                    }
-
-                    const connection = getEventConnectionInfo(date);
-                    const hasEvent = connection.hasEvent;
-                    const connectionClass = connection.connectionClass;
-
-                    let borderStyle = {};
-                    if (hasEvent) {
-                      borderStyle = {
-                        border: "2px solid white",
-                        borderRadius: "8px",
-                      };
-                    }
-
-                    return (
-                      <span
-                        key={dateIndex}
-                        className={`date-item ${connectionClass} ${
-                          hasEvent ? "has-event" : ""
-                        }`}
-                        style={{
-                          color: date === todayDate ? "red" : "inherit",
-                          textShadow:
-                            date === todayDate
-                              ? "0 0 10px red, 0 0 20px rgba(255, 255, 255, 0.5)"
-                              : "none",
-                          fontWeight: "bold",
-                          fontSize: "20px",
-                          backgroundColor: getEventColorForDate(date),
-                          cursor: "pointer",
-                          ...borderStyle,
-                          padding: "2px 8px",
-                          display: "inline-block",
-                          minWidth: "40px",
-                          textAlign: "center",
-                          position: "relative",
-                        }}
-                        onClick={() => date !== " " && updateEventViewer(date)}
-                      >
-                        {date}
-                        {/* Add a visual indicator for events that span months */}
-                        {connectionClass === "last-day-connected" && (
-                          <span
-                            style={{
-                              position: "absolute",
-                              right: "-5px",
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              fontSize: "12px",
-                              color: "white",
-                            }}
-                          >
-                            →
-                          </span>
-                        )}
-                      </span>
-                    );
-                  })}
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <EventViewer
-            event={event}
-            selectedDate={selectedDate}
-            onAddEvent={addEventForSelectedDate}
-            onAddReminder={addReminderForSelectedDate}
-            onEventDelete={onEventDelete}
-            onEventEdit={handleEditEvent}
-            reminders={reminders}
-          />
-          {/* Pass handleSaveEvent to EventEditor */}
-          {showEventEditor && (
-            <EventEditor
-              onClose={() => {
-                setShowEventEditor(false);
-                setEditingEvent(null);
-              }}
-              onSaveEvent={handleSaveEvent}
-              editingEvent={editingEvent}
+            <EventViewer
+              event={event}
+              selectedDate={selectedDate}
+              onAddEvent={addEventForSelectedDate}
+              onAddReminder={addReminderForSelectedDate}
+              onEventDelete={onEventDelete}
+              onEventEdit={handleEditEvent}
+              reminders={reminders}
             />
-          )}
+            {/* Pass handleSaveEvent to EventEditor */}
+            {showEventEditor && (
+              <EventEditor
+                onClose={() => {
+                  setShowEventEditor(false);
+                  setEditingEvent(null);
+                }}
+                onSaveEvent={handleSaveEvent}
+                editingEvent={editingEvent}
+              />
+            )}
 
-          {/* Delete Confirmation Warning Modal */}
-          {deleteWarningActive && (
-            <>
-              <div className="backdrop" onClick={cancelDelete}></div>
-              <div className="dlt-wrn">
-                <div className="wrng">
-                  <p>Are you sure ?</p>
+            {/* Delete Confirmation Warning Modal */}
+            {deleteWarningActive && (
+              <>
+                <div className="backdrop" onClick={cancelDelete}></div>
+                <div className="dlt-wrn">
+                  <div className="wrng">
+                    <p>Are you sure ?</p>
+                  </div>
+                  <div className="yes-no-btn-div">
+                    <button className="btn-y" onClick={confirmDelete}>
+                      Yes
+                    </button>
+                    <button className="btn-x" onClick={cancelDelete}>
+                      No
+                    </button>
+                  </div>
                 </div>
-                <div className="yes-no-btn-div">
-                  <button className="btn-y" onClick={confirmDelete}>
-                    Yes
-                  </button>
-                  <button className="btn-x" onClick={cancelDelete}>
-                    No
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
 
-          <div
-            className="calendar-warning"
-            style={{ marginTop: "35px", color: "#000033" }}
-          >
-            <p>Click on dates to see or add events.</p>
+            <div
+              className="calendar-warning"
+              style={{ marginTop: "35px", color: "#000033" }}
+            >
+              <p>Click on dates to see or add events.</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {showYear && <YearView year={yearViewYear} />}
     </>
   );
 }

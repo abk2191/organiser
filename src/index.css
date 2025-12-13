@@ -296,10 +296,55 @@ html.dark-theme {
   border-radius: 50%;
 }
 
+.two-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* Add to your CSS file */
+.year-view-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  height: auto;
+}
+
+.year-view-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.year-view-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.year-view-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.month-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 300px;
+}
+
+.month-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.month-date.has-event:hover {
+  background-color: rgba(0, 0, 51, 0.7) !important;
+}
+
 /* Dark theme styles for page-text */
 .dark-theme .page-text h1 {
   color: white !important;
   text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5) !important;
+}
+
+.year-month-container {
 }
 
 .brand-name {
@@ -1193,7 +1238,7 @@ html.dark-theme {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
+  margin-top: 120px;
   overflow: hidden;
 }
 
@@ -1668,6 +1713,12 @@ html.dark-theme {
   justify-content: center;
 }
 
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .event-desc,
@@ -1693,6 +1744,12 @@ html.dark-theme {
     right: 0;
     bottom: 0;
     overflow: hidden;
+    margin-top: 100px;
+  }
+
+  .year-view-container {
+    width: 500px;
+    margin-top: 5px;
   }
 
   .clndr-wrpr {
@@ -1762,6 +1819,10 @@ html.dark-theme {
 
   .crt-nt-btn {
     width: 350px;
+  }
+
+  .month-card {
+    width: 200px;
   }
 
   /* FIXED: Mobile notes list centering */
