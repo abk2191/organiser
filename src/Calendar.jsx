@@ -40,16 +40,69 @@ function Calendar() {
   });
 
   useEffect(() => {
-    const todayKey = new Date().toDateString();
-    const lastOpen = localStorage.getItem("lastCalendarOpen");
+    // ----------------------------
+    // 1️⃣ EXACT MIDNIGHT RELOAD
+    // ----------------------------
+    function scheduleMidnightReload() {
+      const now = new Date();
 
-    if (lastOpen !== todayKey) {
-      localStorage.setItem("lastCalendarOpen", todayKey);
-      window.location.reload();
-    } else {
-      localStorage.setItem("lastCalendarOpen", todayKey);
+      // Next midnight
+      const midnight = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1,
+        0,
+        0,
+        0,
+        0
+      );
+
+      const msUntilMidnight = midnight - now;
+
+      console.log("Reload scheduled in", msUntilMidnight, "ms");
+
+      return setTimeout(() => {
+        console.log("Reloading at exact midnight...");
+        window.location.reload();
+      }, msUntilMidnight);
     }
-  }, []); // <-- IMPORTANT!
+
+    const midnightTimeout = scheduleMidnightReload();
+
+    // ----------------------------------------------------------
+    // 2️⃣ RELOAD WHEN USER RETURNS (IF TAB WAS SUSPENDED / FROZEN)
+    // ----------------------------------------------------------
+    function checkDateOnReturn() {
+      const lastOpen = localStorage.getItem("lastCalendarOpen");
+      const today = new Date().toDateString();
+
+      if (lastOpen !== today) {
+        // The day changed while the tab was inactive → reload now
+        console.log("Date changed while backgrounded → reloading...");
+        window.location.reload();
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        checkDateOnReturn();
+      }
+    });
+
+    window.addEventListener("focus", checkDateOnReturn);
+
+    // ----------------------------------------------------------
+    // 3️⃣ SAVE CURRENT DATE ON OPEN (for comparison)
+    // ----------------------------------------------------------
+    localStorage.setItem("lastCalendarOpen", new Date().toDateString());
+
+    // Clean up
+    return () => {
+      clearTimeout(midnightTimeout);
+      window.removeEventListener("focus", checkDateOnReturn);
+      document.removeEventListener("visibilitychange", checkDateOnReturn);
+    };
+  }, []);
 
   // Fix existing events with wrong endDate calculation on load
   useEffect(() => {
