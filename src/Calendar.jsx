@@ -1675,26 +1675,24 @@ function Calendar() {
       <div className="time" style={{ marginTop: "70px" }}>
         <LiveClock />
       </div>
+
       <div
-        className="two-buttons"
         style={{
-          position: "relative",
-          zIndex: 1000,
-          marginBottom: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "20px",
         }}
       >
-        <button className="pushable" onClick={handleShowYear}>
-          <span className="shadow"></span>
-          <span className="edge"></span>
-          <span className="front"> Year </span>
+        <button onClick={handleShowYear} style={{ marginTop: "20px" }}>
+          Year
         </button>
 
-        <button className="pushable" onClick={handleShowMonth}>
-          <span className="shadow"></span>
-          <span className="edge"></span>
-          <span className="front"> Month </span>
+        <button onClick={handleShowMonth} style={{ marginTop: "20px" }}>
+          Month
         </button>
       </div>
+
       {showMonth && (
         <div
           className="calendar-div-main-main"
