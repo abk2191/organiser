@@ -10,8 +10,7 @@ function Calendar() {
     return savedEvents ? JSON.parse(savedEvents) : [];
   });
 
-  const [showMonth, setShowMonth] = useState(true);
-  const [showYear, setShowYear] = useState(false);
+  const [currentView, setCurrentView] = useState("month"); // "month" or "year"
 
   const [moods, setMoods] = useState(() => {
     const savedMoods = localStorage.getItem("calendarMoods");
@@ -22,7 +21,6 @@ function Calendar() {
   const [eventViewerActive, setEventViewerActive] = useState(false);
   const [viewerBg, setViewerBg] = useState("#000033");
 
-  const [currentView, setCurrentView] = useState("month"); // "month" or "year"
   const [yearViewYear, setYearViewYear] = useState(new Date().getFullYear());
 
   // Add state for current month and year
@@ -674,6 +672,7 @@ function Calendar() {
     const today = new Date();
     setCurrentMonth(today.getMonth());
     setCurrentYear(today.getFullYear());
+    setCurrentView("month"); // Ensure we're in month view
   }
 
   function updateEventViewer(date) {
@@ -1660,16 +1659,6 @@ function Calendar() {
     today.getMonth() === currentMonth && today.getFullYear() === currentYear;
   const todayDate = isCurrentMonth ? today.getDate() : null;
 
-  function handleShowYear() {
-    setShowYear(true);
-    setShowMonth(false);
-  }
-
-  function handleShowMonth() {
-    setShowYear(false);
-    setShowMonth(true);
-  }
-
   return (
     <>
       <div className="time" style={{ marginTop: "70px" }}>
@@ -1682,18 +1671,55 @@ function Calendar() {
           alignItems: "center",
           justifyContent: "center",
           gap: "20px",
+          marginTop: "20px",
+          padding: "10px",
         }}
+        className="toggle-buttons-container"
       >
-        <button onClick={handleShowYear} style={{ marginTop: "20px" }}>
-          Year
+        <button
+          onClick={() => {
+            setCurrentView("month");
+            console.log("Switching to Month View");
+          }}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: currentView === "month" ? "#32327a" : "#000033",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            fontSize: "16px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            minWidth: "100px",
+            minHeight: "44px",
+          }}
+        >
+          Month
         </button>
 
-        <button onClick={handleShowMonth} style={{ marginTop: "20px" }}>
-          Month
+        <button
+          onClick={() => {
+            setCurrentView("year");
+            console.log("Switching to Year View");
+          }}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: currentView === "year" ? "#32327a" : "#000033",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            fontSize: "16px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            minWidth: "100px",
+            minHeight: "44px",
+          }}
+        >
+          Year
         </button>
       </div>
 
-      {showMonth && (
+      {currentView === "month" && (
         <div
           className="calendar-div-main-main"
           style={{ overflow: "hidden", height: "100vh" }}
@@ -1905,7 +1931,7 @@ function Calendar() {
           </div>
         </div>
       )}
-      {showYear && <YearView year={yearViewYear} />}
+      {currentView === "year" && <YearView year={yearViewYear} />}
     </>
   );
 }

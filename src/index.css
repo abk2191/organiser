@@ -1240,7 +1240,7 @@ html.dark-theme {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 120px;
+  margin-top: 10px;
   overflow: hidden;
 }
 
@@ -1721,6 +1721,12 @@ html.dark-theme {
   justify-content: center;
 }
 
+.calendar-div-main-main {
+  overflow: auto; /* Changed from hidden to auto */
+  height: auto; /* Changed from 100vh to auto */
+  min-height: 100vh; /* Added to ensure it takes full height */
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .event-desc,
@@ -1742,13 +1748,20 @@ html.dark-theme {
   }
 
   .calendar-div-main-main {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    margin-top: 100px;
+    position: relative; /* Changed from fixed to relative */
+    top: auto; /* Remove fixed positioning */
+    left: auto;
+    right: auto;
+    bottom: auto;
+    overflow: auto; /* Changed from hidden to auto */
+    margin-top: 10px;
+    height: auto; /* Ensure it's not fixed height */
+    min-height: 100vh; /* Allow it to grow with content */
+  }
+
+  .calendar-div-main {
+    margin-top: -10px;
+    z-index: 20;
   }
 
   .year-view-container {
