@@ -1097,7 +1097,6 @@ function Calendar() {
                 justifyContent: "center",
                 gap: "5px",
                 marginBottom: "5px",
-                border: "1px solid blue",
               }}
             >
               {monthNames.slice(0, 3).map((monthName) => {
@@ -1149,7 +1148,7 @@ function Calendar() {
                       backgroundColor: "#000033",
                       borderRadius: "10px",
                       padding: "10px",
-                      height: "180px",
+                      height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     }}
                   >
