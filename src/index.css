@@ -1752,6 +1752,10 @@ html.dark-theme {
     margin-top: 5px;
   }
 
+  .day-header {
+    font-size: 2px;
+  }
+
   .clndr-wrpr {
     padding: 20px;
   }

@@ -1280,7 +1280,7 @@ function Calendar() {
               key={day}
               className="day-header"
               style={{
-                fontSize: "11px",
+                fontSize: "8px",
                 textAlign: "center",
                 color: "#ccc",
                 fontWeight: "bold",
@@ -1344,7 +1344,7 @@ function Calendar() {
                       hasEvent ? "has-event" : ""
                     }`}
                     style={{
-                      fontSize: "12px",
+                      fontSize: "10px",
                       textAlign: "center",
                       padding: "2px 0",
                       backgroundColor: hasEvent ? "#000033" : "transparent",
