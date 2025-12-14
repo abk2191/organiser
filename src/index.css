@@ -1880,6 +1880,10 @@ html.dark-theme {
     height: 170px;
   }
 
+  .month-card .month-date {
+    font-size: 8px !important;
+  }
+
   /* FIXED: Mobile notes list centering */
   .notes-list {
     grid-template-columns: 350px;
