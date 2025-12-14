@@ -1114,7 +1114,7 @@ function Calendar() {
                       backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "5px",
-                      height: "160px",
+                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer", // Add cursor pointer
                     }}
@@ -1154,7 +1154,7 @@ function Calendar() {
                       backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      height: "160px",
+                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1194,7 +1194,7 @@ function Calendar() {
                       backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      height: "160px",
+                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1233,7 +1233,7 @@ function Calendar() {
                       backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      height: "160px",
+                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1358,7 +1358,7 @@ function Calendar() {
                       hasEvent ? "has-event" : ""
                     }`}
                     style={{
-                      fontSize: "8px",
+                      fontSize: "12px",
                       textAlign: "center",
                       padding: "2px 0",
                       backgroundColor: hasEvent ? "#000033" : "transparent",
