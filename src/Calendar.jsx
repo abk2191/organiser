@@ -1711,9 +1711,12 @@ function Calendar() {
         >
           <span class="button_top"> Year </span>
         </button>
+
         <button
           className="month-year-nav-btn"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             setCurrentView("month");
           }}
           // style={{

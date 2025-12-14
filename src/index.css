@@ -1235,13 +1235,12 @@ html.dark-theme {
 }
 
 .calendar-div-main {
-  min-height: 100vh;
-  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
   overflow: hidden;
+  height: 600px;
 }
 
 .week-container {
@@ -1722,9 +1721,9 @@ html.dark-theme {
 }
 
 .calendar-div-main-main {
-  overflow: auto; /* Changed from hidden to auto */
-  height: auto; /* Changed from 100vh to auto */
-  min-height: 100vh; /* Added to ensure it takes full height */
+  overflow: hidden; /* Changed from hidden to auto */
+  /* Changed from 100vh to auto */
+  height: 400px;
 }
 
 /* From Uiverse.io by Voxybuns */
@@ -1786,15 +1785,10 @@ html.dark-theme {
   }
 
   .calendar-div-main-main {
-    position: relative; /* Changed from fixed to relative */
-    top: auto; /* Remove fixed positioning */
-    left: auto;
-    right: auto;
-    bottom: auto;
-    overflow: auto; /* Changed from hidden to auto */
-    margin-top: 10px;
-    height: auto; /* Ensure it's not fixed height */
-    min-height: 100vh; /* Allow it to grow with content */
+    position: relative;
+    height: 600px !important; /* Force height */
+    overflow-y: auto; /* Allow scrolling instead of hidden */
+    box-sizing: border-box; /* Include border in height calculation */
   }
 
   .calendar-div-main {
