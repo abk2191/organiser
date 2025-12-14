@@ -1294,7 +1294,7 @@ function Calendar() {
               key={index}
               className="day-header"
               style={{
-                fontSize: "8px",
+                fontSize: "12px",
                 textAlign: "center",
                 color: "#ccc",
                 fontWeight: "bold",

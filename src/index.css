@@ -1877,10 +1877,14 @@ html.dark-theme {
 
   .month-card {
     width: 200px;
-    height: 170px;
+    height: 160px;
   }
 
   .month-card .month-date {
+    font-size: 8px !important;
+  }
+
+  .day-header {
     font-size: 8px !important;
   }
 
