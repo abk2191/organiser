@@ -1241,7 +1241,7 @@ function Calendar() {
   }
 
   function MonthContent({ monthName, monthData, weeks, year }) {
-    const dayAbbreviations = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+    const dayAbbreviations = ["S", "M", "T", "W", "T", "F", "S"];
 
     return (
       <>
@@ -1346,7 +1346,7 @@ function Calendar() {
                       textAlign: "center",
                       padding: "2px 0",
                       backgroundColor: hasEvent ? "#000033" : "transparent",
-                      color: isToday ? "red" : hasEvent ? "white" : "#ddd",
+                      color: isToday ? "red" : hasEvent ? "white" : "white",
                       textShadow: isToday ? "0 0 3px red" : "none",
                       borderRadius: hasEvent ? "3px" : "0",
                       cursor: hasEvent ? "pointer" : "default",
