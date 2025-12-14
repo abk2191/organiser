@@ -1734,6 +1734,7 @@ function Calendar() {
             e.preventDefault();
             e.stopPropagation();
             setCurrentView("month");
+            window.location.reload();
           }}
           // style={{
           //   padding: "12px 24px",
