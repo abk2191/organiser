@@ -347,6 +347,37 @@ html.dark-theme {
   text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5) !important;
 }
 
+/* Dark theme for year view */
+.dark-theme .month-card {
+  background-color: #000033 !important;
+}
+
+.dark-theme .year-header h2,
+.dark-theme .year-header button {
+  color: white !important;
+  text-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Dark theme for month cards in year view */
+.dark-theme .month-date.has-event {
+  background-color: #32327a !important;
+}
+
+/* Ensure text colors are correct in dark theme */
+.dark-theme .month-title {
+  color: white !important;
+}
+
+/* Dark theme for day headers in year view */
+.dark-theme .day-header {
+  color: #ccc !important;
+}
+
+/* Dark theme for regular dates in year view */
+.dark-theme .month-date:not(.has-event) {
+  color: white !important;
+}
+
 .year-month-container {
 }
 

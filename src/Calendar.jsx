@@ -43,6 +43,8 @@ function Calendar() {
     return savedColors ? JSON.parse(savedColors) : {};
   });
 
+  const isDarkTheme = document.body.classList.contains("dark-theme");
+
   useEffect(() => {
     // ----------------------------
     // 1️⃣ EXACT MIDNIGHT RELOAD
@@ -976,6 +978,9 @@ function Calendar() {
   function YearView({ year }) {
     const yearData = getAllMonthsForYear(year);
 
+    // Get current theme
+    const isDarkTheme = document.body.classList.contains("dark-theme");
+
     // Month names in order
     const monthNames = [
       "January",
@@ -1047,9 +1052,12 @@ function Calendar() {
               style={{
                 background: "none",
                 border: "none",
-                color: "#000033",
+                color: isDarkTheme ? "white" : "#000033",
                 fontSize: "40px",
                 cursor: "pointer",
+                textShadow: isDarkTheme
+                  ? "0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)"
+                  : "none",
               }}
               title="Previous Year"
             >
@@ -1064,7 +1072,16 @@ function Calendar() {
                 alignItems: "center",
               }}
             >
-              <h2 style={{ fontSize: "28px", margin: 0, color: "#000033" }}>
+              <h2
+                style={{
+                  fontSize: "28px",
+                  margin: 0,
+                  color: isDarkTheme ? "white" : "#000033",
+                  textShadow: isDarkTheme
+                    ? "0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)"
+                    : "none",
+                }}
+              >
                 {year}
               </h2>
             </div>
@@ -1075,9 +1092,12 @@ function Calendar() {
               style={{
                 background: "none",
                 border: "none",
-                color: "#000033",
+                color: isDarkTheme ? "white" : "#000033",
                 fontSize: "40px",
                 cursor: "pointer",
+                textShadow: isDarkTheme
+                  ? "0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)"
+                  : "none",
               }}
             >
               <i class="fa-solid fa-angles-right"></i>
@@ -1111,21 +1131,21 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#32327a",
+                      backgroundColor: isDarkTheme ? "#000033" : "#32327a",
                       borderRadius: "10px",
                       padding: "5px",
-                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                      cursor: "pointer", // Add cursor pointer
+                      cursor: "pointer",
                     }}
-                    onClick={() => handleMonthCardClick(monthName)} // Add onClick
-                    title={`Click to view ${monthName} ${year}`} // Tooltip
+                    onClick={() => handleMonthCardClick(monthName)}
+                    title={`Click to view ${monthName} ${year}`}
                   >
                     <MonthContent
                       monthName={monthName}
                       monthData={monthData}
                       weeks={weeks}
                       year={year}
+                      isDarkTheme={isDarkTheme}
                     />
                   </div>
                 );
@@ -1151,10 +1171,9 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#32327a",
+                      backgroundColor: isDarkTheme ? "#000033" : "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1166,6 +1185,7 @@ function Calendar() {
                       monthData={monthData}
                       weeks={weeks}
                       year={year}
+                      isDarkTheme={isDarkTheme}
                     />
                   </div>
                 );
@@ -1191,10 +1211,9 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#32327a",
+                      backgroundColor: isDarkTheme ? "#000033" : "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1206,6 +1225,7 @@ function Calendar() {
                       monthData={monthData}
                       weeks={weeks}
                       year={year}
+                      isDarkTheme={isDarkTheme}
                     />
                   </div>
                 );
@@ -1230,10 +1250,9 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#32327a",
+                      backgroundColor: isDarkTheme ? "#000033" : "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
-                      // height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       cursor: "pointer",
                     }}
@@ -1245,6 +1264,7 @@ function Calendar() {
                       monthData={monthData}
                       weeks={weeks}
                       year={year}
+                      isDarkTheme={isDarkTheme}
                     />
                   </div>
                 );
@@ -1256,7 +1276,7 @@ function Calendar() {
     );
   }
 
-  function MonthContent({ monthName, monthData, weeks, year }) {
+  function MonthContent({ monthName, monthData, weeks, year, isDarkTheme }) {
     const dayAbbreviations = ["S", "M", "T", "W", "T", "F", "S"];
 
     return (
@@ -1298,7 +1318,7 @@ function Calendar() {
                 textAlign: "center",
                 color: "#ccc",
                 fontWeight: "bold",
-                flex: "1", // Equal width for each day
+                flex: "1",
                 minWidth: "0",
               }}
             >
@@ -1329,7 +1349,7 @@ function Calendar() {
                         fontSize: "12px",
                         textAlign: "center",
                         padding: "2px 0",
-                        flex: "1", // Equal width
+                        flex: "1",
                         minWidth: "0",
                       }}
                     >
@@ -1361,14 +1381,18 @@ function Calendar() {
                       fontSize: "12px",
                       textAlign: "center",
                       padding: "2px 0",
-                      backgroundColor: hasEvent ? "#000033" : "transparent",
+                      backgroundColor: hasEvent
+                        ? isDarkTheme
+                          ? "#32327a"
+                          : "#000033"
+                        : "transparent",
                       color: isToday ? "red" : hasEvent ? "white" : "white",
                       textShadow: isToday ? "0 0 3px red" : "none",
                       borderRadius: hasEvent ? "3px" : "0",
                       cursor: hasEvent ? "pointer" : "default",
                       fontWeight: hasEvent ? "bold" : "normal",
                       border: hasEvent ? "1px solid white" : "none",
-                      flex: "1", // Equal width
+                      flex: "1",
                       minWidth: "0",
                     }}
                     onClick={() => {
