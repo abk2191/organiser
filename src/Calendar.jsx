@@ -1111,7 +1111,7 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#000033",
+                      backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "5px",
                       height: "160px",
@@ -1151,7 +1151,7 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#000033",
+                      backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
                       height: "160px",
@@ -1191,7 +1191,7 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#000033",
+                      backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
                       height: "160px",
@@ -1230,7 +1230,7 @@ function Calendar() {
                     key={monthName}
                     className="month-card"
                     style={{
-                      backgroundColor: "#000033",
+                      backgroundColor: "#32327a",
                       borderRadius: "10px",
                       padding: "10px",
                       height: "160px",
