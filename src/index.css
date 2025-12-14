@@ -271,8 +271,8 @@ html.dark-theme {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 3px solid #ddd;
   cursor: pointer;
@@ -375,7 +375,7 @@ html.dark-theme {
 
 /* Dark theme for regular dates in year view */
 .dark-theme .month-date:not(.has-event) {
-  color: white !important;
+  color: white;
 }
 
 .year-month-container {

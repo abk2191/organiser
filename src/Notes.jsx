@@ -455,6 +455,19 @@ function Notes() {
                               )}
 
                               <div className="btn-cntnr">
+                                <div>
+                                  <input
+                                    type="color"
+                                    className="color-picker"
+                                    value={noteColors[note.id] || "#000033"}
+                                    onChange={(e) =>
+                                      changeBackgroundColor(
+                                        note.id,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
                                 <button
                                   className="dlt-btn"
                                   title="Select Color"
@@ -597,6 +610,16 @@ function Notes() {
                           </div>
                         )}
                         <div className="btn-cntnr">
+                          <div>
+                            <input
+                              type="color"
+                              className="color-picker"
+                              value={noteColors[note.id] || "#000033"}
+                              onChange={(e) =>
+                                changeBackgroundColor(note.id, e.target.value)
+                              }
+                            />
+                          </div>
                           <button
                             className="dlt-btn"
                             title="Select Color"

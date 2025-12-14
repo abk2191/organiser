@@ -667,6 +667,19 @@ function Todo() {
                                 )}
 
                                 <div className="btn-cntnr">
+                                  <div>
+                                    <input
+                                      type="color"
+                                      className="color-picker"
+                                      value={todoColors[todo.id] || "#000033"}
+                                      onChange={(e) =>
+                                        changeBackgroundColor(
+                                          todo.id,
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </div>
                                   <button
                                     className="dlt-btn"
                                     title="Select Color"
@@ -832,6 +845,16 @@ function Todo() {
                             </div>
                           )}
                           <div className="btn-cntnr">
+                            <div>
+                              <input
+                                type="color"
+                                className="color-picker"
+                                value={todoColors[todo.id] || "#000033"}
+                                onChange={(e) =>
+                                  changeBackgroundColor(todo.id, e.target.value)
+                                }
+                              />
+                            </div>
                             <button
                               className="dlt-btn"
                               title="Select Color"

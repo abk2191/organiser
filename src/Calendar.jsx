@@ -823,7 +823,14 @@ function Calendar() {
               <h3 style={{ color: "white" }}>EVENT VIEWER</h3>
             </div>
             <div className="event-header">
-              <h3 style={{ color: "white", fontSize: "30px" }}>
+              <h3
+                style={{
+                  color: "white",
+                  fontSize: "30px",
+                  textShadow:
+                    "0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)",
+                }}
+              >
                 {day}, {getOrdinalSuffix(selectedDate)}.
               </h3>
               <button className="cls-nt-btn" onClick={closeEventViewer}>
@@ -1351,7 +1358,7 @@ function Calendar() {
               style={{
                 fontSize: "12px",
                 textAlign: "center",
-                color: "#ccc",
+                color: "white",
                 fontWeight: "bold",
                 flex: "1",
                 minWidth: "0",
