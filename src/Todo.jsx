@@ -542,10 +542,8 @@ function Todo() {
                   className="pushable-container"
                   style={{ marginBottom: "30px" }}
                 >
-                  <button className="pushable" onClick={newTodo}>
-                    <span className="shadow"></span>
-                    <span className="edge"></span>
-                    <span className="front"> ADD TODO </span>
+                  <button className="add-new-note-button" onClick={newTodo}>
+                    <span class="button_top"> ADD TODO </span>
                   </button>
                 </div>
 

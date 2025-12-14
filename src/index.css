@@ -1765,6 +1765,30 @@ html.dark-theme {
   transform: translateY(0);
 }
 
+.add-new-note-button {
+  --button_radius: 0.75em;
+  --button_color: #32327a;
+  --button_outline_color: #000033;
+  width: 150px;
+
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
+
+.add-new-note-button:hover .button_top {
+  /* Pull the add-new-note-button upwards when hovered */
+  transform: translateY(-0.33em);
+}
+
+.add-new-note-button:active .button_top {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .event-desc,
