@@ -2,6 +2,41 @@ import { useState, useEffect, useRef } from "react";
 import EventEditor from "./EventEditor";
 import LiveClock from "./LiveClock";
 
+function useDarkTheme() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkTheme(document.body.classList.contains("dark-theme"));
+    };
+
+    // Check initially
+    checkTheme();
+
+    // Create a MutationObserver to watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "class"
+        ) {
+          checkTheme();
+        }
+      });
+    });
+
+    // Observe body for class changes
+    observer.observe(document.body, { attributes: true });
+
+    // Also observe documentElement (html) for class changes
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return isDarkTheme;
+}
+
 function Calendar() {
   const reminderTimeoutsRef = useRef({});
   // Load events from localStorage on initial render
@@ -43,7 +78,7 @@ function Calendar() {
     return savedColors ? JSON.parse(savedColors) : {};
   });
 
-  const isDarkTheme = document.body.classList.contains("dark-theme");
+  const isDarkTheme = useDarkTheme();
 
   useEffect(() => {
     // ----------------------------
@@ -975,11 +1010,11 @@ function Calendar() {
     );
   }
 
-  function YearView({ year }) {
+  function YearView({ year, isDarkTheme }) {
     const yearData = getAllMonthsForYear(year);
 
     // Get current theme
-    const isDarkTheme = document.body.classList.contains("dark-theme");
+    // const isDarkTheme = document.body.classList.contains("dark-theme");
 
     // Month names in order
     const monthNames = [
@@ -1052,7 +1087,7 @@ function Calendar() {
               style={{
                 background: "none",
                 border: "none",
-                color: isDarkTheme ? "white" : "#000033",
+                color: isDarkTheme ? "white" : "#32327a",
                 fontSize: "40px",
                 cursor: "pointer",
                 textShadow: isDarkTheme
@@ -1076,7 +1111,7 @@ function Calendar() {
                 style={{
                   fontSize: "28px",
                   margin: 0,
-                  color: isDarkTheme ? "white" : "#000033",
+                  color: isDarkTheme ? "white" : "#32327a",
                   textShadow: isDarkTheme
                     ? "0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)"
                     : "none",
@@ -1092,7 +1127,7 @@ function Calendar() {
               style={{
                 background: "none",
                 border: "none",
-                color: isDarkTheme ? "white" : "#000033",
+                color: isDarkTheme ? "white" : "#32327a",
                 fontSize: "40px",
                 cursor: "pointer",
                 textShadow: isDarkTheme
@@ -2030,7 +2065,9 @@ function Calendar() {
           </div>
         </div>
       )}
-      {currentView === "year" && <YearView year={yearViewYear} />}
+      {currentView === "year" && (
+        <YearView year={yearViewYear} isDarkTheme={isDarkTheme} />
+      )}
     </>
   );
 }
