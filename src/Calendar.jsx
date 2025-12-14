@@ -992,9 +992,6 @@ function Calendar() {
       "December",
     ];
 
-    // Day abbreviations for the header
-    const dayAbbreviations = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-
     // Navigation functions for year view
     const handlePrevYear = () => {
       setYearViewYear((prev) => prev - 1);
@@ -1004,9 +1001,16 @@ function Calendar() {
       setYearViewYear((prev) => prev + 1);
     };
 
-    const handleGoToToday = () => {
-      const today = new Date();
-      setYearViewYear(today.getFullYear());
+    // NEW: Function to handle month card click
+    const handleMonthCardClick = (monthName) => {
+      // Get month number (0-11) from month name
+      const monthIndex = monthNames.indexOf(monthName);
+      if (monthIndex !== -1) {
+        // Switch to month view
+        setCurrentMonth(monthIndex);
+        setCurrentYear(year);
+        setCurrentView("month");
+      }
     };
 
     return (
@@ -1052,7 +1056,7 @@ function Calendar() {
               <i class="fa-solid fa-angles-left"></i>
             </button>
 
-            {/* Year Display with Today Button */}
+            {/* Year Display */}
             <div
               style={{
                 display: "flex",
@@ -1112,7 +1116,10 @@ function Calendar() {
                       padding: "5px",
                       height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      cursor: "pointer", // Add cursor pointer
                     }}
+                    onClick={() => handleMonthCardClick(monthName)} // Add onClick
+                    title={`Click to view ${monthName} ${year}`} // Tooltip
                   >
                     <MonthContent
                       monthName={monthName}
@@ -1149,7 +1156,10 @@ function Calendar() {
                       padding: "10px",
                       height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      cursor: "pointer",
                     }}
+                    onClick={() => handleMonthCardClick(monthName)}
+                    title={`Click to view ${monthName} ${year}`}
                   >
                     <MonthContent
                       monthName={monthName}
@@ -1186,7 +1196,10 @@ function Calendar() {
                       padding: "10px",
                       height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      cursor: "pointer",
                     }}
+                    onClick={() => handleMonthCardClick(monthName)}
+                    title={`Click to view ${monthName} ${year}`}
                   >
                     <MonthContent
                       monthName={monthName}
@@ -1222,7 +1235,10 @@ function Calendar() {
                       padding: "10px",
                       height: "160px",
                       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                      cursor: "pointer",
                     }}
+                    onClick={() => handleMonthCardClick(monthName)}
+                    title={`Click to view ${monthName} ${year}`}
                   >
                     <MonthContent
                       monthName={monthName}
@@ -1273,9 +1289,9 @@ function Calendar() {
             marginBottom: "5px",
           }}
         >
-          {dayAbbreviations.map((day) => (
+          {dayAbbreviations.map((day, index) => (
             <span
-              key={day}
+              key={index}
               className="day-header"
               style={{
                 fontSize: "8px",
