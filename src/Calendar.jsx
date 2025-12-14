@@ -1693,48 +1693,44 @@ function Calendar() {
       >
         <button
           className="month-year-nav-btn"
-          onClick={(e) => {
-            animateButtonClick(e);
+          onClick={() => {
             setCurrentView("month");
-            console.log("Switching to Month View");
           }}
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#000033",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            minWidth: "100px",
-            minHeight: "44px",
-          }}
+          // style={{
+          //   padding: "12px 24px",
+          //   backgroundColor: "#000033",
+          //   color: "white",
+          //   border: "none",
+          //   borderRadius: "8px",
+          //   fontSize: "16px",
+          //   fontWeight: "bold",
+          //   cursor: "pointer",
+          //   minWidth: "100px",
+          //   minHeight: "44px",
+          // }}
         >
-          Month
+          <span class="button_top"> Month </span>
         </button>
 
         <button
           className="month-year-nav-btn"
-          onClick={(e) => {
-            animateButtonClick(e);
+          onClick={() => {
             setCurrentView("year");
-            console.log("Switching to Year View");
           }}
-          style={{
-            padding: "12px 24px",
-            backgroundColor: "#000033",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            minWidth: "100px",
-            minHeight: "44px",
-          }}
+          // style={{
+          //   padding: "12px 24px",
+          //   backgroundColor: "#000033",
+          //   color: "white",
+          //   border: "none",
+          //   borderRadius: "8px",
+          //   fontSize: "16px",
+          //   fontWeight: "bold",
+          //   cursor: "pointer",
+          //   minWidth: "100px",
+          //   minHeight: "44px",
+          // }}
         >
-          Year
+          <span class="button_top"> Year </span>
         </button>
       </div>
 

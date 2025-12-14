@@ -1727,111 +1727,42 @@ html.dark-theme {
   min-height: 100vh; /* Added to ensure it takes full height */
 }
 
+/* From Uiverse.io by Voxybuns */
 .month-year-nav-btn {
-  /* Base styling */
-  background: linear-gradient(145deg, #000066, #000022);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 16px;
+  /* Variables */
+  --button_radius: 0.75em;
+  --button_color: #32327a;
+  --button_outline_color: #000033;
+  width: 120px;
+  font-size: 17px;
   font-weight: bold;
+  border: none;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
-
-  /* Ripple effect container */
-  isolation: isolate;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
 }
 
-/* Hover effect */
-.month-year-nav-btn:hover {
-  background: linear-gradient(145deg, #000088, #000033);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 255, 255, 0.2);
+.button_top {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+  color: white;
 }
 
-/* Active/Click animation */
-.month-year-nav-btn:active {
-  transform: translateY(1px) scale(0.98);
-  background: linear-gradient(145deg, #000044, #000011);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.3);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
+.month-year-nav-btn:hover .button_top {
+  /* Pull the month-year-nav-btn upwards when hovered */
+  transform: translateY(-0.33em);
 }
 
-/* Ripple effect */
-.month-year-nav-btn::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.4s, height 0.4s;
-  z-index: -1;
-}
-
-.month-year-nav-btn:active::after {
-  width: 300px;
-  height: 300px;
-  transition: width 0s, height 0s;
-}
-
-/* Press bounce animation */
-@keyframes buttonPress {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(0.95);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Apply animation on click */
-.month-year-nav-btn.animating {
-  animation: buttonPress 0.3s ease;
-}
-
-/* Add pulsing glow for selected state */
-.month-year-nav-btn.selected {
-  background: linear-gradient(145deg, #32327a, #1a1a5a);
-  box-shadow: 0 0 15px rgba(50, 50, 122, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Disabled state */
-.month-year-nav-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.month-year-nav-btn:disabled:hover {
-  background: linear-gradient(145deg, #000066, #000022);
-  transform: none;
-  box-shadow: none;
-}
-
-/* Icon inside button */
-.month-year-nav-btn i {
-  margin: 0 5px;
-  transition: transform 0.2s ease;
-}
-
-.month-year-nav-btn:hover i {
-  transform: scale(1.1);
-}
-
-.month-year-nav-btn:active i {
-  transform: scale(0.95);
+.month-year-nav-btn:active .button_top {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
