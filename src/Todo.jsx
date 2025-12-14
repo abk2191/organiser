@@ -497,7 +497,10 @@ function Todo() {
                       <div
                         key={todo.id}
                         className="note-item"
-                        onClick={() => openTodo(todo.id)}
+                        onClick={(e) => {
+                          if (e.target.closest(".btn-cntnr")) return;
+                          openTodo(todo.id);
+                        }}
                       >
                         <div
                           className="nw-nt-div"
@@ -570,7 +573,10 @@ function Todo() {
                           <div
                             key={todo.id}
                             className="note-item"
-                            onClick={() => openTodo(todo.id)}
+                            onClick={(e) => {
+                              if (e.target.closest(".btn-cntnr")) return;
+                              openTodo(todo.id);
+                            }}
                           >
                             <div
                               className="nw-nt-div"
@@ -775,7 +781,10 @@ function Todo() {
                     <div
                       key={todo.id}
                       className="note-item"
-                      onClick={() => openTodo(todo.id)}
+                      onClick={(e) => {
+                        if (e.target.closest(".btn-cntnr")) return;
+                        openTodo(todo.id);
+                      }}
                     >
                       <div
                         className="nw-nt-div"

@@ -321,7 +321,10 @@ function Notes() {
                     <div
                       key={note.id}
                       className="note-item"
-                      onClick={() => openNote(note.id)}
+                      onClick={(e) => {
+                        if (e.target.closest(".btn-cntnr")) return;
+                        openNote(note.id);
+                      }}
                     >
                       <div
                         className="nw-nt-div"
@@ -372,7 +375,10 @@ function Notes() {
                         <div
                           key={note.id}
                           className="note-item"
-                          onClick={() => openNote(note.id)}
+                          onClick={(e) => {
+                            if (e.target.closest(".btn-cntnr")) return;
+                            openNote(note.id);
+                          }}
                         >
                           <div
                             className="nw-nt-div"
@@ -555,7 +561,10 @@ function Notes() {
                   <div
                     key={note.id}
                     className="note-item"
-                    onClick={() => openNote(note.id)}
+                    onClick={(e) => {
+                      if (e.target.closest(".btn-cntnr")) return;
+                      openNote(note.id);
+                    }}
                   >
                     <div
                       className="nw-nt-div"
