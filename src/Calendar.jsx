@@ -1694,27 +1694,6 @@ function Calendar() {
         <button
           className="month-year-nav-btn"
           onClick={() => {
-            setCurrentView("month");
-          }}
-          // style={{
-          //   padding: "12px 24px",
-          //   backgroundColor: "#000033",
-          //   color: "white",
-          //   border: "none",
-          //   borderRadius: "8px",
-          //   fontSize: "16px",
-          //   fontWeight: "bold",
-          //   cursor: "pointer",
-          //   minWidth: "100px",
-          //   minHeight: "44px",
-          // }}
-        >
-          <span class="button_top"> Month </span>
-        </button>
-
-        <button
-          className="month-year-nav-btn"
-          onClick={() => {
             setCurrentView("year");
           }}
           // style={{
@@ -1731,6 +1710,26 @@ function Calendar() {
           // }}
         >
           <span class="button_top"> Year </span>
+        </button>
+        <button
+          className="month-year-nav-btn"
+          onClick={() => {
+            setCurrentView("month");
+          }}
+          // style={{
+          //   padding: "12px 24px",
+          //   backgroundColor: "#000033",
+          //   color: "white",
+          //   border: "none",
+          //   borderRadius: "8px",
+          //   fontSize: "16px",
+          //   fontWeight: "bold",
+          //   cursor: "pointer",
+          //   minWidth: "100px",
+          //   minHeight: "44px",
+          // }}
+        >
+          <span class="button_top"> Month </span>
         </button>
       </div>
 
