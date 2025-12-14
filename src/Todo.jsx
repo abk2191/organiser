@@ -975,7 +975,7 @@ function Todo() {
                         textAlign: "center",
                         color: "rgba(255, 255, 255, 0.7)",
                         padding: "20px",
-                        fontStyle: "italic",
+                        fontFamily: "Inter, sans-serif",
                       }}
                     >
                       No tasks yet. Click "Add Task" to create your first task!

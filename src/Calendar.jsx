@@ -1675,6 +1675,54 @@ function Calendar() {
     // playClickSound();
   }
 
+  // For the Year button:
+  const handleYearButtonClick = () => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+
+    if (currentView === "year") {
+      // If already in year view, check if showing current year
+      if (yearViewYear === currentYear) {
+        // Already showing current year, do nothing or switch to month view
+        setCurrentView("month");
+      } else {
+        // Not showing current year, go to current year
+        setYearViewYear(currentYear);
+      }
+    } else {
+      // Not in year view, switch to year view with current year
+      setYearViewYear(currentYear);
+      setCurrentView("year");
+    }
+  };
+
+  // For the Month button:
+  const handleMonthButtonClick = () => {
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+
+    if (currentView === "month") {
+      // If already in month view, check if showing current month
+      if (
+        currentMonth === today.getMonth() &&
+        currentYear === today.getFullYear()
+      ) {
+        // Already showing current month, do nothing or refresh
+        window.location.reload();
+      } else {
+        // Not showing current month, go to current month
+        setCurrentMonth(currentMonth);
+        setCurrentYear(currentYear);
+      }
+    } else {
+      // Not in month view, switch to month view with current month
+      setCurrentMonth(currentMonth);
+      setCurrentYear(currentYear);
+      setCurrentView("month");
+    }
+  };
+
   // Usage - using currentMonth and currentYear state
   const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
   const wks = getWeeks();
@@ -1709,9 +1757,7 @@ function Calendar() {
       >
         <button
           className="month-year-nav-btn"
-          onClick={() => {
-            setCurrentView("year");
-          }}
+          onClick={handleYearButtonClick}
           // style={{
           //   padding: "12px 24px",
           //   backgroundColor: "#000033",
@@ -1730,12 +1776,7 @@ function Calendar() {
 
         <button
           className="month-year-nav-btn"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setCurrentView("month");
-            window.location.reload();
-          }}
+          onClick={handleMonthButtonClick}
           // style={{
           //   padding: "12px 24px",
           //   backgroundColor: "#000033",
