@@ -1644,6 +1644,21 @@ function Calendar() {
     alert("Event deleted successfully!");
   }
 
+  function animateButtonClick(event) {
+    const button = event.currentTarget;
+
+    // Add animating class
+    button.classList.add("animating");
+
+    // Remove class after animation completes
+    setTimeout(() => {
+      button.classList.remove("animating");
+    }, 300);
+
+    // You can also add a sound effect if you want
+    // playClickSound();
+  }
+
   // Usage - using currentMonth and currentYear state
   const monthDates = getMonthDatesByWeekday(currentMonth, currentYear);
   const wks = getWeeks();
@@ -1677,13 +1692,15 @@ function Calendar() {
         className="toggle-buttons-container"
       >
         <button
-          onClick={() => {
+          className="month-year-nav-btn"
+          onClick={(e) => {
+            animateButtonClick(e);
             setCurrentView("month");
             console.log("Switching to Month View");
           }}
           style={{
             padding: "12px 24px",
-            backgroundColor: currentView === "month" ? "#32327a" : "#000033",
+            backgroundColor: "#000033",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -1698,13 +1715,15 @@ function Calendar() {
         </button>
 
         <button
-          onClick={() => {
+          className="month-year-nav-btn"
+          onClick={(e) => {
+            animateButtonClick(e);
             setCurrentView("year");
             console.log("Switching to Year View");
           }}
           style={{
             padding: "12px 24px",
-            backgroundColor: currentView === "year" ? "#32327a" : "#000033",
+            backgroundColor: "#000033",
             color: "white",
             border: "none",
             borderRadius: "8px",
