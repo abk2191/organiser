@@ -914,6 +914,7 @@ html.dark-theme {
     0 4px 12px rgba(0, 0, 0, 0.15);
   animation: jello 0.4s;
   margin-bottom: 45px;
+  margin-left: 62px;
 }
 
 .dlt-wrn {
@@ -1885,7 +1886,7 @@ html.dark-theme {
 
   .color-selector {
     /* top: 55%; */
-    left: 13%;
+    left: 7%;
   }
 
   .notes-modal {
