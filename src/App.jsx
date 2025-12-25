@@ -10,6 +10,7 @@ import {
 import Notes from "./Notes";
 import Todo from "./Todo";
 import Calendar from "./Calendar";
+import Mindmap from "./Mindmap";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -147,6 +148,18 @@ function App() {
                   <h2 style={{ fontSize: "25px" }}>CALENDAR</h2>
                 </div>
               </div>
+              <div
+                className="sliding-div-two div-style"
+                onClick={() => {
+                  window.location.href = "/organiser/mindmap";
+                  closeSidebar();
+                }}
+              >
+                <div className="sidebar-menu-items">
+                  <i class="fa-solid fa-brain"></i>
+                  <h2 style={{ fontSize: "25px" }}>MINDMAP</h2>
+                </div>
+              </div>
             </div>
 
             <div className="theme-holder-main">
@@ -194,6 +207,7 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/todo" element={<Todo />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/mindmap" element={<Mindmap />} />
         </Routes>
       </div>
     </Router>
