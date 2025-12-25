@@ -4,13 +4,13 @@ const STORAGE_KEY = "mindmaps";
 
 /* 🎨 Fixed color palette (Notes-style) */
 const NODE_COLORS = [
-  "#000033", // navy
-  "#1f2933", // slate
-  "#374151", // gray
-  "#256025", // green
-  "#360a5e", // purple
-  "#1a0505", // maroon
-  "#646409", // olive
+  "red", // navy
+  "blue", // slate
+  "green", // gray
+  "greenyellow", // green
+  "gold", // purple
+  "magenta", // maroon
+  "cyan", // olive
   "#1a1a1a", // dark
 ];
 
@@ -133,11 +133,12 @@ export default function Mindmap() {
         <div style={styles.controls}>
           {/* 🎨 Color palette selector (REPLACED color picker) */}
           <button
+            className="paint-btn"
             onClick={() =>
               setOpenColorNode(openColorNode === node.id ? null : node.id)
             }
           >
-            🎨
+            <i class="fa-solid fa-brush"></i>
           </button>
 
           {openColorNode === node.id && (
