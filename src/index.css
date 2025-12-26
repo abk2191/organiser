@@ -1728,7 +1728,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 80px;
+  gap: 50px;
 }
 
 .theme-holder {
@@ -1741,6 +1741,7 @@ html {
 
 .name-brand {
   font-family: "Inter", sans-serif;
+  margin-bottom: 30px;
 }
 
 .theme-text {

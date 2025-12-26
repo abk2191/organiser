@@ -189,9 +189,9 @@ function App() {
               </div>
 
               <div className="name-brand">
-                <h2 style={{ color: "white", fontSize: "30px" }}>
+                <h2 style={{ color: "white", fontSize: "20px" }}>
                   <i className="fa-solid fa-flask"></i> Aphelion Labs.
-                  <p style={{ fontSize: "18px", textAlign: "center" }}>
+                  <p style={{ fontSize: "12px", textAlign: "center" }}>
                     &copy; All Rights Reserved 2025.
                   </p>
                 </h2>
