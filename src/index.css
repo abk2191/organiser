@@ -332,6 +332,10 @@ html.dark-theme {
   height: 200px;
 }
 
+.months-container {
+  margin-bottom: 20px;
+}
+
 .month-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -643,6 +647,14 @@ html.dark-theme {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+}
+
+.zoom-control-buttons {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #000033;
+  cursor: pointer;
 }
 
 .dlt-btn:hover {

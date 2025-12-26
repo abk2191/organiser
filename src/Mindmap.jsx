@@ -173,7 +173,12 @@ export default function Mindmap() {
             placeholder="Add sub-topic"
           />
 
-          <button onClick={() => addChild(node.id)}>+</button>
+          <button
+            onClick={() => addChild(node.id)}
+            style={{ border: "none", fontSize: "20px" }}
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
         </div>
 
         {children.length > 0 && (
@@ -195,11 +200,21 @@ export default function Mindmap() {
     return (
       <div style={styles.container}>
         <div className="in-center">
-          <h1>
+          <h1
+            style={{
+              color: "#000033",
+              textShadow: "0 0 10px #000033, 0 0 20px rgba(255, 255, 255, 0.5)",
+              fontSize: "45px",
+              marginBottom: "15px",
+            }}
+          >
             {" "}
             <i class="fa-solid fa-brain"></i> Mindmap
           </h1>
-          <button onClick={startNewMap}>Create New Map</button>
+
+          <button className="add-new-note-button" onClick={startNewMap}>
+            <span class="button_top"> ADD MAP</span>
+          </button>
         </div>
 
         <div style={{ marginTop: 20 }}>
@@ -221,7 +236,7 @@ export default function Mindmap() {
                   deleteMap(map.id);
                 }}
               >
-                ✕
+                <i class="fa-regular fa-trash-can"></i>
               </button>
             </div>
           ))}
@@ -235,15 +250,25 @@ export default function Mindmap() {
   return (
     <div style={styles.container}>
       <div className="in-center">
-        <button onClick={saveMap}>Save Map</button>
+        <button className="add-new-note-button" onClick={saveMap}>
+          <span class="button_top"> SAVE MAP</span>
+        </button>
 
         <div style={styles.zoom}>
-          <button onClick={() => setScale((s) => Math.max(0.5, s - 0.1))}>
-            −
+          <button
+            className="zoom-control-buttons"
+            onClick={() => setScale((s) => Math.max(0.5, s - 0.1))}
+          >
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
           </button>
-          <button onClick={() => setScale(1)}>RESET</button>
-          <button onClick={() => setScale((s) => Math.min(2, s + 0.1))}>
-            +
+          <button className="zoom-control-buttons" onClick={() => setScale(1)}>
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+          <button
+            className="zoom-control-buttons"
+            onClick={() => setScale((s) => Math.min(2, s + 0.1))}
+          >
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
           </button>
         </div>
       </div>
@@ -288,23 +313,28 @@ const styles = {
     borderRadius: 8,
   },
   mapCard: {
-    padding: 12,
-    background: "#e5e7eb",
+    padding: 32,
+    background: "#000033",
     borderRadius: 8,
     cursor: "pointer",
     marginBottom: 8,
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
+    color: "white",
+    height: "80px",
+    fontSize: "25px",
   },
   deleteBtn: {
     border: "none",
     background: "transparent",
-    color: "#dc2626",
+    color: "white",
     cursor: "pointer",
+    fontSize: "20px",
   },
   zoom: {
     display: "flex",
-    gap: 6,
+    gap: 15,
     marginBottom: 10,
   },
   children: {
