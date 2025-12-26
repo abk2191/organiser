@@ -164,6 +164,7 @@ export default function Mindmap() {
 
           <input
             value={inputMap[node.id] || ""}
+            style={{ outline: "none" }}
             onChange={(e) =>
               setInputMap((p) => ({
                 ...p,
